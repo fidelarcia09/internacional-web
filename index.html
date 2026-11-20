@@ -207,10 +207,14 @@
  .hero-art:after{z-index:3}
 }
 
-/* Encuadre cerrado: sin bordes de la imagen y mostrando cabeza, hombros y pecho */
+/* Integrar los extremos del PNG con el fondo y enfocar cabeza, hombros y pecho */
 .hero{isolation:isolate}
 .hero-art{overflow:hidden}
-.hero-character{transform:scale(1.12);transform-origin:right top}
+.hero-character{
+ transform:scale(1.12);transform-origin:right top;
+ -webkit-mask-image:radial-gradient(ellipse 82% 78% at 57% 39%,#000 54%,rgba(0,0,0,.94) 68%,transparent 100%);
+ mask-image:radial-gradient(ellipse 82% 78% at 57% 39%,#000 54%,rgba(0,0,0,.94) 68%,transparent 100%);
+}
 @media(max-width:620px){
  .hero-art{overflow:hidden;right:-8%;width:86%}
  .hero-character{transform:scale(1.28);transform-origin:right top}
