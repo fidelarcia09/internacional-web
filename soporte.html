@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090a0d">
+<meta name="description" content="Centro de soporte de INTERNACIONAL WEB. Estamos aquí para ayudarte.">
+<title>Soporte — INTERNACIONAL WEB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090a0d;--panel:#111318;--orange:#ff7928;--white:#f5f5f5;--muted:#a0a2aa;--line:rgba(255,255,255,.1);--font:'Inter',sans-serif;--display:'Barlow Condensed',sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;padding:18px 0 82px;background:radial-gradient(ellipse at 50% 12%,#ff790012,transparent 42%),var(--bg);color:var(--white);font-family:var(--font);overflow-x:hidden}a{color:inherit;text-decoration:none}
+.support-page{width:min(1080px,90%);margin:0 auto}
+.hero{position:relative;min-height:315px;display:flex;align-items:center;isolation:isolate;overflow:hidden}
+.hero-copy{position:relative;z-index:2;width:58%;padding:24px 0}
+.hero h1{margin:0;font:900 clamp(58px,8vw,100px)/.86 var(--display);letter-spacing:-1.8px;text-transform:uppercase}
+.hero h1 span{display:block;color:var(--orange);font-style:italic}
+.hero h2{margin:20px 0 0;font-size:clamp(20px,3vw,34px);font-weight:800;font-style:italic;line-height:1.1}
+.hero h2 em{color:var(--orange);font-style:italic}
+.hero p{max-width:430px;margin:15px 0 0;color:#e0e0e3;font-size:clamp(13px,1.6vw,16px);line-height:1.55}
+.hero-art{position:absolute;z-index:1;right:-1%;bottom:0;width:47%;height:100%;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none}
+.hero-art img{height:100%;width:auto;max-width:100%;object-fit:contain;object-position:right bottom;filter:drop-shadow(0 0 24px #ff79282b);mask-image:linear-gradient(to bottom,#000 0%,#000 85%,transparent 100%)}
+.support-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 26px}
+.support-card{position:relative;min-height:148px;display:flex;align-items:center;gap:20px;padding:20px 22px;border:1px solid var(--orange);border-radius:18px;background:linear-gradient(110deg,#17100c,#101115 68%);box-shadow:0 0 10px #ff79283b,0 0 24px #ff792817,inset 0 0 18px #ff79280d;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.support-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,#ff9a3910,transparent 48%)}
+.support-card[href]:hover{transform:translateY(-3px);box-shadow:0 0 16px #ff792866,0 0 28px #ff792822}
+.card-icon{position:relative;z-index:1;flex:0 0 82px;display:grid;place-items:center;color:#ff9d00}
+.card-icon svg{width:72px;height:72px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 9px #ff9d0055)}
+.card-copy{position:relative;z-index:1;min-width:0}
+.card-copy h2{margin:0 0 7px;font-size:clamp(17px,2vw,22px);font-weight:800;letter-spacing:-.5px}
+.card-copy p{margin:0;color:#d4d4d8;font-size:13px;line-height:1.45}
+.chevron{position:relative;z-index:1;margin-left:auto;color:var(--orange);font-size:34px;font-weight:400}
+.priority{position:relative;display:flex;align-items:center;justify-content:center;gap:28px;margin:26px 0 30px;padding:22px 28px;border:1px solid var(--orange);border-radius:20px;background:linear-gradient(105deg,#1b100a,#101115 55%,#1b100a);box-shadow:0 0 16px #ff79283a,inset 0 0 24px #ff792812}
+.priority svg{flex:0 0 76px;width:76px;height:76px;fill:none;stroke:#f5f5f5;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 8px #ff792855)}
+.priority p{margin:0;font-size:clamp(23px,3.6vw,39px);font-weight:900;font-style:italic;line-height:1.08;letter-spacing:-1px}
+.priority em{color:var(--orange)}
+.faq{margin:0 0 22px}
+.faq-heading{margin:0 0 13px;font-size:23px;font-weight:800;letter-spacing:-.5px}
+.faq-list{display:grid;gap:9px}
+.faq details{border:1px solid #303239;border-radius:12px;background:#101115;overflow:hidden}
+.faq summary{position:relative;padding:15px 44px 15px 16px;cursor:pointer;list-style:none;font-size:14px;font-weight:700}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--orange);font-size:22px;font-weight:500}
+.faq details[open] summary:after{content:"−"}
+.faq details p{margin:0;padding:0 16px 15px;color:#b8bac2;font-size:13px;line-height:1.55}
+.mobile-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;height:65px;background:#101217f5;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(15px);padding-bottom:env(safe-area-inset-bottom)}
+.mobile-nav a{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:54px;height:60px;color:#777}
+.mobile-nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mobile-nav small{font-size:8px;letter-spacing:.2px}.mobile-nav a:hover,.mobile-nav a.current{color:var(--orange)}
+.mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,#ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}
+.mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}.mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
+@media(max-width:760px){body{padding-top:10px}.hero{min-height:265px;align-items:center}.hero-copy{width:68%;padding:16px 0}.hero h1{font-size:clamp(48px,11vw,70px)}.hero h2{margin-top:15px;font-size:clamp(18px,4.2vw,25px)}.hero p{max-width:300px;margin-top:10px;font-size:12px}.hero-art{right:-9%;width:53%;height:82%;opacity:.92}.support-grid{gap:10px;margin-bottom:20px}.support-card{min-height:122px;padding:13px 11px;gap:9px;border-radius:14px}.card-icon{flex-basis:46px}.card-icon svg{width:43px;height:43px}.card-copy h2{font-size:15px;line-height:1.2}.card-copy p{font-size:10px;line-height:1.4}.chevron{font-size:25px}.priority{gap:14px;margin:20px 0 24px;padding:17px 14px;border-radius:16px}.priority svg{flex-basis:52px;width:52px;height:52px}.priority p{font-size:clamp(19px,5vw,27px)}.faq-heading{font-size:20px}}
+@media(max-width:390px){.hero{min-height:245px}.hero-copy{width:74%}.hero-art{right:-13%;width:55%;height:76%}.hero h1{font-size:48px}.hero h2{font-size:18px}.support-card{min-height:112px;padding:10px 8px;gap:7px}.card-icon{flex-basis:38px}.card-icon svg{width:36px;height:36px}.card-copy h2{font-size:13px}.card-copy p{font-size:9px}.chevron{font-size:22px}.priority{gap:10px;padding:14px 10px}.priority svg{flex-basis:44px;width:44px;height:44px}.priority p{font-size:19px}.faq summary{font-size:12px;padding:13px 38px 13px 13px}.faq details p{font-size:11px;padding:0 13px 13px}}
+</style>
+</head>
+<body>
+<main class="support-page">
+<section class="hero">
+<div class="hero-copy">
+<h1>SOPORTE<span>Estamos aquí</span></h1>
+<h2>¿Necesitas ayuda?<br><em>Estamos aquí para ti.</em></h2>
+<p>Contáctanos y resolveremos tus dudas lo antes posible.</p>
+</div>
+<div class="hero-art"><img src="fuentes/personaje_gamer_cuadrado.webp" alt="Personaje de INTERNACIONAL WEB"></div>
+</section>
+<section class="support-grid" aria-label="Opciones de soporte">
+<a class="support-card" href="mailto:soporte@internacionalweb.com?subject=Chat%20en%20Vivo%20-%20Soporte">
+<span class="card-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M9 15h48a10 10 0 0 1 10 10v23a10 10 0 0 1-10 10H31L14 70V58h-5A10 10 0 0 1-1 48V25A10 10 0 0 1 9 15Z"/><circle cx="23" cy="37" r="3" fill="currentColor" stroke="none"/><circle cx="38" cy="37" r="3" fill="currentColor" stroke="none"/><circle cx="53" cy="37" r="3" fill="currentColor" stroke="none"/></svg></span>
+<span class="card-copy"><h2>Chat en Vivo</h2><p>Habla con nuestro equipo de soporte.</p></span><span class="chevron">›</span>
+</a>
+<a class="support-card" href="mailto:soporte@internacionalweb.com?subject=Consulta%20de%20soporte">
+<span class="card-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="7" y="16" width="66" height="48" rx="5"/><path d="m9 20 31 25 31-25"/></svg></span>
+<span class="card-copy"><h2>Correo Electrónico</h2><p>Envíanos un mensaje y te responderemos pronto.</p></span><span class="chevron">›</span>
+</a>
+<a class="support-card" href="mailto:soporte@internacionalweb.com?subject=Ayuda%20de%20soporte">
+<span class="card-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M12 43v-7a28 28 0 0 1 56 0v7"/><path d="M12 41H8a5 5 0 0 0-5 5v12a5 5 0 0 0 5 5h9V41h-5Zm56 0h4a5 5 0 0 1 5 5v12a5 5 0 0 1-5 5h-9V41h5ZM17 63c4 8 12 12 23 12h7"/></svg></span>
+<span class="card-copy"><h2>Soporte 24/7</h2><p>Siempre disponibles para ayudarte.</p></span><span class="chevron">›</span>
+</a>
+<a class="support-card" href="#preguntas">
+<span class="card-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M8 17h25a10 10 0 0 1 10 10v39a10 10 0 0 0-10-10H8V17Zm64 0H47a10 10 0 0 0-10 10v39a10 10 0 0 1 10-10h25V17Z"/><path d="M53 31c0-6-12-7-13 1m0 10v1"/></svg></span>
+<span class="card-copy"><h2>Preguntas Frecuentes</h2><p>Encuentra respuestas a las dudas más comunes.</p></span><span class="chevron">›</span>
+</a>
+</section>
+<section class="priority" aria-label="Nuestro compromiso">
+<svg viewBox="0 0 80 80" aria-hidden="true"><path d="m8 23 15-15 18 18-15 15L8 23Zm64 0L57 8 39 26l15 15 18-18ZM25 41l-8 8 12 12 8-8m-1-1 8 8 8-8m-1-1 7 7 8-8m-1-1 6 6 8-8M24 42l16-16c4-4 10 2 6 6L35 43l9-8c4-4 10 2 6 6l-8 8 7-6c4-3 9 3 5 7l-6 6 4-3c4-3 9 3 5 7l-8 8c-7 7-18 7-25 0L14 53"/></svg>
+<p>Tu satisfacción<br><em>es nuestra prioridad</em></p>
+</section>
+<section class="faq" id="preguntas">
+<h2 class="faq-heading">Preguntas frecuentes</h2>
+<div class="faq-list">
+<details><summary>¿Cómo puedo contactar al equipo de soporte?</summary><p>Puedes escribirnos directamente a soporte@internacionalweb.com desde el botón de correo electrónico de esta página.</p></details>
+<details><summary>¿Qué información debo incluir en mi consulta?</summary><p>Describe brevemente lo que necesitas y, si corresponde, incluye el nombre del producto o el número de pedido. No compartas contraseñas ni datos de acceso.</p></details>
+<details><summary>¿Dónde puedo consultar mis compras?</summary><p>Entra en la sección Cuenta y abre “Mis Compras” para consultar esa opción dentro de tu perfil.</p></details>
+</div>
+</section>
+</main>
+<nav class="mobile-nav" aria-label="Navegación inferior">
+<a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
+<a href="tienda.html" aria-label="Tienda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5M9 13v3m6-3v3"/></svg><small>Tienda</small></a>
+<a href="revendedores.html" aria-label="Revendedores"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revendedores</small></a>
+<a class="current" href="soporte.html" aria-current="page" aria-label="Soporte"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
+<a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
+</nav>
+</body></html>
