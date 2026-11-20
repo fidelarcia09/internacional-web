@@ -179,6 +179,14 @@
  .mobile-nav svg{width:23px;height:23px;stroke-width:2}
  .mobile-nav small{font-size:8px}
 }
+
+/* Banner USDT: remate angular naranja en la esquina inferior derecha */
+@media(max-width:620px){
+ .usdt-banner{border:1.5px solid #ff8700;background:linear-gradient(105deg,#211000 0%,#090909 48%,#211000 100%);box-shadow:0 0 13px #ff790044,inset 0 0 18px #ff790018}
+ .usdt-banner:before{content:"";position:absolute;inset:auto -1px -1px auto;z-index:0;width:88px;height:52px;pointer-events:none;background:linear-gradient(135deg,#ffb52b 0%,#ff8a00 48%,#ff5b00 100%);clip-path:polygon(82% 0,100% 0,100% 100%,0 100%,19% 77%,68% 77%);filter:drop-shadow(0 0 7px #ff7900)}
+ .usdt-banner:after{content:"";position:absolute;right:3px;bottom:3px;z-index:0;width:76px;height:42px;pointer-events:none;background:linear-gradient(135deg,#160900,#090909);clip-path:polygon(82% 0,100% 0,100% 100%,0 100%,19% 77%,68% 77%)}
+ .usdt-banner>div,.usdt-banner>a{position:relative;z-index:1}
+}
 </style>
 </head>
 <body>
