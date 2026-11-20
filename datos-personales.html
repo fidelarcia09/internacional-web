@@ -221,7 +221,7 @@ saveButton.addEventListener("click", async () => {
     username,
     phone,
     email: currentUser.email || "",
-    user_code: profileHint.textContent.replace(/^ID:\\s*/, "") || "No disponible"
+    user_code: profileHint.textContent.replace(/^ID:\s*/, "") || "No disponible"
   };
   showPersonalData(updatedData);
   try {
