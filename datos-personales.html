@@ -93,6 +93,31 @@ label{display:block;color:#aeb0b8;font-size:10px;font-weight:700;letter-spacing:
 <a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
 <a class="current" href="cuenta.html" aria-label="Cuenta" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
+<script>
+/* Pintar los datos personales desde el almacenamiento local antes de iniciar Supabase. */
+(() => {
+  try {
+    const auth = JSON.parse(localStorage.getItem("sb-fyyebxjysrhcxgmgperf-auth-token") || "null");
+    const userId = auth?.user?.id || auth?.currentSession?.user?.id;
+    if (!userId) return;
+    const cached = localStorage.getItem("iw-personal-data:" + userId);
+    if (!cached) return;
+    const data = JSON.parse(cached);
+    const fields = {
+      "full-name": data.full_name || "",
+      username: data.username || "",
+      phone: data.phone || "",
+      email: data.email || ""
+    };
+    for (const [id, value] of Object.entries(fields)) {
+      const field = document.getElementById(id);
+      if (field) field.value = value;
+    }
+    const profileHint = document.querySelector(".profile-card small");
+    if (profileHint) profileHint.textContent = "ID: " + (data.user_code || "No disponible");
+  } catch (error) { console.warn("No se pudieron precargar los datos personales:", error); }
+})();
+</script>
 <script type="module">
 import { supabase } from "./supabase-client.js";
 
