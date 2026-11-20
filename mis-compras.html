@@ -134,7 +134,8 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
   main.append(name,meta);
   const right=document.createElement("div"); right.className="history-right";
   const value=document.createElement("div"); value.className="history-amount";
-  value.textContent=(isDeposit || status==="failed" ? "+" : "−")+Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT";
+  const sign=isDeposit?(status==="confirmed"?"+":""):(status==="failed"?"+":"−");
+  value.textContent=sign+Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT";
   const badge=document.createElement("span"); badge.className="history-status "+status; badge.textContent=statusLabel(status);
   right.append(value,badge); item.append(main,right);
   return item;
