@@ -100,28 +100,72 @@ Continuar con Google
 </div>
 </section>
 </main>
-<script>
-const notice=document.getElementById("notice");
-function showNotice(message){notice.textContent=message;notice.classList.add("show")}
-document.querySelector(".toggle-pass").addEventListener("click",button=>{
-const field=document.getElementById("password");
-const visible=field.type==="password";
-field.type=visible?"text":"password";
-button.currentTarget.setAttribute("aria-label",visible?"Ocultar contraseña":"Mostrar contraseña");
-const slash=button.currentTarget.querySelector(".slash");
-if(slash)slash.style.display=visible?"none":"block";
+<script type="module">
+import { supabase, SITE_URL } from "./supabase-client.js";
+
+const notice = document.getElementById("notice");
+const form = document.getElementById("loginForm");
+const submit = form.querySelector(".submit");
+function showNotice(message, isError = false) {
+  notice.textContent = message;
+  notice.classList.add("show");
+  notice.style.borderColor = isError ? "#ff5d5d99" : "#ff9a2b70";
+  notice.style.color = isError ? "#ffb5b5" : "#ffd29d";
+}
+
+document.querySelector(".toggle-pass").addEventListener("click", button => {
+  const field = document.getElementById("password");
+  const visible = field.type === "password";
+  field.type = visible ? "text" : "password";
+  button.currentTarget.setAttribute("aria-label", visible ? "Ocultar contraseña" : "Mostrar contraseña");
+  const slash = button.currentTarget.querySelector(".slash");
+  if (slash) slash.style.display = visible ? "none" : "block";
 });
-document.getElementById("loginForm").addEventListener("submit",event=>{
-event.preventDefault();
-showNotice("La pantalla de inicio de sesión está lista. La autenticación se conectará en la siguiente etapa.");
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  const email = form.elements.email.value.trim().toLowerCase();
+  const password = document.getElementById("password").value;
+  submit.disabled = true;
+  submit.style.opacity = ".7";
+  submit.textContent = "INICIANDO SESIÓN...";
+  notice.classList.remove("show");
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  submit.disabled = false;
+  submit.style.opacity = "";
+  submit.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5m5 5H3"/></svg> INICIAR SESIÓN';
+
+  if (error) {
+    const message = error.message.toLowerCase();
+    if (message.includes("email not confirmed")) showNotice("Primero confirma tu correo electrónico desde el enlace que te enviamos.", true);
+    else if (message.includes("invalid login credentials")) showNotice("Correo o contraseña incorrectos.", true);
+    else showNotice("No se pudo iniciar sesión. Comprueba tus datos e inténtalo otra vez.", true);
+    return;
+  }
+  showNotice("¡Sesión iniciada! Entrando...");
+  window.location.assign(SITE_URL + "index.html");
 });
-document.getElementById("forgot").addEventListener("click",event=>{
-event.preventDefault();
-showNotice("La recuperación de contraseña se habilitará cuando conectemos la autenticación.");
+
+document.getElementById("forgot").addEventListener("click", event => {
+  event.preventDefault();
+  showNotice("La recuperación de contraseña la conectaremos en el siguiente paso.", true);
 });
-document.getElementById("googleButton").addEventListener("click",()=>{
-showNotice("El inicio de sesión con Google se habilitará cuando conectemos la autenticación.");
+
+document.getElementById("googleButton").addEventListener("click", async () => {
+  showNotice("Conectando con Google...");
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: SITE_URL + "index.html" }
+  });
+  if (error) showNotice("Google aún no está habilitado en Supabase. Configura el proveedor Google para activarlo.", true);
 });
+
+const { data } = await supabase.auth.getSession();
+if (data.session && !window.location.search.includes("error")) {
+  window.location.replace(SITE_URL + "index.html");
+}
 </script>
 </body>
 </html>
