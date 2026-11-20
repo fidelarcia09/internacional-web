@@ -66,7 +66,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 </div>
 <div class="balance">
 <svg class="diamond" viewBox="0 0 48 48" aria-hidden="true"><path d="M9 8h30M24 8v32M14 15h20M10 17c0 4 6.3 7 14 7s14-3 14-7M10 17v5c0 4 6.3 7 14 7s14-3 14-7v-5"/></svg>
-<div><small>Saldo disponible</small><strong><span>USDT</span> 0.00</strong></div>
+<div><small>Saldo disponible</small><strong><span>USDT</span> <span id="usdt-balance-value" style="color:var(--white)">—</span></strong></div>
 </div>
 <div class="account-links">
 <a href="datos-personales.html"><span class="link-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="10" r="5.2"/><path d="M5.5 27c.8-5.1 4.7-8.2 10.5-8.2s9.7 3.1 10.5 8.2"/><path class="accent" d="M22.5 6.5a5.2 5.2 0 0 1 0 7"/></svg></span><span>Datos personales</span><span class="arrow">›</span></a>
@@ -125,6 +125,30 @@ async function loadAccountIdentity() {
   }
 
   const user = session.user;
+
+  // El saldo siempre se consulta en Supabase; nunca se toma de una caché editable.
+  const balanceElement = document.getElementById("usdt-balance-value");
+  const { data: wallet, error: walletError } = await supabase
+    .from("usdt_wallets")
+    .select("balance")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (!walletError && wallet) {
+    const balance = Number(wallet.balance);
+    if (Number.isFinite(balance)) {
+      balanceElement.textContent = balance.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 8
+      });
+    }
+  } else if (walletError) {
+    console.warn("No se pudo cargar el saldo USDT:", walletError);
+    balanceElement.textContent = "No disponible";
+  } else {
+    balanceElement.textContent = "0.00";
+  }
+
   const cacheKey = `iw-account-identity:${user.id}`;
 
   // La caché local se lee inmediatamente al volver a Cuenta.
