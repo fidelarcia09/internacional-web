@@ -103,8 +103,10 @@
  .mobile-nav a{gap:4px;font-size:0;color:#858585;justify-content:center}
  .mobile-nav svg{width:29px;height:29px;stroke-width:2.2}
  .mobile-nav small{font-size:9px;white-space:nowrap}.mobile-nav a:nth-child(3) small{font-size:8px}
+ .mobile-nav a{position:relative;transition:color .18s ease}
  .mobile-nav a.current{color:#ff8700}
- .mobile-nav a.current svg{stroke:#ff8700;filter:drop-shadow(0 0 5px #ff790077)}
+ .mobile-nav a.current svg{stroke:#ff8700;filter:drop-shadow(0 0 5px #ff7900aa);stroke-width:2.4}
+ .mobile-nav a.current small{color:#ff8700;font-weight:700}
 }
 
 /* Ajustes finales de fidelidad móvil */
@@ -340,6 +342,16 @@ filters.forEach((button) => button.addEventListener("click", () => {
   button.classList.add("active");
   const category = button.dataset.filter;
   cards.forEach((card) => { card.hidden = category !== "all" && card.dataset.category !== category; });
+}));
+
+const mobileNavItems = document.querySelectorAll(".mobile-nav a");
+mobileNavItems.forEach((item) => item.addEventListener("click", () => {
+  mobileNavItems.forEach((link) => {
+    link.classList.remove("current");
+    link.removeAttribute("aria-current");
+  });
+  item.classList.add("current");
+  item.setAttribute("aria-current", "page");
 }));
 
 const menu = document.querySelector(".menu");
