@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090a0d">
+<meta name="description" content="Conoce el programa de revendedores de INTERNACIONAL WEB.">
+<title>Revendedores — INTERNACIONAL WEB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090a0d;--panel:#111318;--orange:#ff7928;--gold:#ffbd19;--white:#f5f5f5;--muted:#a0a2aa;--line:rgba(255,255,255,.1);--font:'Inter',sans-serif;--display:'Barlow Condensed',sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;padding:28px 0 82px;background:radial-gradient(ellipse at 50% 12%,#ff790012,transparent 42%),var(--bg);color:var(--white);font-family:var(--font);overflow-x:hidden}a{color:inherit;text-decoration:none}
+.partner-page{width:min(1120px,90%);margin:0 auto}
+.hero{position:relative;display:flex;align-items:center;min-height:370px;padding:24px 0 28px;isolation:isolate}
+.hero-copy{position:relative;z-index:2;width:58%;max-width:620px}
+.crown{width:56px;height:48px;margin:0 0 8px;color:var(--gold);filter:drop-shadow(0 0 9px #ffb90066)}
+.eyebrow{display:flex;align-items:center;gap:9px;margin-bottom:9px;color:#ff9b48;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--orange)}
+h1{margin:0;font:900 clamp(48px,7vw,82px)/.88 var(--display);letter-spacing:-1.5px;text-transform:uppercase;text-shadow:0 5px 24px #000}
+h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-size:.56em;line-height:.98;letter-spacing:-.4px;text-transform:none}
+.hero-copy p{max-width:490px;margin:19px 0 0;color:#e4e4e7;font-size:clamp(14px,1.7vw,18px);line-height:1.55}
+.hero-art{position:absolute;z-index:1;right:-1%;bottom:0;width:49%;height:100%;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none}
+.hero-art img{height:100%;width:auto;max-width:100%;object-fit:contain;object-position:right bottom;filter:drop-shadow(0 0 22px #ff792822);mask-image:linear-gradient(to bottom,#000 0%,#000 84%,transparent 100%)}
+.feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:4px 0 46px}
+.feature{position:relative;min-height:132px;display:flex;align-items:center;gap:20px;padding:20px 22px;border:1px solid #ff7928;border-radius:20px;background:linear-gradient(110deg,#17100c,#101115 68%);box-shadow:0 0 10px #ff79283b,0 0 24px #ff792817,inset 0 0 18px #ff79280d;overflow:hidden}
+.feature:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,#ff9a3910,transparent 42%)}
+.feature-icon{position:relative;z-index:1;flex:0 0 88px;display:grid;place-items:center;color:#ff9d00}
+.feature-icon svg{width:76px;height:76px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 9px #ff9d0055)}
+.feature-copy{position:relative;z-index:1;min-width:0}
+.feature h2{margin:0 0 7px;font-size:clamp(16px,2vw,23px);font-weight:800;letter-spacing:-.5px}
+.feature p{margin:0;color:#d4d4d8;font-size:14px;line-height:1.45}
+.feature .chevron{margin-left:auto;color:var(--orange);font-size:34px;font-weight:400}
+.tier-heading{display:flex;align-items:center;justify-content:center;gap:17px;margin:0 auto 20px;padding:10px 18px;width:min(700px,100%);border:1px solid #ff7928;border-radius:14px;background:linear-gradient(90deg,transparent,#15100d 16%,#15100d 84%,transparent);box-shadow:0 0 14px #ff792822}
+.tier-heading svg{width:45px;height:45px;color:var(--gold);fill:currentColor;filter:drop-shadow(0 0 8px #ffb90055)}
+.tier-heading h2{margin:0;font:800 clamp(23px,4vw,39px)/1 var(--display);letter-spacing:.1px}
+.tier-heading h2 em{color:var(--gold);font-style:italic}
+.tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.tier{position:relative;min-height:230px;overflow:hidden;text-align:center;border:1px solid #ff8c2e;border-radius:17px;background:linear-gradient(160deg,#28180e 0%,#111216 48%,#090a0d 100%);box-shadow:0 0 12px #ff79282c}
+.tier:before{content:"";position:absolute;inset:0 0 auto;height:115px;background:radial-gradient(ellipse at 50% 15%,#ff9b3a28,transparent 72%);pointer-events:none}
+.tier .medal{position:relative;z-index:1;height:103px;display:grid;place-items:center;color:#ffae36}
+.tier .medal svg{width:72px;height:72px;fill:currentColor;stroke:currentColor;stroke-width:1.2;filter:drop-shadow(0 3px 7px #000)}
+.tier h3{position:relative;margin:0;padding:8px 4px;border-top:1px solid #ffffff24;border-bottom:1px solid #ffffff24;background:#ffffff0a;font-size:18px;font-weight:900;letter-spacing:.5px}
+.tier .discount-label{margin:12px 0 0;color:#f2f2f2;font-size:14px;font-weight:700}
+.tier .discount{margin:0;color:var(--gold);font:900 clamp(38px,5vw,58px)/1 var(--display);text-shadow:0 0 16px #ffbd1933}
+.tier.silver{border-color:#aeb8c5;background:linear-gradient(160deg,#292d35,#111216 52%,#090a0d)}.tier.silver .medal{color:#d7dce4}.tier.silver:before{background:radial-gradient(ellipse at 50% 15%,#dce4f02b,transparent 72%)}.tier.silver .discount{color:#e3e7ef}
+.tier.gold{border-color:#e9a51b;background:linear-gradient(160deg,#3b280b,#111216 52%,#090a0d)}.tier.gold .medal{color:#ffbf26}.tier.gold:before{background:radial-gradient(ellipse at 50% 15%,#ffbf2630,transparent 72%)}
+.tier.diamond{border-color:#c84aff;background:linear-gradient(160deg,#321044,#111216 52%,#090a0d)}.tier.diamond .medal{color:#df69ff}.tier.diamond:before{background:radial-gradient(ellipse at 50% 15%,#dc55ff35,transparent 72%)}
+.reward-banner{position:relative;display:flex;align-items:center;justify-content:center;gap:28px;margin:38px 0 0;padding:27px 30px;border:1px solid var(--orange);border-radius:22px;background:linear-gradient(105deg,#1b100a,#101115 55%,#1b100a);box-shadow:0 0 16px #ff79283a,inset 0 0 24px #ff792812}
+.reward-banner svg{flex:0 0 82px;width:82px;height:82px;fill:#ffae00;color:#ffae00;filter:drop-shadow(0 0 10px #ffae0055)}
+.reward-banner p{margin:0;font-size:clamp(22px,3.6vw,38px);font-weight:900;font-style:italic;line-height:1.12;letter-spacing:-1px}
+.reward-banner em{color:var(--orange)}
+.disclaimer{margin:14px 0 0;text-align:center;color:#777b84;font-size:10px;line-height:1.5}
+.mobile-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;height:65px;background:#101217f5;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(15px);padding-bottom:env(safe-area-inset-bottom)}
+.mobile-nav a{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:54px;height:60px;color:#777}
+.mobile-nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mobile-nav small{font-size:8px;letter-spacing:.2px}.mobile-nav a:hover,.mobile-nav a.current{color:var(--orange)}
+.mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,#ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}
+.mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}.mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
+@media(max-width:760px){body{padding-top:18px}.partner-page{width:90%}.hero{min-height:330px;padding:22px 0 20px;align-items:flex-start}.hero-copy{width:75%;padding-top:18px}.crown{width:43px;height:38px}h1{font-size:clamp(43px,10vw,67px)}h1 em{font-size:.55em}.hero-copy p{max-width:330px;margin-top:14px;font-size:13px}.hero-art{right:-8%;width:54%;height:82%;opacity:.86}.feature-grid{gap:10px;margin-bottom:35px}.feature{min-height:122px;padding:14px 12px;gap:9px;border-radius:15px}.feature-icon{flex-basis:48px}.feature-icon svg{width:45px;height:45px}.feature h2{font-size:15px}.feature p{font-size:11px}.feature .chevron{font-size:24px}.tier-heading{margin-bottom:14px}.tier-heading svg{width:35px;height:35px}.tier-heading h2{font-size:27px}.tiers{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tier{min-height:205px}.tier .medal{height:88px}.tier .medal svg{width:62px;height:62px}.tier h3{font-size:16px}.tier .discount-label{font-size:12px}.tier .discount{font-size:49px}.reward-banner{gap:15px;margin-top:25px;padding:20px 15px;border-radius:16px}.reward-banner svg{flex-basis:55px;width:55px;height:55px}.reward-banner p{font-size:clamp(19px,5vw,27px)}}
+@media(max-width:390px){.hero{min-height:310px}.hero-copy{width:78%}.hero-art{right:-13%;width:57%;height:76%}.hero-copy p{max-width:245px}.feature-grid{grid-template-columns:1fr}.feature{min-height:104px}.feature-icon{flex-basis:60px}.feature-icon svg{width:54px;height:54px}.feature h2{font-size:17px}.feature p{font-size:12px}.tier{min-height:190px}.tier .medal{height:80px}.tier .discount{font-size:44px}.reward-banner{gap:10px}.reward-banner svg{flex-basis:48px;width:48px;height:48px}}
+</style>
+</head>
+<body>
+<main class="partner-page">
+<section class="hero">
+<div class="hero-copy">
+<svg class="crown" viewBox="0 0 64 54" aria-hidden="true"><path d="M8 42 3 15l15 11L31 3l13 23 17-12-7 28H8Z" fill="currentColor"/><path d="M9 48h45" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+<div class="eyebrow"><i></i> IW PARTNER NETWORK</div>
+<h1>REVendedores<em>Únete a nuestro programa de revendedores</em></h1>
+<p>Haz crecer tu negocio con nosotros y gana más en cada recarga.</p>
+</div>
+<div class="hero-art"><img src="fuentes/personaje_gamer_cuadrado.webp" alt="Personaje de INTERNACIONAL WEB"></div>
+</section>
+<section class="feature-grid" aria-label="Beneficios del programa">
+<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M32 7h16l3 9 8 4 9-3 8 14-7 7v9l7 7-8 14-10-3-7 4-3 9H32l-3-9-8-4-9 3-8-14 7-7v-9l-7-7 8-14 10 3 7-4 3-9Z" fill="currentColor" stroke="none"/><circle cx="40" cy="40" r="13" fill="#111318" stroke="none"/></svg></div><div class="feature-copy"><h2>Acceso API</h2><p>Integra nuestras APIs y realiza recargas de forma automática.</p></div><span class="chevron">›</span></article>
+<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M9 66h13V48H9v18Zm24 0h13V35H33v31Zm24 0h13V18H57v48Z" fill="currentColor" stroke="none"/><path d="m8 39 20-18 13 8L67 8M55 8h12v12" stroke="currentColor" stroke-width="5" fill="none"/></svg></div><div class="feature-copy"><h2>Recargas hechas</h2><p>Controla tus ventas y sigue tu progreso.</p></div><span class="chevron">›</span></article>
+<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="23" r="13" fill="currentColor" stroke="none"/><circle cx="17" cy="31" r="10" fill="currentColor" stroke="none"/><circle cx="63" cy="31" r="10" fill="currentColor" stroke="none"/><path d="M18 67V55c0-11 9-18 22-18s22 7 22 18v12H18ZM2 65V53c0-8 5-13 13-14m63 26V53c0-8-5-13-13-14" fill="currentColor" stroke="none"/></svg></div><div class="feature-copy"><h2>Clientes frecuentes</h2><p>Tus clientes siempre vuelven.</p></div><span class="chevron">›</span></article>
+<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="m40 5 10 22 24 3-18 16 5 24-21-12-21 12 5-24L6 30l24-3L40 5Z" fill="currentColor" stroke="none"/></svg></div><div class="feature-copy"><h2>Niveles de revendedor</h2><p>Crece y desbloquea mejores beneficios.</p></div><span class="chevron">›</span></article>
+</section>
+<section aria-labelledby="tiers-title">
+<div class="tier-heading"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="m8 20 12 9 12-20 12 20 12-9-6 29H14L8 20Z"/><path d="M15 55h34" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg><h2 id="tiers-title">Descuentos <em>por Nivel</em></h2></div>
+<div class="tiers">
+<article class="tier bronze"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>BRONCE</h3><p class="discount-label">Descuento</p><p class="discount">3%</p></article>
+<article class="tier silver"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>PLATA</h3><p class="discount-label">Descuento</p><p class="discount">5%</p></article>
+<article class="tier gold"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>ORO</h3><p class="discount-label">Descuento</p><p class="discount">8%</p></article>
+<article class="tier diamond"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>DIAMANTE</h3><p class="discount-label">Descuento</p><p class="discount">10%</p></article>
+</div>
+</section>
+<section class="reward-banner"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 32c-5-8-22-12-22-22 0-8 13-10 22 10 9-20 22-18 22-10 0 10-17 14-22 22ZM7 34h66v13H7zM13 47h54v27H13zM35 34h10v40H35z"/></svg><p>¡Cuanto más recargas,<br>mayor será <em>tu descuento!</em></p></section>
+<p class="disclaimer">Los niveles y beneficios se muestran como referencia del programa y estarán sujetos a las condiciones de activación.</p>
+</main>
+<nav class="mobile-nav" aria-label="Navegación inferior">
+<a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
+<a href="tienda.html" aria-label="Tienda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5M9 13v3m6-3v3"/></svg><small>Tienda</small></a>
+<a class="current" href="revendedores.html" aria-current="page" aria-label="Revendedores"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revendedores</small></a>
+<a href="mailto:soporte@internacionalweb.com" aria-label="Soporte"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
+<a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
+</nav>
+</body></html>
