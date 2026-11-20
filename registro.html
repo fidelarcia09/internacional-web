@@ -89,6 +89,10 @@ h1{margin:0;text-align:center;font:800 clamp(38px,9vw,52px)/.98 var(--display);l
             <input name="email" type="email" autocomplete="email" placeholder="Correo electrónico" aria-label="Correo electrónico" required>
           </label>
           <label class="field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M10 18h4"/></svg>
+            <input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="Número de teléfono" aria-label="Número de teléfono" required>
+          </label>
+          <label class="field">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg>
             <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Contraseña" aria-label="Contraseña" required minlength="8">
             <button class="toggle-pass" type="button" data-toggle="password" aria-label="Mostrar contraseña">
@@ -165,15 +169,24 @@ form.addEventListener("submit", async event => {
   event.preventDefault();
   const usernameField = form.elements.username;
   const emailField = form.elements.email;
+  const phoneField = form.elements.phone;
   const password = document.getElementById("password");
   const confirm = document.getElementById("confirmPassword");
   const username = usernameField.value.trim();
   const email = emailField.value.trim().toLowerCase();
+  const phone = phoneField.value.trim();
+  const phoneDigits = phone.replace(/\\D/g, "");
 
   if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
     usernameField.setCustomValidity("Usa entre 3 y 24 caracteres: letras, números o guion bajo.");
     usernameField.reportValidity();
     usernameField.addEventListener("input", () => usernameField.setCustomValidity(""), { once: true });
+    return;
+  }
+  if (phoneDigits.length < 7 || phoneDigits.length > 15) {
+    phoneField.setCustomValidity("Introduce un número válido, con entre 7 y 15 dígitos.");
+    phoneField.reportValidity();
+    phoneField.addEventListener("input", () => phoneField.setCustomValidity(""), { once: true });
     return;
   }
   if (password.value !== confirm.value) {
@@ -192,7 +205,7 @@ form.addEventListener("submit", async event => {
     email,
     password: password.value,
     options: {
-      data: { username },
+      data: { username, phone },
       emailRedirectTo: SITE_URL + "login.html"
     }
   });
