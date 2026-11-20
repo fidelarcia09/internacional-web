@@ -23,6 +23,19 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .tab{appearance:none;border:0;background:transparent;color:#8d9099;font:700 11px var(--font);padding:10px 13px;border-radius:9px;cursor:pointer;white-space:nowrap;transition:background .18s,color .18s,box-shadow .18s}
 .tab.active{color:#fff;background:linear-gradient(105deg,#9b4808,#d96a08 58%,#ff8a18);box-shadow:0 0 14px #ff79002b}
 .content-panel{min-height:320px;border:0;border-radius:0;background:transparent;box-shadow:none;display:grid;place-items:center;padding:18px 0;text-align:center}\n.history-list{width:100%;display:flex;flex-direction:column;gap:22px;text-align:left}\n.day-group{display:flex;flex-direction:column;gap:11px}\n.day-label{margin:0;color:#f5f4f1;font-size:13px;font-weight:800;letter-spacing:.2px}\n.transaction-card{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 16px;border:1px solid #ff790078;border-radius:16px;background:linear-gradient(105deg,#17110c,#0d0e11 65%);box-shadow:inset 0 0 16px #ff79000b}\n.transaction-info{min-width:0;display:flex;flex-direction:column;gap:5px}\n.transaction-name{margin:0;font-size:12px;font-weight:800;color:#f5f4f1}\n.transaction-detail{margin:0;font-size:10px;line-height:1.5;color:#92959e}\n.transaction-amount{flex-shrink:0;font-size:13px;font-weight:800;color:#ff922e;white-space:nowrap}
+
+.history-list{width:100%;display:flex;flex-direction:column;gap:18px;text-align:left}
+.history-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid #ff790078;border-radius:15px;background:linear-gradient(105deg,#17110c,#0d0e11 65%)}
+.history-main{min-width:0;display:flex;flex-direction:column;gap:5px}
+.history-title{font-size:12px;font-weight:800;overflow-wrap:anywhere}
+.history-meta{font-size:9px;color:#92959e;line-height:1.6;overflow-wrap:anywhere}
+.history-right{flex-shrink:0;text-align:right}
+.history-amount{font-size:13px;font-weight:800;color:#ff922e;white-space:nowrap}
+.history-status{display:inline-block;margin-top:6px;padding:4px 7px;border:1px solid #ffffff20;border-radius:20px;color:#c5c6ca;font-size:8px;font-weight:800}
+.history-status.completed,.history-status.confirmed{color:#69dba0;border-color:#277b50;background:#0c2118}
+.history-status.failed,.history-status.rejected{color:#ff8585;border-color:#873b3b;background:#241010}
+.history-status.pending{color:#ffc078;border-color:#77501e;background:#21180d}
+.history-error{font-size:11px;color:#ff9c80;line-height:1.7}
 .empty-state{max-width:340px;text-align:center}
 .empty-icon{width:72px;height:72px;margin:0 auto 18px;border:1px solid #ff79005c;border-radius:22px;background:radial-gradient(circle,#ff790020,#111114 72%);display:grid;place-items:center;color:#ff922e;box-shadow:0 0 24px #ff790012}
 .empty-icon svg{width:35px;height:35px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -88,6 +101,85 @@ function selectTab(showGames){
 }
 gamesTab.addEventListener('click',()=>selectTab(true));
 depositsTab.addEventListener('click',()=>selectTab(false));
+
+</script>
+<script type="module">
+import { supabase } from "./supabase-client.js";
+
+const gamesPanel = document.getElementById("games-panel");
+const depositsPanel = document.getElementById("deposits-panel");
+
+function statusLabel(status) {
+  return ({pending:"Pendiente",completed:"Completada",failed:"Reembolsada",confirmed:"Confirmado",rejected:"Rechazado"})[status] || status;
+}
+function dateLabel(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "Fecha no disponible" :
+    date.toLocaleString("es", {day:"2-digit",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function makeEmpty(title, description) {
+  const box=document.createElement("div");
+  box.className="empty-state";
+  const h=document.createElement("h2"); h.textContent=title;
+  const p=document.createElement("p"); p.textContent=description;
+  box.append(h,p);
+  return box;
+}
+function makeHistoryItem({title,code,transaction,amount,status,date,kind}) {
+  const item=document.createElement("article"); item.className="history-item";
+  const main=document.createElement("div"); main.className="history-main";
+  const name=document.createElement("strong"); name.className="history-title"; name.textContent=title;
+  const meta=document.createElement("span"); meta.className="history-meta";
+  meta.textContent=[code,transaction ? "Movimiento "+transaction : "",dateLabel(date),kind || ""].filter(Boolean).join(" · ");
+  main.append(name,meta);
+  const right=document.createElement("div"); right.className="history-right";
+  const value=document.createElement("div"); value.className="history-amount";
+  value.textContent=(status==="failed"||status==="rejected"?"":"−")+Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT";
+  const badge=document.createElement("span"); badge.className="history-status "+status; badge.textContent=statusLabel(status);
+  right.append(value,badge); item.append(main,right);
+  return item;
+}
+function showLoading(panel,label) {
+  panel.replaceChildren(makeEmpty("Cargando...",label));
+}
+async function loadHistory() {
+  const {data:{session},error:authError}=await supabase.auth.getSession();
+  if(authError || !session?.user) { window.location.replace("login.html"); return; }
+
+  showLoading(gamesPanel,"Estamos buscando tus compras.");
+  showLoading(depositsPanel,"Estamos buscando tus depósitos.");
+
+  const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
+    supabase.from("usdt_orders").select("id,order_code,description,amount_usdt,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
+    supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
+    supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
+  ]);
+
+  if(ordersResult.error) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
+  else if(!ordersResult.data.length) gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras y recargas cuando realices una."));
+  else {
+    const ledgerByOrder=new Map((ledgerResult.data||[]).filter(x=>x.order_id).map(x=>[x.order_id,x.transaction_code]));
+    const list=document.createElement("div"); list.className="history-list";
+    ordersResult.data.forEach(order=>list.append(makeHistoryItem({
+      title:order.description,code:"Pedido "+order.order_code,transaction:ledgerByOrder.get(order.id),
+      amount:order.amount_usdt,status:order.status,date:order.created_at,kind:"Compra"
+    })));
+    gamesPanel.replaceChildren(list);
+  }
+
+  if(depositsResult.error) depositsPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
+  else if(!depositsResult.data.length) depositsPanel.replaceChildren(makeEmpty("Sin depósitos todavía","Aquí encontrarás el historial de tus depósitos y movimientos de USDT."));
+  else {
+    const ledgerByDeposit=new Map((ledgerResult.data||[]).filter(x=>x.deposit_id).map(x=>[x.deposit_id,x.transaction_code]));
+    const list=document.createElement("div"); list.className="history-list";
+    depositsResult.data.forEach(deposit=>list.append(makeHistoryItem({
+      title:"Depósito USDT",code:"Depósito "+deposit.deposit_code,transaction:ledgerByDeposit.get(deposit.id),
+      amount:deposit.amount_usdt,status:deposit.status,date:deposit.created_at,kind:deposit.payment_method
+    })));
+    depositsPanel.replaceChildren(list);
+  }
+}
+loadHistory();
 </script>
 </body>
 </html>
