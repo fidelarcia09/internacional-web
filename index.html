@@ -519,4 +519,16 @@ if ("serviceWorker" in navigator) {
   }, { once: true });
 }
 </script>
+
+<script type="module">
+import { supabase } from "./supabase-client.js";
+const entryLink = document.querySelector(".entry-link");
+if (entryLink) {
+  const { data } = await supabase.auth.getSession();
+  if (data.session) entryLink.hidden = true;
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (entryLink) entryLink.hidden = Boolean(session);
+  });
+}
+</script>
 </body></html>
