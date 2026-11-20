@@ -111,12 +111,19 @@ async function loadAccountIdentity() {
   const cacheKey = `iw-account-identity:${user.id}`;
 
   // La caché local se lee inmediatamente al volver a Cuenta.
+  let hasCachedIdentity = false;
   try {
     const cachedIdentity = localStorage.getItem(cacheKey);
-    if (cachedIdentity) showIdentity(JSON.parse(cachedIdentity));
+    if (cachedIdentity) {
+      showIdentity(JSON.parse(cachedIdentity));
+      hasCachedIdentity = true;
+    }
   } catch (cacheError) {
     console.warn("No se pudo leer la identidad guardada:", cacheError);
   }
+
+  // Si ya existe la identidad guardada, no repetimos la consulta al servidor.
+  if (hasCachedIdentity) return;
 
   const { data: profile, error } = await supabase
     .from("profiles")
