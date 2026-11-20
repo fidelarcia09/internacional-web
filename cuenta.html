@@ -94,14 +94,31 @@ import { supabase } from "./supabase-client.js";
 const usernameElement = document.querySelector(".username");
 const userIdElement = document.querySelector(".user-id");
 
-async function loadAccountIdentity() {
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+function showIdentity(identity) {
+  usernameElement.textContent = identity.username || "Usuario";
+  userIdElement.textContent = `ID: ${identity.user_code || "No disponible"}`;
+}
 
-  if (authError || !user) {
+async function loadAccountIdentity() {
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError || !session?.user) {
     window.location.replace("login.html");
     return;
   }
 
+  const user = session.user;
+  const cacheKey = `iw-account-identity:${user.id}`;
+
+  // Muestra primero los datos guardados para evitar que la sección aparezca cargando.
+  try {
+    const cachedIdentity = sessionStorage.getItem(cacheKey);
+    if (cachedIdentity) showIdentity(JSON.parse(cachedIdentity));
+  } catch (cacheError) {
+    console.warn("No se pudo leer la identidad guardada:", cacheError);
+  }
+
+  // Actualiza los datos en segundo plano para mantenerlos sincronizados con Supabase.
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("username, user_code")
@@ -109,13 +126,25 @@ async function loadAccountIdentity() {
     .single();
 
   if (error || !profile) {
-    usernameElement.textContent = "Mi cuenta";
-    userIdElement.textContent = "ID: No disponible";
+    if (!usernameElement.textContent || usernameElement.textContent === "Mi cuenta") {
+      usernameElement.textContent = "Mi cuenta";
+      userIdElement.textContent = "ID: No disponible";
+    }
     return;
   }
 
-  usernameElement.textContent = profile.username || "Usuario";
-  userIdElement.textContent = `ID: ${profile.user_code}`;
+  const identity = {
+    username: profile.username || "Usuario",
+    user_code: profile.user_code || "No disponible"
+  };
+
+  showIdentity(identity);
+
+  try {
+    sessionStorage.setItem(cacheKey, JSON.stringify(identity));
+  } catch (cacheError) {
+    console.warn("No se pudo guardar la identidad:", cacheError);
+  }
 }
 
 loadAccountIdentity();
