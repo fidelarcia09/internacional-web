@@ -207,13 +207,13 @@
  .hero-art:after{z-index:3}
 }
 
-/* Zoom del personaje: recorte de bordes y capa detrás del contenido */
+/* Personaje completo, con tamaño equilibrado y detrás del contenido */
 .hero{isolation:isolate}
 .hero-art{overflow:hidden}
-.hero-character{transform:scale(1.28);transform-origin: right bottom}
+.hero-character{transform:scale(1);transform-origin:right bottom}
 @media(max-width:620px){
- .hero-art{overflow:hidden;right:-13%;width:82%}
- .hero-character{transform:scale(1.58);transform-origin:right bottom}
+ .hero-art{overflow:hidden;right:0;width:74%}
+ .hero-character{transform:scale(1);transform-origin:right bottom}
 }
 </style>
 </head>
