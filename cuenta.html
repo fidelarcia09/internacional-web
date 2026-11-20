@@ -110,28 +110,21 @@ async function loadAccountIdentity() {
   const user = session.user;
   const cacheKey = `iw-account-identity:${user.id}`;
 
-  // Muestra primero los datos guardados para evitar que la sección aparezca cargando.
+  // La caché local se lee inmediatamente al volver a Cuenta.
   try {
-    const cachedIdentity = sessionStorage.getItem(cacheKey);
+    const cachedIdentity = localStorage.getItem(cacheKey);
     if (cachedIdentity) showIdentity(JSON.parse(cachedIdentity));
   } catch (cacheError) {
     console.warn("No se pudo leer la identidad guardada:", cacheError);
   }
 
-  // Actualiza los datos en segundo plano para mantenerlos sincronizados con Supabase.
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("username, user_code")
     .eq("id", user.id)
     .single();
 
-  if (error || !profile) {
-    if (!usernameElement.textContent || usernameElement.textContent === "Mi cuenta") {
-      usernameElement.textContent = "Mi cuenta";
-      userIdElement.textContent = "ID: No disponible";
-    }
-    return;
-  }
+  if (error || !profile) return;
 
   const identity = {
     username: profile.username || "Usuario",
@@ -139,9 +132,8 @@ async function loadAccountIdentity() {
   };
 
   showIdentity(identity);
-
   try {
-    sessionStorage.setItem(cacheKey, JSON.stringify(identity));
+    localStorage.setItem(cacheKey, JSON.stringify(identity));
   } catch (cacheError) {
     console.warn("No se pudo guardar la identidad:", cacheError);
   }
