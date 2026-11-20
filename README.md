@@ -1,19 +1,22 @@
 # Internacional Web — Gaming Store
 
-Landing page responsive para una tienda internacional de recargas gaming.
+Prototipo visual responsive para una tienda internacional de recargas gaming.
 
-## Estado
-Prototipo visual de frontend. No procesa pedidos, pagos ni recargas reales. La integración de catálogo, precios, USDT y API para partners queda para fases posteriores.
+## Estado actual
+Frontend estático. No procesa pedidos, pagos ni recargas reales. El catálogo es ilustrativo y los productos, proveedores, precios y disponibilidad deben validarse antes de publicar.
 
 ## Archivos
 - `index.html`: estructura y contenido.
-- `styles.css`: identidad visual negra/naranja, personaje futurista ilustrado con CSS y diseño responsive.
-- `script.js`: filtros del catálogo, navegación móvil y estados activos.
+- `styles.css`: diseño negro/naranja, ilustración futurista CSS y adaptación móvil.
+- `script.js`: filtros de catálogo y navegación.
 
 ## Ejecutar
-Abre `index.html` en un navegador. No requiere instalación ni proceso de build.
+Abre `index.html` en el navegador. No requiere instalación ni build.
 
-## Personalización
-El texto de marca es provisional. Los juegos y categorías son contenido de demostración; confirma disponibilidad, proveedores y precios antes de publicar.
+## Próximas fases
+1. Definir identidad y nombre finales.
+2. Integrar catálogo y precios reales de proveedores.
+3. Diseñar flujo de pedido y pagos cuando corresponda.
+4. Implementar API para partners y revendedores.
 
 © 2026 Internacional Web — prototipo.
