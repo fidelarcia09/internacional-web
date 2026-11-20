@@ -212,8 +212,10 @@
 .hero-art{overflow:hidden}
 .hero-character{
  transform:scale(1.12);transform-origin:right top;
- -webkit-mask-image:radial-gradient(ellipse 82% 78% at 57% 39%,#000 54%,rgba(0,0,0,.94) 68%,transparent 100%);
- mask-image:radial-gradient(ellipse 82% 78% at 57% 39%,#000 54%,rgba(0,0,0,.94) 68%,transparent 100%);
+ -webkit-mask-image:radial-gradient(ellipse 82% 78% at 57% 39%,#000 54%,rgba(0,0,0,.94) 68%,transparent 100%),linear-gradient(to right,transparent 0%,#000 24%,#000 100%);
+ -webkit-mask-composite:source-in;
+ mask-image:radial-gradient(ellipse 82% 78% at 57% 39%,#000 54%,rgba(0,0,0,.94) 68%,transparent 100%),linear-gradient(to right,transparent 0%,#000 24%,#000 100%);
+ mask-composite:intersect;
 }
 @media(max-width:620px){
  .hero-art{overflow:hidden;right:-8%;width:86%}
