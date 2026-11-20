@@ -28,7 +28,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 .profile h2{font-size:clamp(19px,5vw,25px);margin:0 0 7px;letter-spacing:-.7px;overflow-wrap:anywhere}
 .profile p{font-size:13px;color:#aeb0b7;margin:0}
 .balance{min-height:116px;display:flex;align-items:center;gap:17px;padding:17px;border:1px solid #ff7900;border-radius:20px;background:linear-gradient(110deg,#17110b,#0c0c0e 65%);box-shadow:inset 0 0 22px #ff790018,0 0 15px #ff790018}
-.diamond{width:58px;height:58px;flex:0 0 58px;color:#ff9a16;filter:drop-shadow(0 0 7px #ff790055)}
+.diamond{width:58px;height:58px;flex:0 0 58px;padding:7px;border-radius:50%;background:#00a889;color:#fff;filter:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
 .balance small{display:block;color:#ddd;font-size:14px;margin-bottom:5px}
 .balance strong{display:block;font-size:clamp(22px,6vw,31px);letter-spacing:.2px;white-space:nowrap}
 .balance strong span{color:#ff941c}
@@ -50,7 +50,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 .mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse, #ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}
 .mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}
 .mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
-@media(max-width:620px){body{padding-bottom:75px}main{margin:16px auto 28px;width:90%}.account-panel{padding:2px 0 0}.profile{gap:13px;padding-bottom:17px}.avatar{width:76px;height:76px;flex-basis:76px}.avatar svg{width:49px;height:49px}.balance{min-height:100px;padding:13px;gap:12px;border-radius:17px}.diamond{width:48px;height:48px;flex-basis:48px}.account-links{gap:9px;margin-top:15px}.account-links a{min-height:60px;padding:8px 12px;border-radius:14px}.account-links a>span:nth-child(2){font-size:13px}.link-icon{width:35px;height:35px}.link-icon svg{width:28px;height:28px}}
+@media(max-width:620px){body{padding-bottom:75px}main{margin:16px auto 28px;width:90%}.account-panel{padding:2px 0 0}.profile{gap:13px;padding-bottom:17px}.avatar{width:76px;height:76px;flex-basis:76px}.avatar svg{width:49px;height:49px}.balance{min-height:100px;padding:13px;gap:12px;border-radius:17px}.diamond{width:48px;height:48px;flex-basis:48px;padding:6px}.account-links{gap:9px;margin-top:15px}.account-links a{min-height:60px;padding:8px 12px;border-radius:14px}.account-links a>span:nth-child(2){font-size:13px}.link-icon{width:35px;height:35px}.link-icon svg{width:28px;height:28px}}
 @media(min-width:800px){main{margin-top:28px}.account-panel{padding:4px 0 0}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 </style>
@@ -63,7 +63,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 <div><h2 class="username"></h2><p>ID: —</p></div>
 </div>
 <div class="balance">
-<svg class="diamond" viewBox="0 0 64 64" aria-hidden="true"><path d="M13 9h38l10 13-29 34L3 22 13 9Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="m13 9 8 13 11 34 11-34 8-13M3 22h58" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+<svg class="diamond" viewBox="0 0 48 48" aria-hidden="true"><path d="M9 8h30M24 8v32M14 15h20M10 17c0 4 6.3 7 14 7s14-3 14-7M10 17v5c0 4 6.3 7 14 7s14-3 14-7v-5"/></svg>
 <div><small>Saldo disponible</small><strong><span>USDT</span> 0.00</strong></div>
 </div>
 <div class="account-links">
