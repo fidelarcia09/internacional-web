@@ -44,6 +44,7 @@ label{display:block;color:#aeb0b8;font-size:10px;font-weight:700;letter-spacing:
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 .save-button{width:100%;min-height:54px;margin-top:18px;border:1px solid #ffc05c;border-radius:15px;background:linear-gradient(100deg,#ffb52e,#ff8121 55%,#ff9d25);color:#17100a;font:900 14px var(--font);cursor:pointer;box-shadow:0 0 16px #ff790028}
 .save-button:disabled{opacity:.65;cursor:wait}
+.save-button[hidden]{display:none!important}
 .save-notice{display:none;margin:12px 0 0;padding:12px;border:1px solid #ff9a2b70;border-radius:12px;background:#ff8b2c12;color:#ffd29d;text-align:center;font-size:11px;line-height:1.5}
 .save-notice.show{display:block}
 .field input[readonly]{color:#aeb0b8;cursor:not-allowed}
@@ -73,7 +74,7 @@ label{display:block;color:#aeb0b8;font-size:10px;font-weight:700;letter-spacing:
 <div class="field">
 <span class="field-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="3.5" width="16" height="25" rx="3"/><path d="M13 7h6m-5 17h4"/><path class="accent" d="M12 13h8"/></svg></span>
 <label for="phone">Número de teléfono</label>
-<input id="phone" type="tel" placeholder="No especificado" autocomplete="tel">
+<input id="phone" type="tel" placeholder="No especificado" autocomplete="tel" readonly aria-readonly="true">
 </div>
 <div class="field">
 <span class="field-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3.5" y="6.5" width="25" height="19" rx="3"/><path d="m5 9 11 9 11-9"/><path class="accent" d="M5.5 23.5 12 17.8m14.5 5.7L20 17.8"/></svg></span>
@@ -81,7 +82,7 @@ label{display:block;color:#aeb0b8;font-size:10px;font-weight:700;letter-spacing:
 <input id="email" type="email" placeholder="No especificado" autocomplete="email" readonly>
 </div>
 </section>
-<button class="save-button" id="save-profile" type="button">GUARDAR CAMBIOS</button>
+<button class="save-button" id="save-profile" type="button" hidden>GUARDAR CAMBIOS</button>
 <p class="save-notice" id="save-notice" role="status" aria-live="polite"></p>
 </main>
 
@@ -104,6 +105,12 @@ const notice = document.getElementById("save-notice");
 const profileHint = document.querySelector(".profile-card small");
 let currentUser = null;
 let profileCacheKey = null;
+let originalEditableData = { full_name: "", username: "" };
+
+function updateSaveVisibility() {
+  const changed = fullNameField.value.trim() !== originalEditableData.full_name || usernameField.value.trim() !== originalEditableData.username;
+  saveButton.hidden = !changed;
+}
 
 function showNotice(message, isError = false) {
   notice.textContent = message;
@@ -118,6 +125,8 @@ function showPersonalData(data) {
   phoneField.value = data.phone || "";
   emailField.value = data.email || "";
   profileHint.textContent = "ID: " + (data.user_code || "No disponible");
+  originalEditableData = { full_name: data.full_name || "", username: data.username || "" };
+  updateSaveVisibility();
 }
 
 async function loadPersonalData() {
@@ -170,22 +179,18 @@ async function loadPersonalData() {
   }
 }
 
+fullNameField.addEventListener("input", updateSaveVisibility);
+usernameField.addEventListener("input", updateSaveVisibility);
+
 saveButton.addEventListener("click", async () => {
   if (!currentUser) return;
 
   const full_name = fullNameField.value.trim();
   const username = usernameField.value.trim();
-  const phone = phoneField.value.trim();
 
   if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
     showNotice("El usuario debe tener entre 3 y 24 caracteres: letras, números o guion bajo.", true);
     usernameField.focus();
-    return;
-  }
-  const phoneDigits = phone.replace(/[^0-9]/g, "");
-  if (phone && (phoneDigits.length < 7 || phoneDigits.length > 15)) {
-    showNotice("El teléfono debe contener entre 7 y 15 dígitos.", true);
-    phoneField.focus();
     return;
   }
   if (full_name.length > 120) {
@@ -202,8 +207,7 @@ saveButton.addEventListener("click", async () => {
     .from("profiles")
     .update({
       full_name: full_name || null,
-      username,
-      phone: phone || null
+      username
     })
     .eq("id", currentUser.id);
 
@@ -219,7 +223,7 @@ saveButton.addEventListener("click", async () => {
   const updatedData = {
     full_name,
     username,
-    phone,
+    phone: phoneField.value.trim(),
     email: currentUser.email || "",
     user_code: profileHint.textContent.replace(/^ID:\s*/, "") || "No disponible"
   };
