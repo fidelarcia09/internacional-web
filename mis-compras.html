@@ -152,7 +152,7 @@ async function loadHistory() {
 
   const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
     supabase.from("usdt_orders").select("id,order_code,description,amount_usdt,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
-    supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
+    supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).eq("status","confirmed").order("created_at",{ascending:false}),
     supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
   ]);
 
@@ -169,7 +169,7 @@ async function loadHistory() {
   }
 
   if(depositsResult.error) depositsPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
-  else if(!depositsResult.data.length) depositsPanel.replaceChildren(makeEmpty("Sin depósitos todavía","Aquí encontrarás el historial de tus depósitos y movimientos de USDT."));
+  else if(!depositsResult.data.length) depositsPanel.replaceChildren(makeEmpty("Sin depósitos acreditados","Aquí aparecerán únicamente los depósitos que ya se hayan acreditado a tu saldo USDT."));
   else {
     const ledgerByDeposit=new Map((ledgerResult.data||[]).filter(x=>x.deposit_id).map(x=>[x.deposit_id,x.transaction_code]));
     const list=document.createElement("div"); list.className="history-list";
