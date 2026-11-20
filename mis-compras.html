@@ -125,7 +125,7 @@ function makeEmpty(title, description) {
   box.append(h,p);
   return box;
 }
-function makeHistoryItem({title,code,transaction,amount,status,date,kind}) {
+function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDeposit=false}) {
   const item=document.createElement("article"); item.className="history-item";
   const main=document.createElement("div"); main.className="history-main";
   const name=document.createElement("strong"); name.className="history-title"; name.textContent=title;
@@ -134,7 +134,7 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind}) {
   main.append(name,meta);
   const right=document.createElement("div"); right.className="history-right";
   const value=document.createElement("div"); value.className="history-amount";
-  value.textContent=(status==="failed"||status==="rejected"?"":"−")+Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT";
+  value.textContent=(isDeposit || status==="failed" ? "+" : "−")+Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT";
   const badge=document.createElement("span"); badge.className="history-status "+status; badge.textContent=statusLabel(status);
   right.append(value,badge); item.append(main,right);
   return item;
@@ -174,7 +174,7 @@ async function loadHistory() {
     const list=document.createElement("div"); list.className="history-list";
     depositsResult.data.forEach(deposit=>list.append(makeHistoryItem({
       title:"Depósito USDT",code:"Depósito "+deposit.deposit_code,transaction:ledgerByDeposit.get(deposit.id),
-      amount:deposit.amount_usdt,status:deposit.status,date:deposit.created_at,kind:deposit.payment_method
+      amount:deposit.amount_usdt,status:deposit.status,date:deposit.created_at,kind:deposit.payment_method,isDeposit:true
     })));
     depositsPanel.replaceChildren(list);
   }
