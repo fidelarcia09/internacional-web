@@ -125,6 +125,60 @@
  .usdt-banner>a{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin-left:auto;min-height:48px;padding:0 14px;border-radius:28px;background:linear-gradient(100deg,#ff8a00,#ff7900);font-size:11px;font-weight:900;box-shadow:0 0 14px #ff790055}
  .usdt-banner>a b{font-size:19px;margin:0}
 }
+
+/* Escala compacta: proporciones de la referencia móvil */
+@media(max-width:620px){
+ body{padding-bottom:60px}
+ .topbar{height:58px;grid-template-columns:44px 1fr 44px;padding:0 4%;gap:4px}
+ .menu,.wallet{width:42px;height:42px;border-radius:12px}
+ .menu svg,.wallet svg{width:25px;height:25px}
+ .topbar .mark{width:30px;height:30px;font-size:17px}
+ .topbar .brand{font-size:11px;gap:6px}
+ .topbar .brand small{font-size:7px}
+ .topbar nav.mobile-open{top:58px}
+ .hero{padding:19px 5% 15px}
+ .hero-copy{max-width:62%}
+ .hero .eyebrow{font-size:7px;letter-spacing:1px}
+ .hero .mobile-title{font-size:clamp(39px,11.5vw,54px);line-height:.91;letter-spacing:-1.6px;margin:13px 0 9px}
+ .hero-copy>p{font-size:11px;line-height:1.2;max-width:165px;margin:6px 0 11px}
+ .hero .primary{min-height:40px;padding:0 17px;gap:9px;font-size:13px;box-shadow:0 3px 12px #ff790033}
+ .hero .primary svg{width:22px;height:22px;flex-basis:22px}
+ .hero .primary b{font-size:21px}
+ .hero-art{right:-17%;top:20px;width:78%;height:315px;transform:scale(.79);transform-origin:top right}
+ .robot{transform:scale(.94)}
+ .ring1{width:270px;height:140px}.ring2{height:290px}
+ .mobile-features{gap:6px;padding:8px 4% 11px}
+ .mobile-features article{height:70px;padding:5px 2px;border-radius:15px;gap:3px}
+ .mobile-features article:before,.mobile-features article:after{width:24px;height:18px}
+ .mobile-features article:before{border-top-left-radius:14px}
+ .mobile-features article:after{border-bottom-right-radius:14px}
+ .mobile-features svg{width:24px;height:24px}
+ .mobile-features b{font-size:8px;line-height:1.08}
+ .catalog{padding:15px 4% 12px}
+ .mobile-catalog-title{gap:8px;font-size:20px;letter-spacing:-.55px}
+ .mobile-catalog-title>svg{width:39px;height:32px;flex-basis:39px}
+ .mobile-catalog-title>span{gap:3px}
+ .mobile-catalog-title small{font-size:7.8px;letter-spacing:-.25px}
+ .section-head{gap:5px}
+ .section-head .see-all{height:34px;min-width:90px;gap:7px;padding:0 11px;border-width:1.5px;border-radius:22px;font-size:11px;box-shadow:none}
+ .section-head .see-all b{width:17px;height:17px}
+ .section-head .see-all b svg{width:18px;height:18px}
+ .games{gap:7px;margin-top:10px}
+ .game{height:73px;min-height:73px;border-radius:13px}
+ .game:after{border-radius:13px}
+ .usdt-banner{min-height:76px;gap:9px;margin:8px 3% 13px;padding:8px 10px;border-radius:14px;box-shadow:0 0 9px #ff790033,inset 0 0 12px #ff790012}
+ .usdt-coin{flex-basis:46px;width:46px;height:46px;box-shadow:0 0 0 3px #00a98b20}
+ .usdt-coin svg{width:30px;height:30px;stroke-width:3}
+ .usdt-banner>div:nth-child(2){gap:2px}
+ .usdt-banner strong{font-size:18px;letter-spacing:-.3px}
+ .usdt-banner span{font-size:8px}
+ .usdt-banner>a{min-height:36px;padding:0 10px;gap:4px;border-radius:22px;font-size:9px;box-shadow:0 0 8px #ff790033}
+ .usdt-banner>a b{font-size:15px}
+ .mobile-nav{height:60px;padding:4px 1% 3px}
+ .mobile-nav a{gap:2px}
+ .mobile-nav svg{width:23px;height:23px;stroke-width:2}
+ .mobile-nav small{font-size:8px}
+}
 </style>
 </head>
 <body>
