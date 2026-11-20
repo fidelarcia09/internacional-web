@@ -62,7 +62,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 <section class="account-panel" aria-label="Panel de cuenta">
 <div class="profile">
 <div class="avatar" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="21" r="13"/><path d="M7 57c1.5-13 10-20 25-20s23.5 7 25 20H7Z"/></svg></div>
-<div><h2 class="username"></h2><p>ID: —</p></div>
+<div><h2 class="username">Mi cuenta</h2><p class="user-id">ID: —</p></div>
 </div>
 <div class="balance">
 <svg class="diamond" viewBox="0 0 48 48" aria-hidden="true"><path d="M9 8h30M24 8v32M14 15h20M10 17c0 4 6.3 7 14 7s14-3 14-7M10 17v5c0 4 6.3 7 14 7s14-3 14-7v-5"/></svg>
@@ -87,5 +87,38 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 <a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
 <a class="current" href="cuenta.html" aria-label="Cuenta" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
+
+<script type="module">
+import { supabase } from "./supabase-client.js";
+
+const usernameElement = document.querySelector(".username");
+const userIdElement = document.querySelector(".user-id");
+
+async function loadAccountIdentity() {
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("username, user_code")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !profile) {
+    usernameElement.textContent = "Mi cuenta";
+    userIdElement.textContent = "ID: No disponible";
+    return;
+  }
+
+  usernameElement.textContent = profile.username || "Usuario";
+  userIdElement.textContent = `ID: ${profile.user_code}`;
+}
+
+loadAccountIdentity();
+</script>
 </body>
 </html>
