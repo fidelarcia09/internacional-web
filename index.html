@@ -46,11 +46,13 @@
  .float,.art-label{display:none}
  .ticker{display:none}
  .mobile-features{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 4% 18px;background:#050505}
- .mobile-features article{min-height:112px;padding:12px 4px 10px;border:1px solid #292929;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;box-shadow:inset 0 0 14px #ff76000a}
- .mobile-features article:first-child,.mobile-features article:last-child{border-bottom-color:#ff7900}
- .mobile-features svg{width:42px;height:42px;color:#ff8900;fill:#ff8900;stroke:none}
- 
- .mobile-features b{font-size:10px;line-height:1.2;color:#f5f5f5}
+ .mobile-features article{position:relative;isolation:isolate;overflow:hidden;height:82px;min-height:0;padding:7px 2px 6px;border:1px solid #292929;border-radius:19px;background:linear-gradient(145deg,#111 0%,#080808 72%,#100a05 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;box-shadow:inset 0 0 16px #ff760012,0 2px 10px #0009}
+ .mobile-features article:before,.mobile-features article:after{content:"";position:absolute;z-index:-1;width:31px;height:24px;pointer-events:none}
+ .mobile-features article:before{top:-1px;left:-1px;border-top:2px solid #ff8a00;border-left:2px solid #ff8a00;border-top-left-radius:18px;filter:drop-shadow(0 0 4px #ff7900)}
+ .mobile-features article:after{right:-1px;bottom:-1px;border-right:2px solid #ff8a00;border-bottom:2px solid #ff8a00;border-bottom-right-radius:18px;filter:drop-shadow(0 0 5px #ff7900)}
+ .mobile-features article:first-child,.mobile-features article:last-child{box-shadow:inset 0 0 18px #ff760018,0 0 10px #ff790012}
+ .mobile-features svg{width:29px;height:29px;color:#ff8900;fill:#ff8900;stroke:none;filter:drop-shadow(0 0 5px #ff790055)}
+ .mobile-features b{font-size:9px;line-height:1.12;color:#f5f5f5;font-weight:700}
  .catalog{padding:26px 4% 20px}
  .section-head{display:grid;grid-template-columns:1fr;gap:6px}
  .section-head h2{font:800 31px/1.02 var(--font);letter-spacing:-1px;margin:0}
