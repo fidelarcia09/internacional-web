@@ -42,6 +42,11 @@ label{display:block;color:#aeb0b8;font-size:10px;font-weight:700;letter-spacing:
 .mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
 @media(max-width:620px){main{margin:22px auto 28px;width:90%}.profile-card{padding:13px;margin-bottom:16px}.field{min-height:78px;padding-left:55px}.field-icon{left:13px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+.save-button{width:100%;min-height:54px;margin-top:18px;border:1px solid #ffc05c;border-radius:15px;background:linear-gradient(100deg,#ffb52e,#ff8121 55%,#ff9d25);color:#17100a;font:900 14px var(--font);cursor:pointer;box-shadow:0 0 16px #ff790028}
+.save-button:disabled{opacity:.65;cursor:wait}
+.save-notice{display:none;margin:12px 0 0;padding:12px;border:1px solid #ff9a2b70;border-radius:12px;background:#ff8b2c12;color:#ffd29d;text-align:center;font-size:11px;line-height:1.5}
+.save-notice.show{display:block}
+.field input[readonly]{color:#aeb0b8;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -73,9 +78,11 @@ label{display:block;color:#aeb0b8;font-size:10px;font-weight:700;letter-spacing:
 <div class="field">
 <span class="field-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3.5" y="6.5" width="25" height="19" rx="3"/><path d="m5 9 11 9 11-9"/><path class="accent" d="M5.5 23.5 12 17.8m14.5 5.7L20 17.8"/></svg></span>
 <label for="email">Correo electrónico</label>
-<input id="email" type="email" placeholder="No especificado" autocomplete="email">
+<input id="email" type="email" placeholder="No especificado" autocomplete="email" readonly>
 </div>
 </section>
+<button class="save-button" id="save-profile" type="button">GUARDAR CAMBIOS</button>
+<p class="save-notice" id="save-notice" role="status" aria-live="polite"></p>
 </main>
 
 <nav class="mobile-nav" aria-label="Navegación inferior">
@@ -85,5 +92,103 @@ label{display:block;color:#aeb0b8;font-size:10px;font-weight:700;letter-spacing:
 <a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
 <a class="current" href="cuenta.html" aria-label="Cuenta" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
+<script type="module">
+import { supabase } from "./supabase-client.js";
+
+const fullNameField = document.getElementById("full-name");
+const usernameField = document.getElementById("username");
+const phoneField = document.getElementById("phone");
+const emailField = document.getElementById("email");
+const saveButton = document.getElementById("save-profile");
+const notice = document.getElementById("save-notice");
+const profileHint = document.querySelector(".profile-card small");
+let currentUser = null;
+
+function showNotice(message, isError = false) {
+  notice.textContent = message;
+  notice.style.borderColor = isError ? "#ff5d5d99" : "#ff9a2b70";
+  notice.style.color = isError ? "#ffb5b5" : "#ffd29d";
+  notice.classList.add("show");
+}
+
+async function loadPersonalData() {
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    window.location.replace("login.html");
+    return;
+  }
+  currentUser = user;
+
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("full_name, username, phone, user_code")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !profile) {
+    showNotice("No se pudieron cargar tus datos. Actualiza la página.", true);
+    return;
+  }
+
+  fullNameField.value = profile.full_name || "";
+  usernameField.value = profile.username || "";
+  phoneField.value = profile.phone || "";
+  emailField.value = user.email || "";
+  profileHint.textContent = "ID: " + (profile.user_code || "No disponible");
+}
+
+saveButton.addEventListener("click", async () => {
+  if (!currentUser) return;
+
+  const full_name = fullNameField.value.trim();
+  const username = usernameField.value.trim();
+  const phone = phoneField.value.trim();
+
+  if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
+    showNotice("El usuario debe tener entre 3 y 24 caracteres: letras, números o guion bajo.", true);
+    usernameField.focus();
+    return;
+  }
+  const phoneDigits = phone.replace(/[^0-9]/g, "");
+  if (phone && (phoneDigits.length < 7 || phoneDigits.length > 15)) {
+    showNotice("El teléfono debe contener entre 7 y 15 dígitos.", true);
+    phoneField.focus();
+    return;
+  }
+  if (full_name.length > 120) {
+    showNotice("El nombre no puede superar los 120 caracteres.", true);
+    fullNameField.focus();
+    return;
+  }
+
+  saveButton.disabled = true;
+  saveButton.textContent = "GUARDANDO...";
+  notice.classList.remove("show");
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      full_name: full_name || null,
+      username,
+      phone: phone || null
+    })
+    .eq("id", currentUser.id);
+
+  saveButton.disabled = false;
+  saveButton.textContent = "GUARDAR CAMBIOS";
+
+  if (error) {
+    if (error.code === "23505") showNotice("Ese nombre de usuario ya está ocupado. Prueba con otro.", true);
+    else showNotice("No se pudieron guardar los cambios. Inténtalo de nuevo.", true);
+    return;
+  }
+
+  showNotice("Tus datos personales se guardaron correctamente.");
+}
+
+);
+
+loadPersonalData();
+</script>
 </body>
 </html>
