@@ -88,6 +88,23 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 <a class="current" href="cuenta.html" aria-label="Cuenta" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
 
+<script>
+/* Pintar la identidad desde el almacenamiento local antes de iniciar Supabase. */
+(() => {
+  try {
+    const auth = JSON.parse(localStorage.getItem("sb-fyyebxjysrhcxgmgperf-auth-token") || "null");
+    const userId = auth?.user?.id || auth?.currentSession?.user?.id;
+    if (!userId) return;
+    const cached = localStorage.getItem("iw-account-identity:" + userId);
+    if (!cached) return;
+    const identity = JSON.parse(cached);
+    const name = document.querySelector(".username");
+    const id = document.querySelector(".user-id");
+    if (name) name.textContent = identity.username || "Usuario";
+    if (id) id.textContent = "ID: " + (identity.user_code || "No disponible");
+  } catch (error) { console.warn("No se pudo precargar la identidad:", error); }
+})();
+</script>
 <script type="module">
 import { supabase } from "./supabase-client.js";
 
