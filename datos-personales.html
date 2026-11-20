@@ -103,6 +103,7 @@ const saveButton = document.getElementById("save-profile");
 const notice = document.getElementById("save-notice");
 const profileHint = document.querySelector(".profile-card small");
 let currentUser = null;
+let profileCacheKey = null;
 
 function showNotice(message, isError = false) {
   notice.textContent = message;
@@ -111,30 +112,62 @@ function showNotice(message, isError = false) {
   notice.classList.add("show");
 }
 
+function showPersonalData(data) {
+  fullNameField.value = data.full_name || "";
+  usernameField.value = data.username || "";
+  phoneField.value = data.phone || "";
+  emailField.value = data.email || "";
+  profileHint.textContent = "ID: " + (data.user_code || "No disponible");
+}
+
 async function loadPersonalData() {
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  if (authError || !user) {
+  // getSession lee la sesión persistida localmente y evita una consulta de red innecesaria.
+  const { data: { session }, error: authError } = await supabase.auth.getSession();
+  if (authError || !session?.user) {
     window.location.replace("login.html");
     return;
   }
-  currentUser = user;
+
+  currentUser = session.user;
+  profileCacheKey = `iw-personal-data:${currentUser.id}`;
+
+  // Rellena los campos desde la caché antes de consultar el perfil actualizado.
+  try {
+    const cached = localStorage.getItem(profileCacheKey);
+    if (cached) showPersonalData(JSON.parse(cached));
+  } catch (cacheError) {
+    console.warn("No se pudieron leer los datos guardados:", cacheError);
+  }
 
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("full_name, username, phone, user_code")
-    .eq("id", user.id)
+    .eq("id", currentUser.id)
     .single();
 
   if (error || !profile) {
-    showNotice("No se pudieron cargar tus datos. Actualiza la página.", true);
+    if (!usernameField.value) showNotice("No se pudieron cargar tus datos. Actualiza la página.", true);
     return;
   }
 
-  fullNameField.value = profile.full_name || "";
-  usernameField.value = profile.username || "";
-  phoneField.value = profile.phone || "";
-  emailField.value = user.email || "";
-  profileHint.textContent = "ID: " + (profile.user_code || "No disponible");
+  const personalData = {
+    full_name: profile.full_name || "",
+    username: profile.username || "",
+    phone: profile.phone || "",
+    user_code: profile.user_code || "No disponible",
+    email: currentUser.email || ""
+  };
+
+  showPersonalData(personalData);
+  try {
+    localStorage.setItem(profileCacheKey, JSON.stringify(personalData));
+    localStorage.setItem(`iw-account-identity:${currentUser.id}`, JSON.stringify({
+      username: personalData.username || "Usuario",
+      user_code: personalData.user_code
+    }));
+  } catch (cacheError) {
+    console.warn("No se pudieron guardar los datos en caché:", cacheError);
+  }
 }
 
 saveButton.addEventListener("click", async () => {
@@ -183,6 +216,23 @@ saveButton.addEventListener("click", async () => {
     return;
   }
 
+  const updatedData = {
+    full_name,
+    username,
+    phone,
+    email: currentUser.email || "",
+    user_code: profileHint.textContent.replace(/^ID:\\s*/, "") || "No disponible"
+  };
+  showPersonalData(updatedData);
+  try {
+    localStorage.setItem(profileCacheKey, JSON.stringify(updatedData));
+    localStorage.setItem(`iw-account-identity:${currentUser.id}`, JSON.stringify({
+      username: updatedData.username || "Usuario",
+      user_code: updatedData.user_code
+    }));
+  } catch (cacheError) {
+    console.warn("No se pudieron actualizar los datos guardados:", cacheError);
+  }
   showNotice("Tus datos personales se guardaron correctamente.");
 });
 
