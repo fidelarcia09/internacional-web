@@ -25,10 +25,10 @@ h1{font:900 clamp(48px,8vw,78px)/.9 var(--display);letter-spacing:-1px;margin:18
 .amount-wrap span{font-size:14px;color:#888}.amount-wrap input{width:100%;border:0;outline:0;background:transparent;color:#fff;font:700 21px var(--font);min-width:0}
 .hint{font-size:9px;color:#777;margin:9px 0 21px}
 .conversion{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:16px 0 13px}.conversion span{font-size:10px;color:#9a9ca4}.conversion strong{font-size:13px}
-.receive{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0c1714;border:1px solid #1f543d;border-radius:12px;padding:15px;margin-top:5px}.receive span{display:block;color:#83a894;font-size:9px;margin-bottom:5px}.receive strong{font-size:24px;color:#5de0a0}.coin{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#0d3325;color:#5de0a0;font-size:21px;font-weight:800}
+.receive{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0c1714;border:1px solid #1f543d;border-radius:12px;padding:15px;margin-top:5px}.receive span{display:block;color:#83a894;font-size:9px;margin-bottom:5px}.receive strong{font-size:24px;color:#5de0a0}.coin{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#0d3325;color:#5de0a0}.coin svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .rate{display:flex;align-items:center;gap:10px;color:#aaa;font-size:10px;margin-top:17px}.rate b{color:#fff}
 .info-panel{display:flex;flex-direction:column;justify-content:space-between;gap:20px}
-.usdt-mark{width:54px;height:54px;border-radius:16px;background:#0d3325;color:#5de0a0;display:grid;place-items:center;font-size:27px;font-weight:800;box-shadow:0 0 25px #1fbb741c}
+.usdt-mark{width:54px;height:54px;border-radius:16px;background:#0d3325;color:#5de0a0;display:grid;place-items:center;box-shadow:0 0 25px #1fbb741c}.usdt-mark svg{width:39px;height:39px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .info-panel h2{margin-top:5px}.info-panel p{font-size:11px;color:#92949c;line-height:1.8;margin:9px 0 0}
 .rate-card{padding:15px;border:1px solid #ffffff12;border-radius:12px;background:#0d0f13}.rate-card small{display:block;color:#858891;font-size:9px;margin-bottom:7px}.rate-card strong{font:800 29px var(--display);color:#fff}.rate-card strong em{font-style:normal;color:var(--orange)}
 .notice{display:flex;gap:11px;align-items:flex-start;padding:14px;border:1px solid #60431d;background:#1a150d;border-radius:12px;color:#d8c19a;font-size:9px;line-height:1.7}.notice b{color:#ffb45d}
@@ -53,12 +53,12 @@ h1{font:900 clamp(48px,8vw,78px)/.9 var(--display);letter-spacing:-1px;margin:18
 <p class="hint" id="amount-hint">Importe de ejemplo · Puedes modificarlo</p>
 <div class="conversion"><span>Tipo de cambio</span><strong>1 USD = 1 USDT</strong></div>
 <div class="conversion"><span>Comisión mostrada</span><strong>0 USD</strong></div>
-<div class="receive"><div><span>Recibirías (estimación)</span><strong id="result">10.00 USDT</strong></div><div class="coin">₮</div></div>
+<div class="receive"><div><span>Recibirías (estimación)</span><strong id="result">10.00 USDT</strong></div><div class="coin"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 8h30M24 8v32M14 15h20M10 17c0 4 6.3 7 14 7s14-3 14-7M10 17v5c0 4 6.3 7 14 7s14-3 14-7v-5"/></svg></div></div>
 <div class="rate"><span>◎</span> Conversión de referencia <b>1:1</b></div>
 </section>
 <aside class="panel info-panel">
 <div>
-<div class="usdt-mark">₮</div>
+<div class="usdt-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 8h30M24 8v32M14 15h20M10 17c0 4 6.3 7 14 7s14-3 14-7M10 17v5c0 4 6.3 7 14 7s14-3 14-7v-5"/></svg></div>
 <h2>Tu saldo, en digital.</h2>
 <p>USDT es una stablecoin diseñada para mantener una paridad aproximada con el dólar estadounidense. Su valor y disponibilidad pueden variar según la plataforma y las condiciones del mercado.</p>
 </div>
