@@ -140,14 +140,18 @@ async function loadPersonalData() {
   currentUser = session.user;
   profileCacheKey = `iw-personal-data:${currentUser.id}`;
 
-  // Rellena los campos desde la caché antes de consultar el perfil actualizado.
+  // Si ya tenemos los datos guardados, se muestran directamente sin volver a pedirlos.
   try {
     const cached = localStorage.getItem(profileCacheKey);
-    if (cached) showPersonalData(JSON.parse(cached));
+    if (cached) {
+      showPersonalData(JSON.parse(cached));
+      return;
+    }
   } catch (cacheError) {
     console.warn("No se pudieron leer los datos guardados:", cacheError);
   }
 
+  // Solo la primera vez (cuando aún no hay caché) se consulta el perfil en Supabase.
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("full_name, username, phone, user_code")
