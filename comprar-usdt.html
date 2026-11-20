@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090a0d">
+<meta name="description" content="Información y calculadora de USDT en Internacional Web.">
+<title>Comprar USDT — INTERNACIONAL WEB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090a0d;--panel:#121419;--orange:#ff6b24;--white:#f5f4f1;--muted:#92949c;--line:rgba(255,255,255,.09);--font:'Inter',sans-serif;--display:'Barlow Condensed',sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;padding-bottom:85px;background:radial-gradient(ellipse at 50% 12%,#ff790012,transparent 42%),var(--bg);color:var(--white);font-family:var(--font)}a{color:inherit;text-decoration:none}
+main{width:min(900px,90%);margin:0 auto;padding:48px 0 30px}
+.back{display:inline-flex;align-items:center;gap:9px;color:#a5a5aa;font-size:11px;margin-bottom:32px;transition:.2s}.back:hover{color:var(--orange)}
+.eyebrow{display:flex;align-items:center;gap:9px;color:#aaa;font-size:9px;font-weight:700;letter-spacing:2px}.eyebrow:before{content:"";width:22px;height:2px;background:var(--orange)}
+h1{font:900 clamp(48px,8vw,78px)/.9 var(--display);letter-spacing:-1px;margin:18px 0 13px;text-transform:uppercase}h1 em{color:var(--orange);font-style:normal}
+.intro{max-width:570px;color:#9699a2;font-size:12px;line-height:1.8;margin:0}
+.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:35px}
+.panel{background:linear-gradient(145deg,#15171d,#101115);border:1px solid #ffffff12;border-radius:18px;padding:25px;box-shadow:0 15px 40px #0003}
+.panel h2{font:800 25px var(--display);letter-spacing:.2px;margin:0 0 7px}.sub{font-size:10px;color:#888;margin:0 0 22px;line-height:1.7}
+.label{display:block;color:#c9c9cd;font-size:10px;font-weight:700;margin:0 0 9px}
+.amount-wrap{display:flex;align-items:center;gap:10px;background:#090a0d;border:1px solid #34363d;border-radius:12px;padding:0 14px;height:58px;transition:.2s}.amount-wrap:focus-within{border-color:#ff812d;box-shadow:0 0 0 3px #ff790014}
+.amount-wrap span{font-size:14px;color:#888}.amount-wrap input{width:100%;border:0;outline:0;background:transparent;color:#fff;font:700 21px var(--font);min-width:0}
+.hint{font-size:9px;color:#777;margin:9px 0 21px}
+.conversion{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:16px 0 13px}.conversion span{font-size:10px;color:#9a9ca4}.conversion strong{font-size:13px}
+.receive{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0c1714;border:1px solid #1f543d;border-radius:12px;padding:15px;margin-top:5px}.receive span{display:block;color:#83a894;font-size:9px;margin-bottom:5px}.receive strong{font-size:24px;color:#5de0a0}.coin{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#0d3325;color:#5de0a0;font-size:21px;font-weight:800}
+.rate{display:flex;align-items:center;gap:10px;color:#aaa;font-size:10px;margin-top:17px}.rate b{color:#fff}
+.info-panel{display:flex;flex-direction:column;justify-content:space-between;gap:20px}
+.usdt-mark{width:54px;height:54px;border-radius:16px;background:#0d3325;color:#5de0a0;display:grid;place-items:center;font-size:27px;font-weight:800;box-shadow:0 0 25px #1fbb741c}
+.info-panel h2{margin-top:5px}.info-panel p{font-size:11px;color:#92949c;line-height:1.8;margin:9px 0 0}
+.rate-card{padding:15px;border:1px solid #ffffff12;border-radius:12px;background:#0d0f13}.rate-card small{display:block;color:#858891;font-size:9px;margin-bottom:7px}.rate-card strong{font:800 29px var(--display);color:#fff}.rate-card strong em{font-style:normal;color:var(--orange)}
+.notice{display:flex;gap:11px;align-items:flex-start;padding:14px;border:1px solid #60431d;background:#1a150d;border-radius:12px;color:#d8c19a;font-size:9px;line-height:1.7}.notice b{color:#ffb45d}
+.coming{width:100%;display:block;text-align:center;border:1px solid #5a321e;background:#24170f;color:#ffb17a;border-radius:10px;padding:14px;font-size:10px;font-weight:800;letter-spacing:.5px;cursor:not-allowed}
+.footer-note{text-align:center;color:#666;font-size:9px;line-height:1.8;margin:24px auto 0;max-width:560px}
+.mobile-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;height:65px;background:#101217f5;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(15px);padding-bottom:env(safe-area-inset-bottom)}
+.mobile-nav a{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:54px;height:60px;color:#777}
+.mobile-nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.mobile-nav small{font-size:8px;letter-spacing:.2px}
+.mobile-nav a.current{color:var(--orange)}.mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,#ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}.mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}.mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
+@media(max-width:650px){main{width:90%;padding:30px 0 20px}.back{margin-bottom:27px}h1{font-size:58px}.layout{grid-template-columns:1fr;gap:13px;margin-top:26px}.panel{padding:20px}.info-panel{gap:17px}.intro{font-size:11px}.footer-note{font-size:8px}}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="index.html">← Volver al inicio</a>
+<div class="eyebrow">RECARGAS INTERNACIONALES</div>
+<h1>COMPRA <em>USDT.</em></h1>
+<p class="intro">Consulta la equivalencia de tu importe en USDT. La tasa mostrada es fija para esta vista informativa.</p>
+<div class="layout">
+<section class="panel">
+<h2>Calculadora USDT</h2>
+<p class="sub">Introduce un importe en dólares para ver su equivalencia.</p>
+<label class="label" for="usd">Importe en USD</label>
+<div class="amount-wrap"><span>$</span><input id="usd" type="number" inputmode="decimal" min="1" max="100000" step="0.01" value="10" aria-describedby="amount-hint"></div>
+<p class="hint" id="amount-hint">Importe de ejemplo · Puedes modificarlo</p>
+<div class="conversion"><span>Tipo de cambio</span><strong>1 USD = 1 USDT</strong></div>
+<div class="conversion"><span>Comisión mostrada</span><strong>0 USD</strong></div>
+<div class="receive"><div><span>Recibirías (estimación)</span><strong id="result">10.00 USDT</strong></div><div class="coin">₮</div></div>
+<div class="rate"><span>◎</span> Conversión de referencia <b>1:1</b></div>
+</section>
+<aside class="panel info-panel">
+<div>
+<div class="usdt-mark">₮</div>
+<h2>Tu saldo, en digital.</h2>
+<p>USDT es una stablecoin diseñada para mantener una paridad aproximada con el dólar estadounidense. Su valor y disponibilidad pueden variar según la plataforma y las condiciones del mercado.</p>
+</div>
+<div class="rate-card"><small>TIPO DE CAMBIO DE ESTA DEMO</small><strong>1 USD <em>→</em> 1 USDT</strong></div>
+<div class="notice"><span>ⓘ</span><div><b>Vista previa.</b> Esta página todavía no procesa compras, pagos ni transferencias reales. El cálculo es únicamente ilustrativo.</div></div>
+<button class="coming" type="button" disabled>COMPRAS PRÓXIMAMENTE</button>
+</aside>
+</div>
+<p class="footer-note">La equivalencia 1:1 es una referencia de diseño, no una cotización ni una oferta de compra. No envíes fondos a ninguna dirección desde esta página.</p>
+</main>
+<nav class="mobile-nav" aria-label="Navegación inferior">
+<a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
+<a href="tienda.html" aria-label="Tienda"><svg viewBox="0 0 24 24"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5M9 13v3m6-3v3"/></svg><small>Tienda</small></a>
+<a href="revendedores.html" aria-label="Revendedores"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revendedores</small></a>
+<a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
+<a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
+</nav>
+<script>
+const usd=document.getElementById("usd"),result=document.getElementById("result");
+function updateEstimate(){const amount=Number(usd.value);result.textContent=Number.isFinite(amount)&&amount>=0?amount.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" USDT":"— USDT"}
+usd.addEventListener("input",updateEstimate);
+</script>
+</body>
+</html>
