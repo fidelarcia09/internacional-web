@@ -162,10 +162,9 @@ document.getElementById("googleButton").addEventListener("click", async () => {
   if (error) showNotice("Google aún no está habilitado en Supabase. Configura el proveedor Google para activarlo.", true);
 });
 
-const { data } = await supabase.auth.getSession();
-if (data.session && !window.location.search.includes("error")) {
-  window.location.replace(SITE_URL + "index.html");
-}
+// La confirmación del correo puede dejar una sesión activa en este navegador.
+ // Aun así, mostramos el formulario para que el usuario introduzca sus credenciales.
+
 </script>
 </body>
 </html>
