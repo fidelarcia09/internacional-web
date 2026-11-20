@@ -207,13 +207,13 @@
  .hero-art:after{z-index:3}
 }
 
-/* Personaje completo, con tamaño equilibrado y detrás del contenido */
+/* Encuadre cerrado: sin bordes de la imagen y mostrando cabeza, hombros y pecho */
 .hero{isolation:isolate}
 .hero-art{overflow:hidden}
-.hero-character{transform:scale(1);transform-origin:right bottom}
+.hero-character{transform:scale(1.12);transform-origin:right top}
 @media(max-width:620px){
- .hero-art{overflow:hidden;right:0;width:74%}
- .hero-character{transform:scale(1);transform-origin:right bottom}
+ .hero-art{overflow:hidden;right:-8%;width:86%}
+ .hero-character{transform:scale(1.28);transform-origin:right top}
 }
 </style>
 </head>
