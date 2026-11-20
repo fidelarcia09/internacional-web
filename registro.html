@@ -127,40 +127,107 @@ h1{margin:0;text-align:center;font:800 clamp(38px,9vw,52px)/.98 var(--display);l
     </div>
   </section>
 </main>
-<script>
-document.querySelectorAll("[data-toggle]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    const field=document.getElementById(button.dataset.toggle);
-    const visible=field.type==="password";
-    field.type=visible?"text":"password";
-    button.setAttribute("aria-label",visible?"Ocultar contraseña":"Mostrar contraseña");
-    const slash=button.querySelector(".slash");
-    if(slash) slash.style.display=visible?"none":"block";
+<script type="module">
+import { supabase, SITE_URL } from "./supabase-client.js";
+
+document.querySelectorAll("[data-toggle]").forEach(button => {
+  button.addEventListener("click", () => {
+    const field = document.getElementById(button.dataset.toggle);
+    const visible = field.type === "password";
+    field.type = visible ? "text" : "password";
+    button.setAttribute("aria-label", visible ? "Ocultar contraseña" : "Mostrar contraseña");
+    const slash = button.querySelector(".slash");
+    if (slash) slash.style.display = visible ? "none" : "block";
   });
 });
-const notice=document.getElementById("notice");
-document.getElementById("registerForm").addEventListener("submit",event=>{
+
+const form = document.getElementById("registerForm");
+const notice = document.getElementById("notice");
+const submit = form.querySelector(".submit");
+const socialNote = document.getElementById("socialNote");
+const showNotice = (message, isError = false) => {
+  notice.textContent = message;
+  notice.classList.add("show");
+  notice.style.borderColor = isError ? "#ff5d5d99" : "#ff9a2b70";
+  notice.style.color = isError ? "#ffb5b5" : "#ffd29d";
+};
+const translateError = error => {
+  const message = (error?.message || "").toLowerCase();
+  if (message.includes("already registered") || message.includes("already been registered")) return "Este correo ya tiene una cuenta. Inicia sesión.";
+  if (message.includes("password") && message.includes("least")) return "La contraseña debe tener al menos 8 caracteres.";
+  if (message.includes("rate limit")) return "Has realizado demasiados intentos. Espera un momento y vuelve a intentarlo.";
+  if (message.includes("profiles_username_lower_unique") || message.includes("duplicate key")) return "Ese nombre de usuario ya está ocupado. Prueba con otro.";
+  if (message.includes("database error saving new user")) return "No se pudo crear la cuenta. Puede que el nombre de usuario ya esté ocupado; prueba con otro.";
+  return "No se pudo crear la cuenta. Revisa los datos e inténtalo nuevamente.";
+};
+
+form.addEventListener("submit", async event => {
   event.preventDefault();
-  const password=document.getElementById("password");
-  const confirm=document.getElementById("confirmPassword");
-  if(password.value!==confirm.value){
-    confirm.setCustomValidity("Las contraseñas no coinciden.");
-    confirm.reportValidity();
-    confirm.addEventListener("input",()=>confirm.setCustomValidity(""),{once:true});
+  const usernameField = form.elements.username;
+  const emailField = form.elements.email;
+  const password = document.getElementById("password");
+  const confirm = document.getElementById("confirmPassword");
+  const username = usernameField.value.trim();
+  const email = emailField.value.trim().toLowerCase();
+
+  if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
+    usernameField.setCustomValidity("Usa entre 3 y 24 caracteres: letras, números o guion bajo.");
+    usernameField.reportValidity();
+    usernameField.addEventListener("input", () => usernameField.setCustomValidity(""), { once: true });
     return;
   }
-  notice.textContent="El diseño del registro está listo. La creación de cuentas se conectará en la siguiente etapa.";
-  notice.classList.add("show");
+  if (password.value !== confirm.value) {
+    confirm.setCustomValidity("Las contraseñas no coinciden.");
+    confirm.reportValidity();
+    confirm.addEventListener("input", () => confirm.setCustomValidity(""), { once: true });
+    return;
+  }
+
+  submit.disabled = true;
+  submit.style.opacity = ".7";
+  submit.textContent = "CREANDO CUENTA...";
+  notice.classList.remove("show");
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password: password.value,
+    options: {
+      data: { username },
+      emailRedirectTo: SITE_URL + "login.html"
+    }
+  });
+
+  submit.disabled = false;
+  submit.style.opacity = "";
+  submit.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2m4-11v8m-4-4h8"/></svg> REGISTRARSE';
+
+  if (error) {
+    showNotice(translateError(error), true);
+    return;
+  }
+  if (data.session) {
+    showNotice("¡Tu cuenta está creada! Entrando a Internacional Web...");
+    window.location.assign(SITE_URL + "index.html");
+    return;
+  }
+  showNotice("¡Registro recibido! Te enviamos un correo para confirmar tu cuenta. Abre el enlace desde tu correo para activar el acceso.");
 });
-document.querySelectorAll("[data-provider]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.getElementById("socialNote").textContent="El registro con "+button.dataset.provider+" se habilitará en la siguiente etapa.";
+
+document.querySelectorAll("[data-provider]").forEach(button => {
+  button.addEventListener("click", async () => {
+    socialNote.textContent = "Conectando con Google...";
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: SITE_URL + "index.html" }
+    });
+    if (error) socialNote.textContent = "Google aún no está habilitado en el panel de Supabase. Configura el proveedor Google para activarlo.";
   });
 });
-document.querySelectorAll("[data-info]").forEach(link=>{
-  link.addEventListener("click",event=>{
+
+document.querySelectorAll("[data-info]").forEach(link => {
+  link.addEventListener("click", event => {
     event.preventDefault();
-    document.getElementById("socialNote").textContent=link.dataset.info;
+    socialNote.textContent = link.dataset.info;
   });
 });
 </script>
