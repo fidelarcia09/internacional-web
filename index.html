@@ -507,5 +507,14 @@ if (menu && desktopNav) {
   });
   desktopNav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => desktopNav.classList.remove("mobile-open")));
 }
+
+// Guarda automáticamente la imagen principal para que también aparezca sin conexión.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch((error) => {
+      console.warn("No se pudo activar la caché de la imagen principal:", error);
+    });
+  }, { once: true });
+}
 </script>
 </body></html>
