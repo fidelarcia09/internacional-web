@@ -325,6 +325,28 @@
     z-index:-1;
   }
 }
+
+/* Estado activo: halo naranja difuso, sin marco alrededor */
+@media(max-width:620px){
+  .mobile-nav a.current::before{
+    inset:3px auto auto 50%;
+    width:66px;
+    height:44px;
+    transform:translateX(-50%);
+    border:0;
+    border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(255,112,0,.34) 0%,rgba(255,112,0,.15) 38%,rgba(255,112,0,0) 74%);
+    box-shadow:none;
+    filter:blur(5px);
+    opacity:1;
+  }
+  .mobile-nav a.current svg{
+    filter:drop-shadow(0 0 4px rgba(255,125,0,.9)) drop-shadow(0 0 10px rgba(255,105,0,.45));
+  }
+  .mobile-nav a.current small{
+    text-shadow:0 0 8px rgba(255,120,0,.35);
+  }
+}
 </style>
 </head>
 <body>
