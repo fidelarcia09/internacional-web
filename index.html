@@ -454,6 +454,8 @@
  }
 }
 .entry-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 17px;margin-left:auto;border:1px solid #ff8a00;border-radius:12px;background:linear-gradient(135deg,#ff8a00,#ff6b24);color:#101010;font:800 10px var(--font);letter-spacing:.7px;text-transform:uppercase;box-shadow:0 0 14px #ff790033;transition:background .2s,border-color .2s,transform .2s,box-shadow .2s}.entry-link:hover{background:#ffa13b;border-color:#ffad52;box-shadow:0 0 19px #ff790066;transform:translateY(-1px)}
+
+.entry-link[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -522,12 +524,25 @@ if ("serviceWorker" in navigator) {
 
 <script type="module">
 import { supabase } from "./supabase-client.js";
+
 const entryLink = document.querySelector(".entry-link");
+
 if (entryLink) {
-  const { data } = await supabase.auth.getSession();
-  if (data.session) entryLink.hidden = true;
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (entryLink) entryLink.hidden = Boolean(session);
+  // Evita que el enlace "Entrar" aparezca un instante mientras se comprueba la sesión.
+  entryLink.hidden = true;
+
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) {
+    entryLink.hidden = false;
+    console.error("No se pudo comprobar la sesión:", error);
+  } else {
+    entryLink.hidden = Boolean(data.session);
+  }
+
+  // Mantiene el botón sincronizado al iniciar o cerrar sesión sin recargar la página.
+  supabase.auth.onAuthStateChange((_event, session) => {
+    entryLink.hidden = Boolean(session);
   });
 }
 </script>
