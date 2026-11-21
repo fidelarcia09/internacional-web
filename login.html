@@ -144,6 +144,11 @@ form.addEventListener("submit", async event => {
     else showNotice("No se pudo iniciar sesión. Comprueba tus datos e inténtalo otra vez.", true);
     return;
   }
+  const { data: assurance, error: assuranceError } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (!assuranceError && assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
+    window.location.assign(SITE_URL + "verificar-2fa.html");
+    return;
+  }
   showNotice("¡Sesión iniciada! Entrando...");
   window.location.assign(SITE_URL + "index.html");
 });
@@ -157,13 +162,29 @@ document.getElementById("googleButton").addEventListener("click", async () => {
   showNotice("Conectando con Google...");
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: SITE_URL + "index.html" }
+    options: { redirectTo: SITE_URL + "login.html?oauth=1" }
   });
   if (error) showNotice("Google aún no está habilitado en Supabase. Configura el proveedor Google para activarlo.", true);
 });
 
 // La confirmación del correo puede dejar una sesión activa en este navegador.
  // Aun así, mostramos el formulario para que el usuario introduzca sus credenciales.
+
+
+
+// Al regresar de Google, comprobar si la cuenta exige el segundo factor.
+if (new URLSearchParams(window.location.search).get("oauth") === "1") {
+  (async () => {
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData?.session) return;
+    const { data: assurance } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
+      window.location.replace(SITE_URL + "verificar-2fa.html");
+    } else {
+      window.location.replace(SITE_URL + "index.html");
+    }
+  })();
+}
 
 </script>
 </body>
