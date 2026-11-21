@@ -82,7 +82,6 @@ const playerInput=document.getElementById("player-id");
 const helpButton=document.getElementById("help-button");
 let products=[];
 let selectedProduct=null;
-let activeClientReference=crypto.randomUUID();
      buyButton.disabled=true;
 let selectedRegion="";
 function notify(text){message.textContent=text;message.classList.add("show")}
@@ -138,7 +137,6 @@ function renderProducts(){
    button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?product.priceUSDT.toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
    button.addEventListener("click",()=>{
      selectedProduct=product;
-     activeClientReference=crypto.randomUUID();
      buyButton.disabled=false;
      packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
      updateRequirements();
