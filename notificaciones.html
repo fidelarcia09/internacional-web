@@ -140,17 +140,35 @@ async function refreshPushStatus() {
   try {
     const registration = await getPushRegistration();
     if (!registration) return;
-    const subscription = await registration.pushManager.getSubscription();
 
-    if (Notification.permission === "granted" && subscription) {
-      await saveBrowserSubscription(subscription);
-      setPushStatus("Este dispositivo ya está preparado para recibir avisos de tus compras.", "Desactivar avisos");
-    } else {
-      setPushStatus("Activa los avisos para recibir las compras y sus cambios de estado en la barra del teléfono.", "Activar notificaciones");
+    let permission = Notification.permission;
+    if (permission === "default") {
+      setPushStatus("Solicitando permiso para enviarte avisos de tus compras…", "Solicitando permiso", true);
+      permission = await Notification.requestPermission();
     }
+
+    if (permission !== "granted") {
+      if (permission === "denied") {
+        setPushStatus("El permiso está bloqueado. Cámbialo en los ajustes del navegador para recibir avisos.", "Permiso bloqueado", true);
+      } else {
+        setPushStatus("No se concedió el permiso. Puedes intentarlo nuevamente desde aquí.", "Activar notificaciones");
+      }
+      return;
+    }
+
+    let subscription = await registration.pushManager.getSubscription();
+    if (!subscription) {
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: base64UrlToUint8Array(VAPID_PUBLIC_KEY)
+      });
+    }
+
+    await saveBrowserSubscription(subscription);
+    setPushStatus("Este dispositivo ya está preparado para recibir avisos de tus compras.", "Desactivar avisos");
   } catch (error) {
-    console.error("No se pudo comprobar la suscripción push:", error);
-    setPushStatus("No pudimos comprobar este dispositivo. Inténtalo de nuevo.", "Reintentar");
+    console.error("No se pudo activar la suscripción push al entrar:", error);
+    setPushStatus("No pudimos activar los avisos automáticamente. Puedes reintentarlo aquí.", "Reintentar");
   }
 }
 
