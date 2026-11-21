@@ -176,6 +176,31 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
 function showLoading(panel,label) {
   panel.replaceChildren(makeEmpty("Cargando...",label));
 }
+function renderOrders(rows) {
+  if (!Array.isArray(rows) || !rows.length) {
+    gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras."));
+    return;
+  }
+  const list=document.createElement("div"); list.className="history-list";
+  rows.forEach(order=>list.append(makeHistoryItem({
+    title:order.description,code:order.order_code,playerId:order.player_id,
+    date:order.created_at,status:order.status,isOrder:true
+  })));
+  gamesPanel.replaceChildren(list);
+}
+function renderDeposits(rows, ledgerRows) {
+  if (!Array.isArray(rows) || !rows.length) {
+    depositsPanel.replaceChildren(makeEmpty("Sin depósitos acreditados","Aquí aparecerán únicamente los depósitos que ya se hayan acreditado a tu saldo USDT."));
+    return;
+  }
+  const ledgerByDeposit=new Map((ledgerRows||[]).filter(x=>x.deposit_id).map(x=>[x.deposit_id,x.transaction_code]));
+  const list=document.createElement("div"); list.className="history-list";
+  rows.forEach(deposit=>list.append(makeHistoryItem({
+    title:"Depósito USDT",code:"Depósito "+deposit.deposit_code,transaction:ledgerByDeposit.get(deposit.id),
+    amount:deposit.amount_usdt,status:deposit.status,date:deposit.created_at,kind:deposit.payment_method,isDeposit:true
+  })));
+  depositsPanel.replaceChildren(list);
+}
 async function loadHistory() {
   const {data:{session},error:authError}=await supabase.auth.getSession();
   if(authError || !session?.user) { window.location.replace("login.html"); return; }
@@ -183,35 +208,40 @@ async function loadHistory() {
   showLoading(gamesPanel,"Estamos buscando tus compras.");
   showLoading(depositsPanel,"Estamos buscando tus depósitos.");
 
+  const cacheKey="iw-history:"+session.user.id;
+  try {
+    const cached=JSON.parse(localStorage.getItem(cacheKey)||"null");
+    if(cached && Date.now()-cached.savedAt<24*60*60*1000) {
+      if(Array.isArray(cached.orders)) renderOrders(cached.orders);
+      if(Array.isArray(cached.deposits)) renderDeposits(cached.deposits,cached.ledger||[]);
+    }
+  } catch(cacheError) {
+    console.warn("No se pudo leer el historial guardado:",cacheError);
+  }
+
   const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
     supabase.from("usdt_orders").select("id,order_code,description,player_id,amount_usdt,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
     supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).eq("status","confirmed").order("created_at",{ascending:false}),
     supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
   ]);
 
-  if(ordersResult.error) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
-  else if(!(ordersResult.data||[]).length) gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras."));
-  else {
-    const list=document.createElement("div"); list.className="history-list";
-    ordersResult.data.forEach(order=>{
-      list.append(makeHistoryItem({
-        title:order.description,code:order.order_code,playerId:order.player_id,
-        date:order.created_at,status:order.status,isOrder:true
-      }));
-    });
-    gamesPanel.replaceChildren(list);
-  }
+  if(!ordersResult.error) renderOrders(ordersResult.data||[]);
+  else if(gamesPanel.querySelector(".history-list")===null) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
 
-  if(depositsResult.error) depositsPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
-  else if(!depositsResult.data.length) depositsPanel.replaceChildren(makeEmpty("Sin depósitos acreditados","Aquí aparecerán únicamente los depósitos que ya se hayan acreditado a tu saldo USDT."));
-  else {
-    const ledgerByDeposit=new Map((ledgerResult.data||[]).filter(x=>x.deposit_id).map(x=>[x.deposit_id,x.transaction_code]));
-    const list=document.createElement("div"); list.className="history-list";
-    depositsResult.data.forEach(deposit=>list.append(makeHistoryItem({
-      title:"Depósito USDT",code:"Depósito "+deposit.deposit_code,transaction:ledgerByDeposit.get(deposit.id),
-      amount:deposit.amount_usdt,status:deposit.status,date:deposit.created_at,kind:deposit.payment_method,isDeposit:true
-    })));
-    depositsPanel.replaceChildren(list);
+  if(!depositsResult.error) renderDeposits(depositsResult.data||[],ledgerResult.data||[]);
+  else if(depositsPanel.querySelector(".history-list")===null) depositsPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
+
+  if(!ordersResult.error&&!depositsResult.error&&!ledgerResult.error) {
+    try {
+      localStorage.setItem(cacheKey,JSON.stringify({
+        savedAt:Date.now(),
+        orders:ordersResult.data||[],
+        deposits:depositsResult.data||[],
+        ledger:ledgerResult.data||[]
+      }));
+    } catch(cacheError) {
+      console.warn("No se pudo guardar el historial:",cacheError);
+    }
   }
 }
 loadHistory();
