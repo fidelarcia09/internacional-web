@@ -110,7 +110,7 @@ const gamesPanel = document.getElementById("games-panel");
 const depositsPanel = document.getElementById("deposits-panel");
 
 function statusLabel(status) {
-  return ({pending:"Pendiente",completed:"Completada",failed:"Reembolsada",confirmed:"Confirmado",rejected:"Rechazado",SIMULATED:"Prueba registrada"})[status] || status;
+  return ({pending:"Pendiente",completed:"Completada",failed:"Reembolsada",confirmed:"Confirmado",rejected:"Rechazado",SIMULATED:"Prueba archivada"})[status] || status;
 }
 function dateLabel(value) {
   const date = new Date(value);
@@ -201,7 +201,7 @@ async function loadHistory() {
   ]);
 
   if(ordersResult.error && sandboxResult.error) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
-  else if(!(ordersResult.data||[]).length && !(sandboxResult.data||[]).length) gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras y pedidos de prueba."));
+  else if(!(ordersResult.data||[]).length && !(sandboxResult.data||[]).length) gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras. El historial de pruebas anteriores se conserva."));
   else {
     const ledgerByOrder=new Map((ledgerResult.data||[]).filter(x=>x.order_id).map(x=>[x.order_id,x.transaction_code]));
     const entries=[
@@ -218,7 +218,7 @@ async function loadHistory() {
           amount:null,
           status:"SIMULATED",
           date:order.created_at,
-          kind:"Prueba · "+order.game+" · sin saldo ni envío al proveedor"
+          kind:"Historial de prueba · "+order.game+" · operación no realizada"
         }));
       }else{
         const order=entry.data;
