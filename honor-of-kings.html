@@ -82,6 +82,7 @@ const playerInput=document.getElementById("player-id");
 const helpButton=document.getElementById("help-button");
 let products=[];
 let selectedProduct=null;
+let activeClientReference=crypto.randomUUID();
      buyButton.disabled=true;
 let selectedRegion="";
 function notify(text){message.textContent=text;message.classList.add("show")}
@@ -137,6 +138,7 @@ function renderProducts(){
    button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?product.priceUSDT.toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
    button.addEventListener("click",()=>{
      selectedProduct=product;
+     activeClientReference=crypto.randomUUID();
      buyButton.disabled=false;
      packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
      updateRequirements();
@@ -197,7 +199,7 @@ buyButton.addEventListener("click",async()=>{
    const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-crear-pedido-prueba",{
      method:"POST",
      headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+sessionData.session.access_token,"Content-Type":"application/json",Accept:"application/json"},
-     body:JSON.stringify({productId:selectedProduct.productId,playerId,zoneId,clientReference:crypto.randomUUID()})
+     body:JSON.stringify({productId:selectedProduct.productId,playerId,zoneId,clientReference:activeClientReference})
    });
    const data=await response.json().catch(()=>({}));
    if(!response.ok||!data.ok)throw new Error(data.error||"No se pudo registrar el pedido de prueba.");
