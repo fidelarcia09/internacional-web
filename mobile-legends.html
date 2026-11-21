@@ -72,6 +72,22 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 </nav>
 <script type="module">
 import { supabase, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-client.js";
+
+const { data: { user: verifiedUser }, error: authError } = await supabase.auth.getUser();
+if (authError || !verifiedUser) {
+  window.location.replace("login.html");
+  throw new Error("auth_required");
+}
+const { data: { session: entrySession }, error: sessionError } = await supabase.auth.getSession();
+if (sessionError || !entrySession?.access_token || entrySession.user?.id !== verifiedUser.id) {
+  window.location.replace("login.html");
+  throw new Error("session_unavailable");
+}
+let activeSession = entrySession;
+supabase.auth.onAuthStateChange((_event, session) => {
+  activeSession = session;
+  if (!session) window.location.replace("login.html");
+});
 const GAME="mobile-legends";
 const CATALOG_URL="https://fyyebxjysrhcxgmgperf.supabase.co/functions/v1/public-game-catalog";
 const message=document.getElementById("message");
@@ -256,10 +272,8 @@ buyButton.addEventListener("click",async()=>{
  buyButton.textContent="Enviando pedido…";
  notify("Comprobando sesión y saldo. No cierres esta página.");
  try{
-   const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
-   if(sessionError) throw new Error("No se pudo comprobar tu sesión.");
-   const accessToken=sessionData?.session?.access_token;
-   if(!accessToken) throw new Error("Inicia sesión para realizar una compra.");
+   const accessToken=activeSession?.access_token;
+   if(!accessToken) throw new Error("Tu sesión ya no está activa. Vuelve a iniciar sesión.");
    if(!pendingClientReference) pendingClientReference="IW-"+crypto.randomUUID().replace(/-/g,"");
    const clientReference=pendingClientReference;
    const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-crear-pedido",{
