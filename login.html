@@ -162,7 +162,7 @@ document.getElementById("googleButton").addEventListener("click", async () => {
   showNotice("Conectando con Google...");
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: SITE_URL + "login.html?oauth=1" }
+    options: { redirectTo: SITE_URL + "index.html" }
   });
   if (error) showNotice("Google aún no está habilitado en Supabase. Configura el proveedor Google para activarlo.", true);
 });
@@ -171,20 +171,6 @@ document.getElementById("googleButton").addEventListener("click", async () => {
  // Aun así, mostramos el formulario para que el usuario introduzca sus credenciales.
 
 
-
-// Al regresar de Google, comprobar si la cuenta exige el segundo factor.
-if (new URLSearchParams(window.location.search).get("oauth") === "1") {
-  (async () => {
-    const { data: sessionData } = await supabase.auth.getSession();
-    if (!sessionData?.session) return;
-    const { data: assurance } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-    if (assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
-      window.location.replace(SITE_URL + "verificar-2fa.html");
-    } else {
-      window.location.replace(SITE_URL + "index.html");
-    }
-  })();
-}
 
 </script>
 </body>
