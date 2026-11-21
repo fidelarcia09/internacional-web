@@ -153,7 +153,7 @@ function renderProducts(){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles para esta región.</div>';
    return;
  }
- [...visible].sort((a,b)=>productAmount(b)-productAmount(a)||Number(b.priceUSDT||0)-Number(a.priceUSDT||0)).forEach(product=>{
+ [...visible].sort((a,b)=>productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0)).forEach(product=>{
    const button=document.createElement("button");
    button.type="button";
    button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");
