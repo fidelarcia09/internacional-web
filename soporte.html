@@ -101,6 +101,63 @@
 .mobile-nav a:hover,.mobile-nav a.current{color:#ff8700!important}.mobile-nav a.current:before{content:none!important;display:none!important}.mobile-nav a.current svg{filter:drop-shadow(0 0 2px rgba(255,135,0,.35))!important}
 }
 @media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
+
+.ticket-app{margin:8px 0 18px;padding:18px;border:1px solid #303239;border-radius:18px;background:linear-gradient(145deg,#14161c,#0e1015);box-shadow:0 14px 38px #0005}
+.ticket-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.ticket-kicker{display:block;color:var(--orange);font-size:10px;font-weight:900;letter-spacing:1.5px}
+.ticket-top h2{margin:5px 0 4px;font-size:clamp(19px,3vw,25px);font-weight:850}
+.ticket-top p{margin:0;color:#aeb0b9;font-size:12px;line-height:1.45}
+.ticket-primary{border:1px solid #ff9b48;border-radius:11px;padding:11px 15px;background:linear-gradient(135deg,#ff9c36,#ff5c16);color:#17100b;font:800 12px var(--font);cursor:pointer;box-shadow:0 5px 18px #ff6b2429}
+.ticket-primary:disabled{opacity:.55;cursor:wait}
+.ticket-alert{display:none;margin:0 0 12px;padding:10px 12px;border-radius:10px;background:#2a1a13;color:#ffd0ad;font-size:12px;line-height:1.5}
+.ticket-alert.show{display:block}
+.ticket-alert.success{background:#10251c;color:#a9f0c8}
+.ticket-login{padding:17px;border:1px dashed #555;border-radius:12px;text-align:center;color:#c2c4cb;font-size:13px}
+.ticket-login a{display:inline-block;margin-top:10px;padding:9px 16px;border-radius:9px;background:#ff7928;color:#160d07;font-weight:800}
+.ticket-workspace{display:grid;grid-template-columns:minmax(220px,.72fr) minmax(0,1.55fr);gap:12px;min-height:340px}
+.ticket-sidebar,.ticket-detail{min-width:0;border:1px solid #2e3139;border-radius:13px;background:#0b0d12;overflow:hidden}
+.ticket-list-head{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-bottom:1px solid #282b32;color:#f3f3f4;font-size:13px}
+.ticket-list-head button,.ticket-close{border:0;background:transparent;color:#ff9a45;font-size:23px;cursor:pointer}
+.ticket-list{max-height:450px;overflow:auto;padding:7px}
+.ticket-item{display:block;width:100%;padding:11px;text-align:left;border:1px solid transparent;border-radius:10px;background:transparent;color:#f3f3f4;cursor:pointer}
+.ticket-item:hover,.ticket-item.active{border-color:#75401f;background:#24170f}
+.ticket-item strong{display:block;font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+.ticket-item small{display:block;margin-top:5px;color:#9b9da6;font-size:10px}
+.ticket-item .ticket-code{color:#ff9a45;font-weight:800;letter-spacing:.5px}
+.ticket-status{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:20px;background:#272a31;color:#d6d7dc;font-size:9px;font-weight:800}
+.ticket-status.abierto{background:#352716;color:#ffc27f}.ticket-status.respondido{background:#142c25;color:#9be0bd}.ticket-status.cerrado{background:#292b31;color:#c1c2c8}
+.ticket-empty{padding:18px 10px;color:#92949d;text-align:center;font-size:12px}
+.ticket-empty-state{min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.ticket-empty-state>span{color:#ff8b32;font-size:34px}
+.ticket-empty-state h3{margin:10px 0 5px;font-size:17px}
+.ticket-empty-state p{max-width:300px;margin:0;color:#999ca6;font-size:12px;line-height:1.55}
+.ticket-thread{display:flex;flex-direction:column;min-height:340px}
+.ticket-thread-head{padding:13px 15px;border-bottom:1px solid #282b32}
+.ticket-thread-head h3{margin:4px 0;font-size:15px;overflow-wrap:anywhere}
+.ticket-thread-meta{display:flex;flex-wrap:wrap;gap:7px;align-items:center;color:#a3a5ad;font-size:10px}
+.ticket-owner{margin-top:10px;padding:9px 10px;border-radius:9px;background:#171a21;color:#c4c6ce;font-size:10px;line-height:1.6;overflow-wrap:anywhere}
+.ticket-owner b{color:#fff}
+.ticket-messages{display:flex;flex:1;flex-direction:column;gap:10px;padding:14px;max-height:350px;overflow:auto}
+.ticket-message{max-width:88%;padding:10px 12px;border:1px solid #333640;border-radius:12px;background:#171a21;align-self:flex-start}
+.ticket-message.mine{align-self:flex-end;border-color:#70401f;background:#26180f}
+.ticket-message-head{display:flex;gap:9px;align-items:center;margin-bottom:5px;color:#ffab67;font-size:10px;font-weight:800}
+.ticket-message time{color:#858892;font-size:9px;font-weight:500}
+.ticket-message p{margin:0;color:#e8e9ed;font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.ticket-reply{display:flex;gap:8px;padding:12px;border-top:1px solid #282b32}
+.ticket-reply textarea{flex:1;min-width:0;min-height:44px;max-height:120px;resize:vertical;border:1px solid #373a43;border-radius:10px;padding:10px;background:#11141a;color:#fff;font:12px var(--font);outline:none}
+.ticket-reply textarea:focus,.ticket-create input:focus,.ticket-create select:focus,.ticket-create textarea:focus{border-color:#ff8b32}
+.ticket-reply button{align-self:flex-end;border:0;border-radius:10px;padding:0 14px;background:#ff7928;color:#170e08;font-weight:900;cursor:pointer}
+.ticket-status-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.ticket-status-actions button{border:1px solid #484b54;border-radius:8px;padding:6px 8px;background:#20232a;color:#e6e7eb;font-size:10px;cursor:pointer}
+.ticket-create{margin-top:12px;padding:16px;border:1px solid #75401f;border-radius:13px;background:#121318}
+.ticket-form-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.ticket-form-head h3{margin:4px 0 0;font-size:17px}
+.ticket-create label{display:block;margin:11px 0;color:#d8d9de;font-size:11px;font-weight:700}
+.ticket-create input,.ticket-create select,.ticket-create textarea{display:block;width:100%;margin-top:6px;border:1px solid #363943;border-radius:9px;padding:11px;background:#0b0d12;color:#f5f5f5;font:12px var(--font);outline:none}
+.ticket-create select{color-scheme:dark}.ticket-create textarea{resize:vertical;line-height:1.5}
+.ticket-submit{margin-top:4px}
+@media(max-width:650px){.ticket-app{padding:13px;border-radius:14px}.ticket-top{align-items:flex-start;flex-direction:column}.ticket-primary{padding:10px 13px}.ticket-workspace{grid-template-columns:minmax(0,1fr);min-height:0}.ticket-list{display:flex;gap:7px;max-height:none;overflow-x:auto}.ticket-item{flex:0 0 190px;border-color:#292c33;background:#11141a}.ticket-detail{min-height:300px}.ticket-messages{max-height:340px}.ticket-reply{padding:9px}.ticket-reply button{padding:0 11px}.ticket-owner{font-size:9px}}
+
 </style>
 </head>
 <body>
@@ -112,11 +169,29 @@
 
 </div>
 </section>
-<section class="support-grid" aria-label="Soporte">
-<a class="support-card" href="mailto:soporte@internacionalweb.com?subject=Ayuda%20de%20soporte">
-<span class="card-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M12 43v-7a28 28 0 0 1 56 0v7"/><path d="M12 41H8a5 5 0 0 0-5 5v12a5 5 0 0 0 5 5h9V41h-5Zm56 0h4a5 5 0 0 1 5 5v12a5 5 0 0 1-5 5h-9V41h5ZM17 63c4 8 12 12 23 12h7"/></svg></span>
-<span class="card-copy"><h2>Soporte 24/7</h2><p>Siempre disponibles para ayudarte.</p></span><span class="chevron">›</span>
-</a>
+<section class="ticket-app" id="ticketApp" aria-label="Sistema de tickets">
+  <div class="ticket-top">
+    <div><span class="ticket-kicker">CENTRO DE AYUDA</span><h2 id="ticketWelcome">Tus solicitudes de soporte</h2><p id="ticketIntro">Inicia sesión para crear y consultar tus tickets.</p></div>
+    <button class="ticket-primary" id="newTicketBtn" type="button" hidden>＋ Nuevo ticket</button>
+  </div>
+  <div class="ticket-alert" id="ticketAlert" role="status" aria-live="polite"></div>
+  <div class="ticket-login" id="ticketLogin"><p>Para utilizar el centro de soporte necesitas iniciar sesión con tu cuenta.</p><a href="login.html">Iniciar sesión</a></div>
+  <div class="ticket-workspace" id="ticketWorkspace" hidden>
+    <aside class="ticket-sidebar">
+      <div class="ticket-list-head"><strong id="ticketListTitle">Mis tickets</strong><button type="button" id="refreshTickets" aria-label="Actualizar tickets">↻</button></div>
+      <div class="ticket-list" id="ticketList"><p class="ticket-empty">Cargando tickets…</p></div>
+    </aside>
+    <section class="ticket-detail" id="ticketDetail">
+      <div class="ticket-empty-state"><span>✦</span><h3>Tu espacio de soporte</h3><p>Selecciona un ticket para consultar la conversación o crea uno nuevo para recibir ayuda.</p></div>
+    </section>
+  </div>
+  <form class="ticket-create" id="ticketCreateForm" hidden>
+    <div class="ticket-form-head"><div><span class="ticket-kicker">NUEVA SOLICITUD</span><h3>Cuéntanos qué sucede</h3></div><button type="button" class="ticket-close" id="cancelCreate" aria-label="Cerrar">×</button></div>
+    <label>Asunto<input id="ticketSubject" maxlength="120" minlength="4" required placeholder="Ej. No puedo completar mi compra"></label>
+    <label>Categoría<select id="ticketCategory" required><option value="Cuenta">Cuenta</option><option value="Pagos">Pagos</option><option value="Compras">Compras</option><option value="Recargas">Recargas</option><option value="Problemas técnicos">Problemas técnicos</option><option value="Otro">Otro</option></select></label>
+    <label>Mensaje<textarea id="ticketFirstMessage" rows="4" maxlength="5000" required placeholder="Describe el problema con el mayor detalle posible…"></textarea></label>
+    <button class="ticket-primary ticket-submit" type="submit">Enviar ticket</button>
+  </form>
 </section>
 <section class="priority" aria-label="Nuestro compromiso">
 <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 11.5h30a9 9 0 0 1 9 9v17a9 9 0 0 1-9 9H27l-12 8v-8.5a9 9 0 0 1-12-8.5v-17a9 9 0 0 1 9-9Z"/><path d="m27 20 3.3 6.8 7.5 1.1-5.4 5.2 1.3 7.4-6.7-3.5-6.7 3.5 1.3-7.4-5.4-5.2 7.5-1.1L27 20Z"/><path d="m51 8 1.5 4.5L57 14l-4.5 1.5L51 20l-1.5-4.5L45 14l4.5-1.5L51 8Z"/></svg>
@@ -139,6 +214,139 @@
 <a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
 
+
+<script type="module">
+import { supabase } from "./supabase-client.js";
+
+const $ = (id) => document.getElementById(id);
+const state = { user:null, isSupport:false, tickets:[], activeTicket:null, messages:[], ownerInfo:null };
+const esc = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+const dateText = (value) => new Date(value).toLocaleString("es-ES",{dateStyle:"short",timeStyle:"short"});
+function alertBox(message, success=false) {
+  const el=$("ticketAlert"); el.textContent=message; el.className="ticket-alert show"+(success?" success":"");
+}
+function clearAlert(){ $("ticketAlert").className="ticket-alert"; }
+function statusLabel(status){ return status==="respondido"?"Respondido":status==="cerrado"?"Cerrado":"Abierto"; }
+
+async function init(){
+  const {data:{session},error}=await supabase.auth.getSession();
+  if(error) throw error;
+  if(!session){
+    $("ticketLogin").hidden=false;
+    $("ticketWorkspace").hidden=true;
+    $("ticketCreateForm").hidden=true;
+    $("newTicketBtn").hidden=true;
+    return;
+  }
+  state.user=session.user;
+  $("ticketLogin").hidden=true;
+  $("ticketWorkspace").hidden=false;
+  $("ticketWelcome").textContent="Hola, "+(session.user.email||"bienvenido");
+  $("ticketIntro").textContent="Aquí puedes crear solicitudes y mantener toda la conversación con nuestro equipo.";
+  const {data:agent,error:agentError}=await supabase.from("support_agents").select("user_id").eq("user_id",state.user.id).maybeSingle();
+  if(agentError) throw agentError;
+  state.isSupport=!!agent;
+  $("ticketWelcome").textContent=state.isSupport?"Panel de atención al cliente":"Tus solicitudes de soporte";
+  $("ticketIntro").textContent=state.isSupport?"Consulta y responde los tickets de los usuarios.":"Crea un ticket y consulta únicamente tus propias conversaciones.";
+  $("ticketListTitle").textContent=state.isSupport?"Todos los tickets":"Mis tickets";
+  $("newTicketBtn").hidden=state.isSupport;
+  await loadTickets();
+}
+async function loadTickets(){
+  const {data,error}=await supabase.from("support_tickets").select("id,ticket_code,user_id,subject,category,status,created_at,last_message_at").order("last_message_at",{ascending:false});
+  if(error) throw error;
+  state.tickets=data||[];
+  renderTickets();
+  if(state.activeTicket){
+    const found=state.tickets.find(t=>t.id===state.activeTicket.id);
+    if(found) await openTicket(found);
+    else {state.activeTicket=null;renderEmptyDetail();}
+  }
+}
+function renderTickets(){
+  const list=$("ticketList");
+  if(!state.tickets.length){list.innerHTML='<p class="ticket-empty">'+(state.isSupport?"Todavía no hay tickets.":"Aún no has creado ningún ticket.")+'</p>';return;}
+  list.innerHTML=state.tickets.map(t=>'<button type="button" class="ticket-item '+(state.activeTicket?.id===t.id?"active":"")+'" data-ticket="'+esc(t.id)+'"><strong>'+esc(t.subject)+'</strong><small><span class="ticket-code">'+esc(t.ticket_code)+'</span> · '+esc(t.category)+'</small><span class="ticket-status '+esc(t.status)+'">'+statusLabel(t.status)+'</span>'+(state.isSupport?'<small>Usuario: '+esc(t.user_id.slice(0,8))+'…</small>':'')+'</button>').join("");
+  list.querySelectorAll("[data-ticket]").forEach(btn=>btn.addEventListener("click",()=>{const t=state.tickets.find(x=>x.id===btn.dataset.ticket);if(t)openTicket(t)}));
+}
+function renderEmptyDetail(){
+  $("ticketDetail").innerHTML='<div class="ticket-empty-state"><span>✦</span><h3>Tu espacio de soporte</h3><p>Selecciona un ticket para consultar la conversación o crea uno nuevo para recibir ayuda.</p></div>';
+  renderTickets();
+}
+async function openTicket(ticket){
+  state.activeTicket=ticket;
+  state.ownerInfo=null;
+  renderTickets();
+  const {data,error}=await supabase.from("support_messages").select("id,ticket_id,author_id,author_role,message,created_at").eq("ticket_id",ticket.id).order("created_at",{ascending:true});
+  if(error) throw error;
+  state.messages=data||[];
+  if(state.isSupport){
+    const info=await supabase.rpc("get_support_ticket_user_info",{p_ticket_id:ticket.id});
+    if(info.error) throw info.error;
+    state.ownerInfo=Array.isArray(info.data)?info.data[0]:info.data;
+  }
+  renderThread();
+}
+function renderThread(){
+  const t=state.activeTicket;
+  if(!t){renderEmptyDetail();return;}
+  const owner=state.ownerInfo;
+  const ownerHtml=state.isSupport?'<div class="ticket-owner"><b>Información del usuario</b><br>Nombre: '+esc(owner?.full_name||"No indicado")+'<br>Usuario: '+esc(owner?.username||"No indicado")+'<br>Correo: '+esc(owner?.email||"No disponible")+'<br>ID de cuenta: '+esc(owner?.user_code||t.user_id)+'<br>Teléfono: '+esc(owner?.phone||"No indicado")+'</div>':"";
+  const messages=state.messages.map(m=>'<article class="ticket-message '+(m.author_id===state.user.id?"mine":"")+'"><div class="ticket-message-head">'+(m.author_role==="soporte"?"Soporte":"Usuario")+'<time>'+dateText(m.created_at)+'</time></div><p>'+esc(m.message)+'</p></article>').join("");
+  const actions=state.isSupport?'<div class="ticket-status-actions"><button type="button" data-status="abierto">Marcar abierto</button><button type="button" data-status="respondido">Marcar respondido</button><button type="button" data-status="cerrado">Cerrar ticket</button></div>':"";
+  const reply=t.status==="cerrado"?'<div class="ticket-empty">Este ticket está cerrado. Si necesitas más ayuda, crea uno nuevo.</div>':'<form class="ticket-reply" id="ticketReplyForm"><textarea id="ticketReplyText" maxlength="5000" required placeholder="Escribe tu respuesta…"></textarea><button type="submit">Enviar</button></form>';
+  $("ticketDetail").innerHTML='<div class="ticket-thread"><header class="ticket-thread-head"><div class="ticket-thread-meta"><span class="ticket-code">'+esc(t.ticket_code)+'</span><span>·</span><span>'+esc(t.category)+'</span><span class="ticket-status '+esc(t.status)+'">'+statusLabel(t.status)+'</span></div><h3>'+esc(t.subject)+'</h3>'+ownerHtml+actions+'</header><div class="ticket-messages" id="ticketMessages">'+(messages||'<p class="ticket-empty">Todavía no hay mensajes.</p>')+'</div>'+reply+'</div>';
+  const box=$("ticketMessages");if(box)box.scrollTop=box.scrollHeight;
+  $("ticketReplyForm")?.addEventListener("submit",sendReply);
+  $("ticketDetail").querySelectorAll("[data-status]").forEach(btn=>btn.addEventListener("click",()=>changeStatus(btn.dataset.status)));
+}
+async function sendReply(event){
+  event.preventDefault();
+  const button=event.currentTarget.querySelector("button");
+  const message=$("ticketReplyText").value.trim();
+  if(!message)return;
+  button.disabled=true;
+  const {error}=await supabase.from("support_messages").insert({ticket_id:state.activeTicket.id,author_id:state.user.id,message});
+  if(error){button.disabled=false;alertBox("No se pudo enviar la respuesta: "+error.message);return;}
+  clearAlert();
+  await loadTickets();
+}
+async function changeStatus(status){
+  const {error}=await supabase.rpc("set_support_ticket_status",{p_ticket_id:state.activeTicket.id,p_status:status});
+  if(error){alertBox("No se pudo actualizar el estado: "+error.message);return;}
+  alertBox("Estado del ticket actualizado.",true);
+  await loadTickets();
+}
+async function createTicket(event){
+  event.preventDefault();
+  const button=event.currentTarget.querySelector('button[type="submit"]');
+  const subject=$("ticketSubject").value.trim(),category=$("ticketCategory").value,message=$("ticketFirstMessage").value.trim();
+  if(!subject||!message)return;
+  button.disabled=true;
+  try{
+    const {data:ticket,error}=await supabase.from("support_tickets").insert({user_id:state.user.id,subject,category}).select("id,ticket_code,user_id,subject,category,status,created_at,last_message_at").single();
+    if(error)throw error;
+    const {error:messageError}=await supabase.from("support_messages").insert({ticket_id:ticket.id,author_id:state.user.id,message});
+    if(messageError)throw messageError;
+    $("ticketCreateForm").hidden=true;
+    event.currentTarget.reset();
+    state.activeTicket=ticket;
+    alertBox("Ticket "+ticket.ticket_code+" creado correctamente.",true);
+    await loadTickets();
+    await openTicket(ticket);
+  }catch(error){alertBox("No se pudo crear el ticket: "+error.message);}
+  finally{button.disabled=false;}
+}
+$("newTicketBtn").addEventListener("click",()=>{$("ticketCreateForm").hidden=false;$("ticketSubject").focus();});
+$("cancelCreate").addEventListener("click",()=>$("ticketCreateForm").hidden=true);
+$("ticketCreateForm").addEventListener("submit",createTicket);
+$("refreshTickets").addEventListener("click",async()=>{try{await loadTickets();alertBox("Lista actualizada.",true);}catch(e){alertBox("No se pudieron actualizar los tickets: "+e.message);}});
+supabase.auth.onAuthStateChange((_event,session)=>{
+  if(!session){state.user=null;state.isSupport=false;state.tickets=[];state.activeTicket=null;$("ticketLogin").hidden=false;$("ticketWorkspace").hidden=true;$("newTicketBtn").hidden=true;}
+  else if(!state.user||state.user.id!==session.user.id){state.user=session.user;init().catch(e=>alertBox("No se pudo cargar soporte: "+e.message));}
+});
+init().catch(error=>alertBox("No se pudo iniciar el centro de soporte: "+error.message));
+</script>
 <script>
 (()=>{
  const nav=document.querySelector(".mobile-nav");if(!nav)return;
