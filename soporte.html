@@ -239,17 +239,19 @@ async function init(){
     return;
   }
   state.user=session.user;
+  const {data:agent,error:agentError}=await supabase.from("support_agents").select("user_id").eq("user_id",state.user.id).maybeSingle();
+  if(agentError) throw agentError;
+  if(agent){
+    window.location.replace("soporte-panel.html");
+    return;
+  }
+  state.isSupport=false;
   $("ticketLogin").hidden=true;
   $("ticketWorkspace").hidden=false;
   $("ticketWelcome").textContent="Hola, "+(session.user.email||"bienvenido");
   $("ticketIntro").textContent="Aquí puedes crear solicitudes y mantener toda la conversación con nuestro equipo.";
-  const {data:agent,error:agentError}=await supabase.from("support_agents").select("user_id").eq("user_id",state.user.id).maybeSingle();
-  if(agentError) throw agentError;
-  state.isSupport=!!agent;
-  $("ticketWelcome").textContent=state.isSupport?"Panel de atención al cliente":"Tus solicitudes de soporte";
-  $("ticketIntro").textContent=state.isSupport?"Consulta y responde los tickets de los usuarios.":"Crea un ticket y consulta únicamente tus propias conversaciones.";
-  $("ticketListTitle").textContent=state.isSupport?"Todos los tickets":"Mis tickets";
-  $("newTicketBtn").hidden=state.isSupport;
+  $("ticketListTitle").textContent="Mis tickets";
+  $("newTicketBtn").hidden=false;
   await loadTickets();
 }
 async function loadTickets(){
