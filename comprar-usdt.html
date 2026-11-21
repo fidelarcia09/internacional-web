@@ -20,17 +20,17 @@ main{width:min(1180px,98%);margin:0 auto}
 .topbar a{width:38px;height:38px;display:grid;place-items:center;border:1px solid #ff9a3c;border-radius:12px;color:#ffae22;background:#120b06}
 .topbar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .brand{font:900 19px var(--display);letter-spacing:.5px;text-align:center}.brand em{font-style:normal;color:var(--orange)}
-.banner{position:relative;overflow:hidden;border-radius:18px 18px 7px 7px;border:1px solid #ff9a32;box-shadow:0 7px 0 #6f2c00,0 12px 24px #ff6a0030,inset 0 0 22px #ffb00024;margin:0 0 0;background:#100a05;transform:perspective(900px) rotateX(.35deg);transform-origin:center bottom}
-.banner img{display:block;width:100%;height:clamp(112px,17vw,185px);object-fit:cover;object-position:center;filter:drop-shadow(0 8px 13px #0009)}
-.banner:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(180deg,#ffffff12,transparent 24%,transparent 76%,#ff780018);box-shadow:inset 0 0 24px #ff8a0022}
+.banner{position:relative;z-index:0;overflow:hidden;border:0;border-radius:0;background:transparent;margin:0 0 -13px;transform:perspective(900px) rotateX(1.2deg) scale(1.045);transform-origin:center bottom;filter:drop-shadow(0 13px 10px #000b)}
+.banner img{display:block;width:100%;height:clamp(125px,19vw,205px);object-fit:cover;object-position:center;transform:scale(1.075);filter:saturate(1.08) contrast(1.04)}
+.banner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 65%,#080706a8 100%)}
 .heading{padding:8px 5px 15px}
 .eyebrow{display:flex;align-items:center;gap:9px;color:#ffad4a;font-size:9px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase}
 .eyebrow:before{content:"";width:23px;height:2px;background:var(--orange);box-shadow:0 0 9px var(--orange)}
 h1{font:900 clamp(42px,8vw,70px)/.88 var(--display);letter-spacing:-1px;margin:10px 0 8px;text-transform:uppercase}
 h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 .heading p{margin:0;color:#aaa19a;font-size:11px;line-height:1.7}
-.order-panel{position:relative;overflow:hidden;border:2px solid #ff8b2b;border-top:1px solid #ff9d32;border-radius:7px 7px 23px 23px;padding:clamp(17px,3.5vw,30px);background:radial-gradient(ellipse at 50% 0%,#ff790010,transparent 45%),linear-gradient(145deg,#100c09,#090807 65%,#120b06);box-shadow:0 0 24px #ff79001b,inset 0 0 22px #ff790008}
-.order-panel:before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 18px #ff790012}
+.order-panel{position:relative;z-index:1;overflow:hidden;border:0;border-radius:0 0 23px 23px;padding:clamp(17px,3.5vw,30px);background:radial-gradient(ellipse at 50% 0%,#ff790018,transparent 45%),linear-gradient(145deg,#100c09,#090807 65%,#120b06);box-shadow:0 -5px 0 #7a3500,0 0 24px #ff79001b,inset 0 8px 16px #ff790012}
+.order-panel:before{content:"";position:absolute;left:4%;right:4%;top:0;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#ff9b35,#ffd08a,#ff8a20,transparent);box-shadow:0 0 13px #ff79008a}
 .section-title{display:flex;align-items:center;gap:12px;margin:0 0 17px;font:800 clamp(21px,4vw,29px)/1.1 var(--display)}
 .section-title .symbol{width:35px;height:35px;flex:0 0 35px;display:grid;place-items:center;color:var(--orange);filter:drop-shadow(0 0 8px #ff8b2b55)}
 .section-title svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
@@ -82,10 +82,10 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
  body{padding-top:9px}
  main{width:94%}
  .topbar{height:53px;margin-bottom:10px}
- .banner{border-radius:15px;margin-bottom:12px}
- .banner img{height:150px}
+ .banner{margin-bottom:-10px;transform:perspective(700px) rotateX(1.2deg) scale(1.055)}
+ .banner img{height:clamp(125px,38vw,165px)}
  .heading{padding:7px 3px 13px}
- .order-panel{padding:16px 13px;border-radius:19px}
+ .order-panel{padding:16px 13px;border-radius:0 0 19px 19px}
  .packages{gap:9px}
  .package{min-height:69px;gap:8px;border-radius:13px}
  .package .coin{width:32px;height:32px;font-size:19px}
