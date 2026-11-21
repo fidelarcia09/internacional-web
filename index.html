@@ -526,24 +526,49 @@ if ("serviceWorker" in navigator) {
 import { supabase } from "./supabase-client.js";
 
 const entryLink = document.querySelector(".entry-link");
+const catalogGames = [
+  "free-fire","mobile-legends","pubg-mobile","call-of-duty-mobile",
+  "arena-breakout","blood-strike","genshin-impact","honor-of-kings","roblox"
+];
+
+async function prefetchGameCatalogs() {
+  const base = "https://fyyebxjysrhcxgmgperf.supabase.co/functions/v1/public-game-catalog";
+  await Promise.allSettled(catalogGames.map(async game => {
+    try {
+      const response = await fetch(base + "?game=" + encodeURIComponent(game), {
+        method: "GET",
+        headers: { Accept: "application/json" }
+      });
+      const data = await response.json();
+      if (!response.ok || !data?.ok || !Array.isArray(data.products)) return;
+      sessionStorage.setItem("iw_catalog_" + game, JSON.stringify({
+        products: data.products,
+        savedAt: Date.now()
+      }));
+    } catch (error) {
+      console.warn("No se pudo precargar el catálogo:", game);
+    }
+  }));
+}
+
+if (entryLink) entryLink.hidden = true;
+
+const { data: { user }, error: userError } = await supabase.auth.getUser();
+const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+const verifiedSession = !userError && !sessionError && Boolean(user && session?.access_token && session.user?.id === user.id);
 
 if (entryLink) {
-  // Evita que el enlace "Entrar" aparezca un instante mientras se comprueba la sesión.
-  entryLink.hidden = true;
-
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error) {
+  entryLink.hidden = verifiedSession;
+  if (userError || sessionError) {
     entryLink.hidden = false;
-    console.error("No se pudo comprobar la sesión:", error);
-  } else {
-    entryLink.hidden = Boolean(data.session);
+    console.error("No se pudo comprobar la sesión:", userError || sessionError);
   }
-
-  // Mantiene el botón sincronizado al iniciar o cerrar sesión sin recargar la página.
-  supabase.auth.onAuthStateChange((_event, session) => {
-    entryLink.hidden = Boolean(session);
-  });
 }
+
+prefetchGameCatalogs();
+
+supabase.auth.onAuthStateChange((_event, nextSession) => {
+  if (entryLink) entryLink.hidden = Boolean(nextSession);
+});
 </script>
 </body></html>
