@@ -193,40 +193,22 @@ async function loadHistory() {
   showLoading(gamesPanel,"Estamos buscando tus compras.");
   showLoading(depositsPanel,"Estamos buscando tus depósitos.");
 
-  const [ordersResult,sandboxResult,depositsResult,ledgerResult]=await Promise.all([
+  const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
     supabase.from("usdt_orders").select("id,order_code,description,amount_usdt,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
-    supabase.from("sandbox_orders").select("id,order_code,game,product_name,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
     supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).eq("status","confirmed").order("created_at",{ascending:false}),
     supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
   ]);
 
-  if(ordersResult.error && sandboxResult.error) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
-  else if(!(ordersResult.data||[]).length && !(sandboxResult.data||[]).length) gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras. El historial de pruebas anteriores se conserva."));
+  if(ordersResult.error) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
+  else if(!(ordersResult.data||[]).length) gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras."));
   else {
     const ledgerByOrder=new Map((ledgerResult.data||[]).filter(x=>x.order_id).map(x=>[x.order_id,x.transaction_code]));
-    const entries=[
-      ...(ordersResult.data||[]).map(order=>({type:"real",date:order.created_at,data:order})),
-      ...(sandboxResult.data||[]).map(order=>({type:"sandbox",date:order.created_at,data:order}))
-    ].sort((a,b)=>new Date(b.date)-new Date(a.date));
     const list=document.createElement("div"); list.className="history-list";
-    entries.forEach(entry=>{
-      if(entry.type==="sandbox"){
-        const order=entry.data;
-        list.append(makeHistoryItem({
-          title:order.product_name,
-          code:"Pedido "+order.order_code,
-          amount:null,
-          status:"SIMULATED",
-          date:order.created_at,
-          kind:"Historial de prueba · "+order.game+" · operación no realizada"
-        }));
-      }else{
-        const order=entry.data;
-        list.append(makeHistoryItem({
-          title:order.description,code:"Pedido "+order.order_code,transaction:ledgerByOrder.get(order.id),
-          amount:order.amount_usdt,status:order.status,date:order.created_at,kind:"Compra",orderId:order.id
-        }));
-      }
+    ordersResult.data.forEach(order=>{
+      list.append(makeHistoryItem({
+        title:order.description,code:"Pedido "+order.order_code,transaction:ledgerByOrder.get(order.id),
+        amount:order.amount_usdt,status:order.status,date:order.created_at,kind:"Compra",orderId:order.id
+      }));
     });
     gamesPanel.replaceChildren(list);
   }
