@@ -103,6 +103,7 @@ function renderRegions(){
    button.dataset.value=region;button.textContent=region;
    button.addEventListener("click",()=>{
      selectedRegion=region;
+     selectedProduct=null;
      regions.querySelectorAll(".choice").forEach(el=>el.classList.toggle("selected",el===button));
      renderProducts();
    });
@@ -137,10 +138,11 @@ function renderProducts(){
  });
 }
 function updateRequirements(){
- const needsPlayer=!!selectedProduct?.requiresPlayerId;
+ const needsPlayer=selectedProduct ? !!selectedProduct.requiresPlayerId : products.some(p=>p.requiresPlayerId);
  playerSection.hidden=!needsPlayer;
  const zoneId=document.getElementById("provider-zone-id");
- if(selectedProduct?.requiresZoneId){
+ const needsZone=selectedProduct ? !!selectedProduct.requiresZoneId : products.some(p=>p.requiresZoneId);
+ if(needsZone){
    if(!zoneId){
      const field=document.createElement("div");
      field.id="provider-zone-wrap";field.className="field-row";field.style.marginTop="9px";
