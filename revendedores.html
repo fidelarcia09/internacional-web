@@ -70,6 +70,12 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
  .mobile-nav a.current small{text-shadow:0 0 8px rgba(255,120,0,.35)!important}
 }
 @media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
+
+/* El brillo móvil es una única pieza que viaja; nunca quedan dos selecciones */
+@media(max-width:620px){
+ .mobile-nav a.current:before{content:none!important;display:none!important}
+ .mobile-nav:before{transition:transform .36s cubic-bezier(.22,.75,.25,1)!important;will-change:transform}
+}
 </style>
 </head>
 <body>
@@ -106,6 +112,25 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 </nav>
 
 <script>
-(()=>{const nav=document.querySelector(".mobile-nav");if(!nav)return;const links=[...nav.querySelectorAll("a")];const file=location.pathname.split("/").pop()||"index.html";let active=links.findIndex(a=>{const target=(a.getAttribute("href")||"").split("#")[0];return target===file||(file==="mis-compras.html"&&target==="cuenta.html")});if(active<0)active=4;nav.style.setProperty("--active-index",active);links.forEach((a,i)=>{a.classList.toggle("current",i===active);if(i===active)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});links.forEach((a,i)=>a.addEventListener("click",()=>nav.style.setProperty("--active-index",i)))})();
+(()=>{
+ const nav=document.querySelector(".mobile-nav");if(!nav)return;
+ const links=[...nav.querySelectorAll("a")];
+ const file=location.pathname.split("/").pop()||"index.html";
+ let active=links.findIndex(a=>{const target=(a.getAttribute("href")||"").split("#")[0];return target===file||(file==="mis-compras.html"&&target==="cuenta.html")});
+ if(active<0)active=0;
+ const select=(index)=>{nav.style.setProperty("--active-index",index);links.forEach((a,i)=>{a.classList.toggle("current",i===index);if(i===index)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})};
+ select(active);
+ links.forEach((a,index)=>a.addEventListener("click",event=>{
+   if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+   const href=a.getAttribute("href")||"";
+   if(a.hasAttribute("download")||a.target&&a.target!=="_self")return;
+   event.preventDefault();
+   if(index===active){if(href==="#")window.scrollTo({top:0,behavior:"smooth"});return;}
+   select(index);
+   if(href==="#"){window.scrollTo({top:0,behavior:"smooth"});return;}
+   const delay=window.matchMedia&&window.matchMedia("(max-width:620px)").matches?380:0;
+   window.setTimeout(()=>{window.location.href=a.href},delay);
+ }));
+})();
 </script>
 </body></html>
