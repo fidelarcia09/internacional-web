@@ -210,7 +210,7 @@ buyButton.addEventListener("click",()=>{
 async function verifyNicknameAutomatically(){
  const playerId=playerInput?.value.trim()||"";
  const requestId=++validationRequest;
- if(!/^\\d{5,20}$/.test(playerId)||!selectedRegion) return;
+ if(!/^\d{5,20}$/.test(playerId)||!selectedRegion) return;
  const validationProduct=selectedProduct||products.find(p=>p.region===selectedRegion&&p.requiresPlayerId&&p.supportsPlayerValidation);
  if(!validationProduct) return;
  try{
@@ -254,7 +254,7 @@ function scheduleNicknameValidation(){
  validationRequest++;
  clearValidation();
  const playerId=playerInput?.value.trim()||"";
- if(!/^\\d{5,20}$/.test(playerId)||!selectedRegion) return;
+ if(!/^\d{5,20}$/.test(playerId)||!selectedRegion) return;
  validationTimer=setTimeout(verifyNicknameAutomatically,650);
 }
 playerInput?.addEventListener("input",()=>{
