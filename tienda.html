@@ -63,18 +63,18 @@
   .mobile-nav:before{
     content:""!important;position:absolute!important;z-index:0!important;
     top:8px!important;left:1%!important;width:19.6%!important;height:58px!important;
-    border:1px solid rgba(255,139,42,.88)!important;border-radius:17px!important;
-    background:linear-gradient(135deg,rgba(255,132,34,.30) 0%,rgba(255,105,24,.19) 55%,rgba(255,132,34,.10) 100%)!important;
-    box-shadow:0 0 8px rgba(255,119,25,.72),0 0 20px rgba(255,105,18,.42),0 0 34px rgba(255,105,18,.20),inset 0 0 13px rgba(255,153,64,.24)!important;
-    filter:drop-shadow(0 0 5px rgba(255,112,20,.42))!important;
+    border:0!important;border-radius:17px!important;
+    background:linear-gradient(135deg,rgba(255,132,34,.27) 0%,rgba(255,105,24,.19) 55%,rgba(255,132,34,.13) 100%)!important;
+    box-shadow:0 2px 9px rgba(255,105,18,.16),inset 0 0 9px rgba(255,153,64,.10)!important;
+    filter:none!important;
     transform:translateX(calc(var(--active-index,0)*100%))!important;
     transition:transform .62s cubic-bezier(.22,1.38,.42,1)!important;
     pointer-events:none!important
   }
   .mobile-nav a{position:relative!important;z-index:1!important;transition:color .22s ease!important}
   .mobile-nav a.current:before{content:none!important;display:none!important}
-  .mobile-nav a.current svg{filter:drop-shadow(0 0 5px rgba(255,130,24,.98)) drop-shadow(0 0 13px rgba(255,105,10,.65))!important}
-  .mobile-nav a.current small{text-shadow:0 0 10px rgba(255,125,25,.65)!important}
+  .mobile-nav a.current svg{filter:drop-shadow(0 0 2px rgba(255,130,24,.42))!important}
+  .mobile-nav a.current small{text-shadow:0 0 4px rgba(255,125,25,.28)!important}
 }
 @media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
 </style>
