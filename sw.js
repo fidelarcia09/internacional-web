@@ -1,4 +1,4 @@
-const CACHE_NAME = "internacional-web-home-image-v7";
+const CACHE_NAME = "internacional-web-home-image-v8";
 const IMAGE_PATHS = [
   "fuentes/personaje_gamer_cuadrado.webp",
   "fuentes/novatopup_tienda_banner.webp",
