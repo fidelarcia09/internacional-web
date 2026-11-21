@@ -151,7 +151,15 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
       line.textContent=value;
       main.append(line);
     });
-    item.append(main);
+    if(status==="failed") {
+      const right=document.createElement("div"); right.className="history-right";
+      const badge=document.createElement("span"); badge.className="history-status failed";
+      badge.textContent="Reembolsado";
+      right.append(badge);
+      item.append(main,right);
+    } else {
+      item.append(main);
+    }
     return item;
   }
   const meta=document.createElement("span"); meta.className="history-meta";
@@ -188,7 +196,7 @@ async function loadHistory() {
     ordersResult.data.forEach(order=>{
       list.append(makeHistoryItem({
         title:order.description,code:order.order_code,playerId:order.player_id,
-        date:order.created_at,isOrder:true
+        date:order.created_at,status:order.status,isOrder:true
       }));
     });
     gamesPanel.replaceChildren(list);
