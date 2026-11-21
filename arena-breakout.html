@@ -63,14 +63,14 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 <section class="section" aria-labelledby="packages-title">
 <h2 class="section-head" id="packages-title"><span class="ico">🪙</span>Paquetes de Bonos</h2>
 <div class="packages" id="packages">
-<button class="package" type="button" disabled><span class="diamond">🪙</span><strong>Paquete básico</strong><small>Bonos · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">🪙</span><strong>Paquete estándar</strong><small>Bonos · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">🪙</span><strong>Paquete avanzado</strong><small>Bonos · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">🪙</span><strong>Paquete premium</strong><small>Bonos · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">🪙</span><strong>Paquete especial</strong><small>Bonos · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">🪙</span><strong>Paquete máximo</strong><small>Bonos · catálogo pendiente</small></button>
+<button class="package" type="button"><span class="diamond">🪙</span><strong>Paquete básico</strong><small>Bonos</small></button>
+<button class="package" type="button"><span class="diamond">🪙</span><strong>Paquete estándar</strong><small>Bonos</small></button>
+<button class="package" type="button"><span class="diamond">🪙</span><strong>Paquete avanzado</strong><small>Bonos</small></button>
+<button class="package" type="button"><span class="diamond">🪙</span><strong>Paquete premium</strong><small>Bonos</small></button>
+<button class="package" type="button"><span class="diamond">🪙</span><strong>Paquete especial</strong><small>Bonos</small></button>
+<button class="package" type="button"><span class="diamond">🪙</span><strong>Paquete máximo</strong><small>Bonos</small></button>
 </div>
-<button class="cta" id="buy-button" type="button" disabled>🪙 &nbsp; Próximamente &nbsp; →</button>
+<button class="cta" id="buy-button" type="button">🪙 &nbsp; Recargar Ahora &nbsp; →</button>
 <div class="toast" id="message" role="status"></div>
 </section>
 </main>
@@ -87,6 +87,10 @@ function notify(text){message.textContent=text;message.classList.add("show")}
 document.querySelectorAll("#regions .choice").forEach(button=>button.addEventListener("click",()=>{
  document.querySelectorAll("#regions .choice").forEach(item=>item.classList.toggle("selected",item===button));
 }));
+document.querySelectorAll("#packages .package").forEach(button=>button.addEventListener("click",()=>{
+ document.querySelectorAll("#packages .package").forEach(item=>item.classList.toggle("selected",item===button));
+}));
+document.getElementById("buy-button").addEventListener("click",()=>notify("El catálogo de Arena Breakout todavía se está configurando. Tu selección no genera ningún cobro."));
 
 document.getElementById("help-button").addEventListener("click",()=>notify("Abre Arena Breakout, entra en tu perfil y busca el ID que aparece debajo de tu nombre. Cópialo aquí."));
 document.getElementById("player-id").addEventListener("input",()=>{message.classList.remove("show")});
