@@ -82,6 +82,7 @@ const playerInput=document.getElementById("player-id");
 const helpButton=document.getElementById("help-button");
 let products=[];
 let selectedProduct=null;
+     buyButton.disabled=true;
 let selectedRegion="";
 function notify(text){message.textContent=text;message.classList.add("show")}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
@@ -136,6 +137,7 @@ function renderProducts(){
    button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?product.priceUSDT.toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
    button.addEventListener("click",()=>{
      selectedProduct=product;
+     buyButton.disabled=false;
      packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
      updateRequirements();
    });
@@ -181,8 +183,31 @@ async function loadCatalog(){
    notify("No se pudo conectar con el catálogo de Supabase.");
  }
 }
-buyButton.addEventListener("click",()=>{
- notify("El checkout todavía no está habilitado. No se ha realizado ningún cobro.");
+buyButton.addEventListener("click",async()=>{
+ if(!selectedProduct){notify("Selecciona primero un producto.");return;}
+ const playerId=playerInput?.value.trim()||"";
+ const zoneId=document.getElementById("provider-zone-id")?.value.trim()||"";
+ if(selectedProduct.requiresPlayerId&&!playerId){notify("Ingresa tu Player ID para continuar.");return;}
+ if(selectedProduct.requiresZoneId&&!zoneId){notify("Ingresa también tu Zone ID.");return;}
+ const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
+ if(sessionError||!sessionData?.session?.access_token){notify("Inicia sesión para enviar la solicitud de prueba.");return;}
+ buyButton.disabled=true;
+ buyButton.textContent="Enviando prueba…";
+ try{
+   const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-crear-pedido-prueba",{
+     method:"POST",
+     headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+sessionData.session.access_token,"Content-Type":"application/json",Accept:"application/json"},
+     body:JSON.stringify({game:GAME,productId:selectedProduct.productId,productName:selectedProduct.name,playerId,zoneId})
+   });
+   const data=await response.json().catch(()=>({}));
+   if(!response.ok||!data.ok)throw new Error(data.error||"No se pudo enviar la prueba.");
+   notify("✓ Solicitud de prueba recibida · "+data.orderId+". No se descontó saldo ni se creó un pedido en Next Level.");
+ }catch(error){
+   notify(error instanceof Error?error.message:"No se pudo completar la prueba.");
+ }finally{
+   buyButton.disabled=!selectedProduct;
+   buyButton.textContent="Recargar ahora";
+ }
 });
 playerInput?.addEventListener("input",()=>message.classList.remove("show"));
 helpButton?.addEventListener("click",()=>{
