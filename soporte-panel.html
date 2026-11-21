@@ -291,26 +291,6 @@ async function changeStatus(status){
   alertBox("Estado del ticket actualizado.",true);
   await loadTickets();
 }
-async function createTicket(event){
-  event.preventDefault();
-  const button=event.currentTarget.querySelector('button[type="submit"]');
-  const subject=$("ticketSubject").value.trim(),category=$("ticketCategory").value,message=$("ticketFirstMessage").value.trim();
-  if(!subject||!message)return;
-  button.disabled=true;
-  try{
-    const {data:ticket,error}=await supabase.from("support_tickets").insert({user_id:state.user.id,subject,category}).select("id,ticket_code,user_id,subject,category,status,created_at,last_message_at").single();
-    if(error)throw error;
-    const {error:messageError}=await supabase.from("support_messages").insert({ticket_id:ticket.id,author_id:state.user.id,message});
-    if(messageError)throw messageError;
-    $("ticketCreateForm").hidden=true;
-    event.currentTarget.reset();
-    state.activeTicket=ticket;
-    alertBox("Ticket "+ticket.ticket_code+" creado correctamente.",true);
-    await loadTickets();
-  }catch(error){alertBox("No se pudo crear el ticket: "+error.message);}
-  finally{button.disabled=false;}
-}
-$("newTicketBtn").addEventListener("click",()=>{$("ticketCreateForm").hidden=false;$("ticketSubject").focus();});
 $("refreshTickets").addEventListener("click",async()=>{try{await loadTickets();alertBox("Lista actualizada.",true);}catch(e){alertBox("No se pudieron actualizar los tickets: "+e.message);}});
 init().catch(error=>alertBox("No se pudo iniciar el centro de soporte: "+error.message));
 </script>
