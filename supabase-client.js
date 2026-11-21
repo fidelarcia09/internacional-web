@@ -25,6 +25,14 @@ if (!mfaExemptPages.has(currentPage)) {
       if (!current?.session) return;
       const { data: assurance, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
       if (!error && assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
+        const basePath = new URL(SITE_URL).pathname;
+        const currentPath = window.location.pathname.startsWith(basePath)
+          ? window.location.pathname.slice(basePath.length)
+          : "index.html";
+        const returnTo = currentPath + window.location.search + window.location.hash;
+        if (returnTo && returnTo !== "verificar-2fa.html") {
+          sessionStorage.setItem("mfa_return_to", returnTo);
+        }
         window.location.replace(SITE_URL + "verificar-2fa.html");
       }
     }, 0);
