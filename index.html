@@ -541,10 +541,12 @@ async function prefetchGameCatalogs() {
       });
       const data = await response.json();
       if (!response.ok || !data?.ok || !Array.isArray(data.products)) return;
-      sessionStorage.setItem("iw_catalog_" + game, JSON.stringify({
+      const cacheEntry = JSON.stringify({
         products: data.products,
         savedAt: Date.now()
-      }));
+      });
+      try { localStorage.setItem("iw_catalog_" + game, cacheEntry); } catch (error) {}
+      try { sessionStorage.setItem("iw_catalog_" + game, cacheEntry); } catch (error) {}
     } catch (error) {
       console.warn("No se pudo precargar el catálogo:", game);
     }
