@@ -28,6 +28,11 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .notice-title{margin:1px 0 5px;font-size:12px;font-weight:800;color:#f5f4f1}
 .notice-message{margin:0;color:#92959e;font-size:10px;line-height:1.65}
 .notice-time{display:block;margin-top:8px;color:#777b85;font-size:9px}
+.push-description{margin:9px 0 0;color:#92959e;font-size:10px;line-height:1.6;max-width:390px}
+.push-button{flex:0 0 auto;min-height:42px;padding:0 15px;border:1px solid #ff790078;border-radius:12px;background:linear-gradient(110deg,#ff7900,#ff9b35);color:#17100a;font:800 10px var(--font);letter-spacing:.2px;cursor:pointer;box-shadow:0 5px 18px #ff79001c}
+.push-button:disabled{opacity:.65;cursor:default}
+@media(max-width:520px){.page-head{align-items:flex-start;flex-direction:column}.push-button{width:100%}.push-description{max-width:none}}
+
 .empty-state{min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 18px}
 .empty-icon{width:74px;height:74px;margin:0 auto 18px;border:1px solid #ff79005c;border-radius:23px;background:radial-gradient(circle,#ff790020,#111114 72%);display:grid;place-items:center;color:#ff922e;box-shadow:0 0 24px #ff790012}
 .empty-icon svg{width:36px;height:36px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -59,7 +64,8 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 <body>
 <main>
 <header class="page-head">
-<div><h1>NOTIFICACIONES</h1></div>
+<div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite">Activa los avisos para recibir las novedades de tus compras en el teléfono.</p></div>
+<button class="push-button" id="push-toggle" type="button">Activar notificaciones</button>
 </header>
 <section class="notice-list" id="notice-list" aria-live="polite">
 <div class="empty-state" id="empty-state">
@@ -81,6 +87,140 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 import { supabase } from "./supabase-client.js";
 
 const list = document.getElementById("notice-list");
+
+const pushToggle = document.getElementById("push-toggle");
+const pushStatus = document.getElementById("push-status");
+const VAPID_PUBLIC_KEY = "BHTV5yJXTfvalz80W5gPYe9-T_-tTU1b6QmSRvYhfNENLq26R4QmjMzMHqk4jQLFpeibjU";
+
+function base64UrlToUint8Array(value) {
+  const padding = "=".repeat((4 - value.length % 4) % 4);
+  const base64 = (value + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = atob(base64);
+  return Uint8Array.from(raw, char => char.charCodeAt(0));
+}
+
+function setPushStatus(message, buttonText, disabled = false) {
+  pushStatus.textContent = message;
+  pushToggle.textContent = buttonText;
+  pushToggle.disabled = disabled;
+}
+
+async function getPushRegistration() {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) {
+    setPushStatus("Este navegador no admite notificaciones push web.", "No compatible", true);
+    return null;
+  }
+  const registration = await navigator.serviceWorker.register("./sw.js");
+  await navigator.serviceWorker.ready;
+  return registration;
+}
+
+async function saveBrowserSubscription(subscription) {
+  const data = subscription.toJSON();
+  const { error } = await supabase.rpc("save_web_push_subscription", {
+    p_endpoint: data.endpoint,
+    p_p256dh: data.keys?.p256dh,
+    p_auth: data.keys?.auth
+  });
+  if (error) throw error;
+}
+
+async function refreshPushStatus() {
+  if (!currentUserId) return;
+  if (!("Notification" in window) || !("serviceWorker" in navigator) || !("PushManager" in window)) {
+    setPushStatus("Tu navegador no permite recibir notificaciones push web.", "No compatible", true);
+    return;
+  }
+
+  if (Notification.permission === "denied") {
+    setPushStatus("El permiso está bloqueado. Cámbialo en los ajustes del navegador para recibir avisos.", "Permiso bloqueado", true);
+    return;
+  }
+
+  try {
+    const registration = await getPushRegistration();
+    if (!registration) return;
+    const subscription = await registration.pushManager.getSubscription();
+
+    if (Notification.permission === "granted" && subscription) {
+      await saveBrowserSubscription(subscription);
+      setPushStatus("Este dispositivo ya está preparado para recibir avisos de tus compras.", "Desactivar avisos");
+    } else {
+      setPushStatus("Activa los avisos para recibir las compras y sus cambios de estado en la barra del teléfono.", "Activar notificaciones");
+    }
+  } catch (error) {
+    console.error("No se pudo comprobar la suscripción push:", error);
+    setPushStatus("No pudimos comprobar este dispositivo. Inténtalo de nuevo.", "Reintentar");
+  }
+}
+
+async function enablePush() {
+  pushToggle.disabled = true;
+  try {
+    if (!("Notification" in window)) {
+      setPushStatus("Este navegador no admite notificaciones.", "No compatible", true);
+      return;
+    }
+
+    const permission = Notification.permission === "granted"
+      ? "granted"
+      : await Notification.requestPermission();
+
+    if (permission !== "granted") {
+      if (permission === "denied") {
+        setPushStatus("El permiso fue bloqueado. Actívalo desde los ajustes del navegador.", "Permiso bloqueado", true);
+      } else {
+        setPushStatus("No se activaron los avisos. Puedes permitirlos cuando quieras.", "Activar notificaciones");
+      }
+      return;
+    }
+
+    const registration = await getPushRegistration();
+    if (!registration) return;
+
+    let subscription = await registration.pushManager.getSubscription();
+    if (!subscription) {
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: base64UrlToUint8Array(VAPID_PUBLIC_KEY)
+      });
+    }
+
+    await saveBrowserSubscription(subscription);
+    setPushStatus("¡Listo! Este dispositivo recibirá las notificaciones de tus compras.", "Desactivar avisos");
+  } catch (error) {
+    console.error("No se pudieron activar las notificaciones push:", error);
+    setPushStatus("No se pudieron activar los avisos. Comprueba la conexión e inténtalo otra vez.", "Reintentar");
+  } finally {
+    if (Notification.permission !== "denied" && pushToggle.textContent !== "No compatible") {
+      pushToggle.disabled = false;
+    }
+  }
+}
+
+async function disablePush() {
+  pushToggle.disabled = true;
+  try {
+    const registration = await getPushRegistration();
+    if (!registration) return;
+    const subscription = await registration.pushManager.getSubscription();
+    if (subscription) {
+      const { error } = await supabase.rpc("remove_web_push_subscription", {
+        p_endpoint: subscription.endpoint
+      });
+      if (error) throw error;
+      await subscription.unsubscribe();
+    }
+    setPushStatus("Los avisos push están desactivados en este dispositivo.", "Activar notificaciones");
+  } catch (error) {
+    console.error("No se pudieron desactivar las notificaciones push:", error);
+    setPushStatus("No se pudo desactivar este dispositivo. Inténtalo otra vez.", "Reintentar");
+  } finally {
+    pushToggle.disabled = false;
+  }
+}
+
+
 let currentUserId = null;
 let channel = null;
 
@@ -221,6 +361,7 @@ async function init() {
 
   currentUserId = session.user.id;
   await loadNotifications(currentUserId);
+  await refreshPushStatus();
 
   channel = supabase
     .channel("user-notifications-page-" + currentUserId)
@@ -232,6 +373,14 @@ async function init() {
     }, () => loadNotifications(currentUserId))
     .subscribe();
 }
+
+pushToggle.addEventListener("click", async () => {
+  if (pushToggle.textContent.includes("Desactivar")) {
+    await disablePush();
+  } else {
+    await enablePush();
+  }
+});
 
 init();
 </script>
