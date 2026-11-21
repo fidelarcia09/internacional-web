@@ -138,6 +138,6 @@ document.querySelectorAll('a.product[href$=".html"]').forEach(link=>{
 </script>
 
 <script>
-(()=>{const nav=document.querySelector(".mobile-nav");if(!nav)return;const links=[...nav.querySelectorAll("a")];const file=location.pathname.split("/").pop()||"index.html";let active=links.findIndex(a=>{const target=(a.getAttribute("href")||"").split("#")[0];return target===file});if(active<0)active=1;nav.style.setProperty("--active-index",active);links.forEach((a,i)=>{a.classList.toggle("current",i===active);if(i===active)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})})();
+(()=>{const nav=document.querySelector(".mobile-nav");if(!nav)return;const links=[...nav.querySelectorAll("a")];const file=location.pathname.split("/").pop()||"index.html";let active=links.findIndex(a=>{const target=(a.getAttribute("href")||"").split("#")[0];return target===file});if(active<0)active=1;nav.style.setProperty("--active-index",active);links.forEach((a,i)=>{a.classList.toggle("current",i===active);if(i===active)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});links.forEach((a,i)=>a.addEventListener("click",()=>nav.style.setProperty("--active-index",i)))})();
 </script>
 </body></html>
