@@ -569,6 +569,36 @@ if (entryLink) {
 
 prefetchGameCatalogs();
 
+async function prefetchAccountData(userId) {
+  if (!userId) return;
+  const [profileResult, walletResult, ordersResult, depositsResult, ledgerResult] = await Promise.all([
+    supabase.from("profiles").select("username,user_code").eq("id", userId).maybeSingle(),
+    supabase.from("usdt_wallets").select("balance").eq("user_id", userId).maybeSingle(),
+    supabase.from("usdt_orders").select("id,order_code,description,player_id,amount_usdt,status,created_at").eq("user_id", userId).order("created_at", { ascending: false }),
+    supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id", userId).eq("status", "confirmed").order("created_at", { ascending: false }),
+    supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id", userId)
+  ]);
+  if (!profileResult.error && profileResult.data) {
+    try { localStorage.setItem("iw-account-identity:" + userId, JSON.stringify({
+      username: profileResult.data.username || "Usuario",
+      user_code: profileResult.data.user_code || "No disponible"
+    })); } catch (error) {}
+  }
+  if (!walletResult.error && walletResult.data) {
+    try { localStorage.setItem("iw-account-balance:" + userId, String(walletResult.data.balance)); } catch (error) {}
+  }
+  if (!ordersResult.error && !depositsResult.error && !ledgerResult.error) {
+    try { localStorage.setItem("iw-history:" + userId, JSON.stringify({
+      savedAt: Date.now(),
+      orders: ordersResult.data || [],
+      deposits: depositsResult.data || [],
+      ledger: ledgerResult.data || []
+    })); } catch (error) {}
+  }
+}
+
+if (verifiedSession) prefetchAccountData(user.id);
+
 supabase.auth.onAuthStateChange((_event, nextSession) => {
   if (entryLink) entryLink.hidden = Boolean(nextSession);
 });
