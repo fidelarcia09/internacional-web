@@ -1,8 +1,9 @@
-const CACHE_NAME = "internacional-web-home-image-v3";
+const CACHE_NAME = "internacional-web-home-image-v4";
 const IMAGE_PATHS = [
   "fuentes/personaje_gamer_cuadrado.webp",
   "fuentes/novatopup_tienda_banner.webp",
-  "fuentes/novatopup_tienda_banner(1).webp"
+  "fuentes/novatopup_tienda_banner(1).webp",
+  "fuentes/blood_strike.webp"
 ];
 
 self.addEventListener("install", (event) => {
