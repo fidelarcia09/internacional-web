@@ -84,5 +84,53 @@ document.querySelectorAll(".section-search input").forEach(input=>{
     });
   });
 });
+
+// Calienta los nueve catálogos al entrar a la tienda. Al abrir un juego,
+// espera su catálogo si todavía está descargándose para que aparezca listo.
+const catalogBase="https://fyyebxjysrhcxgmgperf.supabase.co/functions/v1/public-game-catalog";
+const gameCatalogs=["free-fire","mobile-legends","pubg-mobile","call-of-duty-mobile","arena-breakout","blood-strike","genshin-impact","honor-of-kings","roblox"];
+const catalogTasks=new Map();
+function cacheCatalog(game,products){
+  const entry=JSON.stringify({products,savedAt:Date.now()});
+  try{localStorage.setItem("iw_catalog_"+game,entry)}catch(error){}
+  try{sessionStorage.setItem("iw_catalog_"+game,entry)}catch(error){}
+}
+function hasFreshCatalog(game){
+  for(const storage of [localStorage,sessionStorage]){
+    try{
+      const cached=JSON.parse(storage.getItem("iw_catalog_"+game)||"null");
+      if(cached&&Array.isArray(cached.products)&&Date.now()-cached.savedAt<24*60*60*1000)return true;
+    }catch(error){}
+  }
+  return false;
+}
+function warmCatalog(game){
+  if(hasFreshCatalog(game))return Promise.resolve(true);
+  if(catalogTasks.has(game))return catalogTasks.get(game);
+  const task=(async()=>{
+    try{
+      const response=await fetch(catalogBase+"?game="+encodeURIComponent(game),{headers:{Accept:"application/json"}});
+      const data=await response.json();
+      if(!response.ok||!data?.ok||!Array.isArray(data.products))return false;
+      cacheCatalog(game,data.products);
+      return true;
+    }catch(error){return false}
+    finally{catalogTasks.delete(game)}
+  })();
+  catalogTasks.set(game,task);
+  return task;
+}
+gameCatalogs.forEach(game=>{if(!hasFreshCatalog(game))warmCatalog(game)});
+document.querySelectorAll('a.product[href$=".html"]').forEach(link=>{
+  const game=link.getAttribute("href").replace(/\.html$/,"");
+  if(!gameCatalogs.includes(game))return;
+  link.addEventListener("click",async event=>{
+    if(hasFreshCatalog(game))return;
+    event.preventDefault();
+    link.setAttribute("aria-busy","true");
+    await warmCatalog(game);
+    window.location.href=link.href;
+  });
+});
 </script>
 </body></html>
