@@ -219,10 +219,12 @@ function applyCatalogProducts(rawProducts){
  updateRequirements();
 }
 function readPrefetchedCatalog(){
- try{
-   const cached=JSON.parse(sessionStorage.getItem("iw_catalog_"+GAME)||"null");
-   if(cached&&Array.isArray(cached.products)&&Date.now()-cached.savedAt<10*60*1000) return cached.products;
- }catch(error){}
+ for(const storage of [localStorage,sessionStorage]){
+  try{
+   const cached=JSON.parse(storage.getItem("iw_catalog_"+GAME)||"null");
+   if(cached&&Array.isArray(cached.products)&&Date.now()-cached.savedAt<24*60*60*1000) return cached.products;
+  }catch(error){}
+ }
  return null;
 }
 async function loadCatalog(){
@@ -235,7 +237,7 @@ async function loadCatalog(){
    const data=await response.json();
    if(!response.ok||!data.ok) throw new Error(data.error||"catalog_unavailable");
    const freshProducts=Array.isArray(data.products)?data.products:[];
-   try{sessionStorage.setItem("iw_catalog_"+GAME,JSON.stringify({products:freshProducts,savedAt:Date.now()}));}catch(error){}
+   const cacheEntry=JSON.stringify({products:freshProducts,savedAt:Date.now()});try{localStorage.setItem("iw_catalog_"+GAME,cacheEntry);}catch(error){}try{sessionStorage.setItem("iw_catalog_"+GAME,cacheEntry);}catch(error){}
    applyCatalogProducts(freshProducts);
  }catch(error){
    if(!cachedProducts){
