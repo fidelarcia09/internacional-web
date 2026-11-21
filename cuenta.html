@@ -292,6 +292,26 @@ logoutButton?.addEventListener("click", async event => {
   try {
     const { data: { session } } = await supabase.auth.getSession();
     const userId = session?.user?.id;
+
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      try {
+        const registration = await navigator.serviceWorker.getRegistration();
+        const subscription = await registration?.pushManager.getSubscription();
+        if (subscription) {
+          const { error: pushError } = await supabase.rpc("remove_web_push_subscription", {
+            p_endpoint: subscription.endpoint
+          });
+          if (pushError) {
+            console.warn("No se pudo retirar la suscripción push antes de cerrar sesión:", pushError);
+          } else {
+            await subscription.unsubscribe();
+          }
+        }
+      } catch (pushCleanupError) {
+        console.warn("No se pudo limpiar la suscripción push al cerrar sesión:", pushCleanupError);
+      }
+    }
+
     const { error } = await supabase.auth.signOut();
 
     if (error) throw error;
