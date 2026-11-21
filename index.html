@@ -636,7 +636,8 @@ async function refreshNotificationIndicator(userId) {
   const { count, error } = await supabase
     .from("user_notifications")
     .select("id", { count: "exact", head: true })
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .is("read_at", null);
   setNotificationIndicator(!error && (count || 0) > 0);
   if (error) console.warn("No se pudo consultar el indicador de notificaciones:", error);
 }
@@ -653,6 +654,12 @@ function watchNotificationIndicator(userId) {
       table: "user_notifications",
       filter: "user_id=eq." + userId
     }, () => setNotificationIndicator(true))
+    .on("postgres_changes", {
+      event: "UPDATE",
+      schema: "public",
+      table: "user_notifications",
+      filter: "user_id=eq." + userId
+    }, () => refreshNotificationIndicator(userId))
     .subscribe();
 }
 
