@@ -99,7 +99,7 @@ function clearValidation(){
 async function verifyPlayer(){
  const playerId=playerInput?.value.trim()||"";
  const requestId=++validationRequest;
- if(!/^\\d{5,20}$/.test(playerId)||!selectedRegion)return;
+ if(!/^\d{5,20}$/.test(playerId)||!selectedRegion)return;
  const product=selectedProduct||products.find(p=>p.region===selectedRegion&&p.requiresPlayerId&&p.supportsPlayerValidation);
  if(!product||!product.requiresPlayerId||!product.supportsPlayerValidation)return;
  const zoneId=document.getElementById("provider-zone-id")?.value.trim()||"";
@@ -127,7 +127,7 @@ async function verifyPlayer(){
 }
 function schedulePlayerValidation(){
  clearTimeout(validationTimer);validationRequest++;clearValidation();
- if(!/^\\d{5,20}$/.test(playerInput?.value.trim()||""))return;
+ if(!/^\d{5,20}$/.test(playerInput?.value.trim()||""))return;
  validationTimer=setTimeout(verifyPlayer,650);
 }
 playerInput?.addEventListener("input",schedulePlayerValidation);
