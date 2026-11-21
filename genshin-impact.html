@@ -44,7 +44,7 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 <body>
 <header class="topbar">
 <a class="back" href="tienda.html" aria-label="Atrás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Atrás</span></a>
-<div class="balance"><small>●</small>Catálogo Next Level</div>
+<div class="balance"><small>●</small>Genshin Impact</div>
 </header>
 <main>
 <section class="section" aria-labelledby="region-title">
@@ -58,7 +58,7 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 </section>
 <section class="section" aria-labelledby="packages-title">
 <h2 class="section-head" id="packages-title"><span class="ico">💎</span>Paquetes de Cristales génesis</h2>
-<div class="packages" id="packages"><div class="catalog-state">Conectando con el catálogo oficial…</div></div>
+<div class="packages" id="packages"></div>
 <button class="cta" id="buy-button" type="button" disabled>Recargar ahora</button>
 <div class="toast" id="message" role="status"></div>
 </section>
@@ -231,27 +231,44 @@ function updateRequirements(){
    document.getElementById("provider-zone-wrap")?.remove();
  }
 }
+function applyCatalogProducts(rawProducts){
+ products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT"):[];
+ if(!products.length){
+   packages.innerHTML='<div class="catalog-state">No hay productos disponibles en este momento. Vuelve a intentarlo más tarde.</div>';
+   regions.innerHTML="";
+   playerSection.hidden=true;
+   buyButton.disabled=true;
+   return;
+ }
+ playerSection.hidden=false;
+ renderRegions();
+ renderProducts();
+ updateRequirements();
+}
+function readPrefetchedCatalog(){
+ try{
+   const cached=JSON.parse(sessionStorage.getItem("iw_catalog_"+GAME)||"null");
+   if(cached&&Array.isArray(cached.products)&&Date.now()-cached.savedAt<10*60*1000) return cached.products;
+ }catch(error){}
+ return null;
+}
 async function loadCatalog(){
- packages.innerHTML='<div class="catalog-state">Conectando con el catálogo de Next Level…</div>';
- buyButton.disabled=true;
  buyButton.textContent="Recargar ahora";
+ const cachedProducts=readPrefetchedCatalog();
+ if(cachedProducts) applyCatalogProducts(cachedProducts);
+ else { packages.replaceChildren(); buyButton.disabled=true; }
  try{
    const response=await fetch(CATALOG_URL+"?game="+encodeURIComponent(GAME),{method:"GET",headers:{Accept:"application/json"}});
    const data=await response.json();
    if(!response.ok||!data.ok) throw new Error(data.error||"catalog_unavailable");
-   products=Array.isArray(data.products)?data.products.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT"):[];
-   if(!products.length){
-     packages.innerHTML='<div class="catalog-state">No hay productos disponibles en este momento. Vuelve a intentarlo más tarde.</div>';
-     regions.innerHTML="";
-     playerSection.hidden=true;
-     return;
-   }
-   renderRegions();
-   renderProducts();
-   updateRequirements();
+   const freshProducts=Array.isArray(data.products)?data.products:[];
+   try{sessionStorage.setItem("iw_catalog_"+GAME,JSON.stringify({products:freshProducts,savedAt:Date.now()}));}catch(error){}
+   applyCatalogProducts(freshProducts);
  }catch(error){
-   packages.innerHTML='<div class="catalog-state">No pudimos cargar el catálogo. Comprueba tu conexión e inténtalo de nuevo.</div>';
-   notify("No se pudo conectar con el catálogo de Supabase.");
+   if(!cachedProducts){
+     packages.innerHTML='<div class="catalog-state">No pudimos cargar el catálogo. Comprueba tu conexión e inténtalo de nuevo.</div>';
+     notify("No se pudo conectar con el catálogo de Supabase.");
+   }
  }
 }
 let purchaseInProgress=false;
@@ -287,7 +304,7 @@ buyButton.addEventListener("click",async()=>{
      notify("Saldo USDT insuficiente. No se realizó el pedido.");
    }else if(data.refunded===true){
      pendingClientReference="";
-     notify("Next Level rechazó el pedido ("+(data.error||"rechazado")+"). El saldo fue reembolsado.");
+     notify("Error al crear el pedido. El saldo fue reembolsado.");
    }else if(response.status===202||data.error==="provider_submission_pending_confirmation"){
      notify("Pedido pendiente de confirmación. No repitas la compra; consulta soporte. Código: "+(data.order?.code||"pendiente"));
    }else if(!response.ok||!data.ok){
