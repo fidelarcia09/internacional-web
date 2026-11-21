@@ -3,108 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090a0d">
-<meta name="description" content="Información y calculadora de USDT en Internacional Web.">
+<meta name="theme-color" content="#090706">
+<meta name="description" content="Comprar USDT en Internacional Web.">
 <title>Comprar USDT — INTERNACIONAL WEB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#090a0d;--panel:#121419;--orange:#ff6b24;--white:#f5f4f1;--muted:#92949c;--line:rgba(255,255,255,.09);--font:'Inter',sans-serif;--display:'Barlow Condensed',sans-serif}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;padding-bottom:85px;background:radial-gradient(ellipse at 50% 12%,#ff790012,transparent 42%),var(--bg);color:var(--white);font-family:var(--font)}a{color:inherit;text-decoration:none}
-main{width:min(900px,90%);margin:0 auto;padding:48px 0 30px}
-.back{display:inline-flex;align-items:center;gap:9px;color:#a5a5aa;font-size:11px;margin-bottom:32px;transition:.2s}.back:hover{color:var(--orange)}
-.eyebrow{display:flex;align-items:center;gap:9px;color:#aaa;font-size:9px;font-weight:700;letter-spacing:2px}.eyebrow:before{content:"";width:22px;height:2px;background:var(--orange)}
-h1{font:900 clamp(48px,8vw,78px)/.9 var(--display);letter-spacing:-1px;margin:18px 0 13px;text-transform:uppercase}h1 em{color:var(--orange);font-style:normal}
-.intro{max-width:570px;color:#9699a2;font-size:12px;line-height:1.8;margin:0}
-.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:35px}
-.panel{background:linear-gradient(145deg,#15171d,#101115);border:1px solid #ffffff12;border-radius:18px;padding:25px;box-shadow:0 15px 40px #0003}
-.panel h2{font:800 25px var(--display);letter-spacing:.2px;margin:0 0 7px}.sub{font-size:10px;color:#888;margin:0 0 22px;line-height:1.7}
-.label{display:block;color:#c9c9cd;font-size:10px;font-weight:700;margin:0 0 9px}
-.amount-wrap{display:flex;align-items:center;gap:10px;background:#090a0d;border:1px solid #34363d;border-radius:12px;padding:0 14px;height:58px;transition:.2s}.amount-wrap:focus-within{border-color:#ff812d;box-shadow:0 0 0 3px #ff790014}
-.amount-wrap span{font-size:14px;color:#888}.amount-wrap input{width:100%;border:0;outline:0;background:transparent;color:#fff;font:700 21px var(--font);min-width:0}
-.hint{font-size:9px;color:#777;margin:9px 0 21px}
-.conversion{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:16px 0 13px}.conversion span{font-size:10px;color:#9a9ca4}.conversion strong{font-size:13px}
-.receive{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0c1714;border:1px solid #1f543d;border-radius:12px;padding:15px;margin-top:5px}.receive span{display:block;color:#83a894;font-size:9px;margin-bottom:5px}.receive strong{font-size:24px;color:#5de0a0}.coin{width:48px;height:48px;flex:0 0 48px;border-radius:50%;display:grid;place-items:center;background:#00a889;color:#fff}.coin svg{width:43px;height:43px;fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
-.rate{display:flex;align-items:center;gap:10px;color:#aaa;font-size:10px;margin-top:17px}.rate b{color:#fff}
-.info-panel{display:flex;flex-direction:column;justify-content:space-between;gap:20px}
-.usdt-mark{width:54px;height:54px;border-radius:16px;background:#00a889;color:#fff;display:grid;place-items:center;box-shadow:0 0 25px #1fbb741c}.usdt-mark svg{width:43px;height:43px;fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
-.info-panel h2{margin-top:5px}.info-panel p{font-size:11px;color:#92949c;line-height:1.8;margin:9px 0 0}
-.rate-card{padding:15px;border:1px solid #ffffff12;border-radius:12px;background:#0d0f13}.rate-card small{display:block;color:#858891;font-size:9px;margin-bottom:7px}.rate-card strong{font:800 29px var(--display);color:#fff}.rate-card strong em{font-style:normal;color:var(--orange)}
-.notice{display:flex;gap:11px;align-items:flex-start;padding:14px;border:1px solid #60431d;background:#1a150d;border-radius:12px;color:#d8c19a;font-size:9px;line-height:1.7}.notice b{color:#ffb45d}
-.coming{width:100%;display:block;text-align:center;border:1px solid #5a321e;background:#24170f;color:#ffb17a;border-radius:10px;padding:14px;font-size:10px;font-weight:800;letter-spacing:.5px;cursor:not-allowed}
-.footer-note{text-align:center;color:#666;font-size:9px;line-height:1.8;margin:24px auto 0;max-width:560px}
-.mobile-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;height:65px;background:#101217f5;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(15px);padding-bottom:env(safe-area-inset-bottom)}
+:root{--bg:#080706;--panel:#100d0a;--orange:#ff8500;--orange2:#ffb000;--white:#f8f7f4;--muted:#99918a;--line:rgba(255,137,0,.34);--font:'Inter',sans-serif;--display:'Barlow Condensed',sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;padding:14px 0 86px;background:radial-gradient(ellipse at 50% 0%,#ff79001c,transparent 38%),#080706;color:var(--white);font-family:var(--font)}
+a{color:inherit;text-decoration:none}
+main{width:min(980px,94%);margin:0 auto}
+.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;margin-bottom:13px;border:1px solid #ff8a304d;border-radius:17px;background:linear-gradient(110deg,#160d06,#090807 52%,#170c04);box-shadow:0 0 22px #ff6a0012,inset 0 0 18px #ff6a000a}
+.topbar a{width:38px;height:38px;display:grid;place-items:center;border:1px solid #ff9a3c;border-radius:12px;color:#ffae22;background:#120b06}
+.topbar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.brand{font:900 19px var(--display);letter-spacing:.5px;text-align:center}.brand em{font-style:normal;color:var(--orange)}
+.banner{position:relative;overflow:hidden;border-radius:18px;border:1px solid #ff8b2b7a;box-shadow:0 0 25px #ff6a0020;margin-bottom:16px;background:#100a05}
+.banner img{display:block;width:100%;height:clamp(145px,27vw,245px);object-fit:cover;object-position:center}
+.banner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#08060435,transparent 60%),linear-gradient(0deg,#08060420,transparent 45%)}
+.heading{padding:8px 5px 15px}
+.eyebrow{display:flex;align-items:center;gap:9px;color:#ffad4a;font-size:9px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase}
+.eyebrow:before{content:"";width:23px;height:2px;background:var(--orange);box-shadow:0 0 9px var(--orange)}
+h1{font:900 clamp(42px,8vw,70px)/.88 var(--display);letter-spacing:-1px;margin:10px 0 8px;text-transform:uppercase}
+h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
+.heading p{margin:0;color:#aaa19a;font-size:11px;line-height:1.7}
+.order-panel{position:relative;overflow:hidden;border:1px solid #ff8b2b;border-radius:23px;padding:clamp(17px,3.5vw,30px);background:radial-gradient(ellipse at 50% 0%,#ff790010,transparent 45%),linear-gradient(145deg,#100c09,#090807 65%,#120b06);box-shadow:0 0 24px #ff79001b,inset 0 0 22px #ff790008}
+.order-panel:before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 18px #ff790012}
+.section-title{display:flex;align-items:center;gap:12px;margin:0 0 17px;font:800 clamp(21px,4vw,29px)/1.1 var(--display)}
+.section-title .symbol{width:35px;height:35px;flex:0 0 35px;display:grid;place-items:center;color:var(--orange);filter:drop-shadow(0 0 8px #ff8b2b55)}
+.section-title svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.packages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:25px}
+.package{position:relative;min-height:76px;display:flex;align-items:center;justify-content:center;gap:13px;border:1px solid #ff8b2b;border-radius:16px;background:linear-gradient(145deg,#120d09,#080706);color:#f7f4ef;font:800 clamp(23px,4vw,32px) var(--display);cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
+.package:hover{transform:translateY(-2px);box-shadow:0 0 15px #ff850033}
+.package.selected{border:2px solid #ffb000;box-shadow:0 0 9px #ff9a00,0 0 25px #ff79004d,inset 0 0 15px #ff790018}
+.package .coin{width:39px;height:39px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 28%,#38e6d1,#009f91 62%,#005b58);border:2px solid #36e8d3;box-shadow:0 0 10px #00d4bd50;color:#fff;font:900 23px var(--display)}
+.package .check{position:absolute;right:-7px;top:-9px;width:27px;height:27px;border-radius:50%;display:none;place-items:center;background:#ffb000;color:#130a00;font-size:17px;font-weight:900}
+.package.selected .check{display:grid}
+.amount-area{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-bottom:19px}
+.field-label{display:block;margin:0 0 8px;color:#f2e9df;font-size:11px;font-weight:800}
+.input-shell{height:52px;display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid #a95012;border-radius:12px;background:#090706;transition:.2s}
+.input-shell:focus-within{border-color:#ffb000;box-shadow:0 0 0 3px #ff8a001c}
+.input-shell .prefix{font-weight:800;color:#ff9a27}
+.input-shell input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#fff;font:700 17px var(--font)}
+.input-shell input:disabled{opacity:.7}
+.helper{margin:7px 0 0;color:#8d837b;font-size:9px;line-height:1.5}
+.receive{height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 13px;border:1px solid #237c60;border-radius:12px;background:linear-gradient(100deg,#092018,#0b120e)}
+.receive small{display:block;color:#83b99f;font-size:9px;margin-bottom:4px}
+.receive strong{font-size:18px;color:#65e6a6}
+.receive .tether{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:#00a88d;color:white;font:900 20px var(--display)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,#ff8a344d,transparent);margin:23px 0}
+.pay-title{display:flex;align-items:center;gap:11px;margin:0 0 12px;font:800 clamp(20px,4vw,27px) var(--display)}
+.pay-title svg{width:34px;height:34px;flex:0 0 34px;fill:none;stroke:var(--orange);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.address{min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 13px;border:1px solid #a95012;border-radius:13px;background:#090706}
+.address span{font-size:12px;color:#8d8580;line-height:1.5}
+.copy{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border:1px solid #ff9b2b;border-radius:10px;background:#1a1007;color:#ffad22;opacity:.55;cursor:not-allowed}
+.copy svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pay-button{width:100%;height:72px;margin:16px 0 22px;border:1px solid #ffd04a;border-radius:999px;background:linear-gradient(100deg,#ff8a00,#ffb000 48%,#ff8500);color:#17100a;font:900 clamp(24px,5vw,34px) var(--display);box-shadow:0 0 18px #ff880080,inset 0 1px 0 #fff7;opacity:.62;cursor:not-allowed}
+.pay-button span{margin-right:10px}
+.txid-label{display:flex;align-items:center;gap:11px;margin:0 0 11px;font:800 clamp(18px,3.7vw,25px) var(--display)}
+.txid-label svg{width:35px;height:35px;flex:0 0 35px;fill:none;stroke:var(--orange);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.txid{width:100%;height:61px;padding:0 14px;border:1px solid #a95012;border-radius:13px;background:#090706;color:#eee;font:500 13px var(--font);outline:0}
+.txid::placeholder{color:#77716c}
+.txid:disabled{opacity:.68}
+.preview-note{display:flex;align-items:flex-start;gap:10px;margin-top:17px;padding:12px 13px;border:1px solid #68421b;border-radius:12px;background:#1b1309;color:#cdb48f;font-size:10px;line-height:1.65}
+.preview-note b{color:#ffb34e}
+.footer-note{text-align:center;color:#726a64;font-size:9px;line-height:1.7;margin:17px auto 0;max-width:600px}
+.mobile-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;height:65px;background:#101010f5;border-top:1px solid #ffffff15;display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(15px);padding-bottom:env(safe-area-inset-bottom)}
 .mobile-nav a{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:54px;height:60px;color:#777}
-.mobile-nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.mobile-nav small{font-size:8px;letter-spacing:.2px}
-.mobile-nav a.current{color:var(--orange)}.mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,#ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}.mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}.mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
-@media(max-width:650px){main{width:90%;padding:30px 0 20px}.back{margin-bottom:27px}h1{font-size:58px}.layout{grid-template-columns:1fr;gap:13px;margin-top:26px}.panel{padding:20px}.info-panel{gap:17px}.intro{font-size:11px}.footer-note{font-size:8px}}
-</style>
-<style id="mobile-nav-final-unified">
+.mobile-nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mobile-nav small{font-size:8px;letter-spacing:.2px}
+.mobile-nav a.current{color:var(--orange)}
+.mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,#ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}
+.mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}
+.mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
 @media(max-width:620px){
-  .mobile-nav{
-    position:fixed!important;z-index:10!important;left:0!important;right:0!important;bottom:0!important;
-    display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
-    gap:0!important;height:calc(64px + env(safe-area-inset-bottom))!important;
-    box-sizing:border-box!important;padding:3px 1% env(safe-area-inset-bottom)!important;
-    align-items:center!important;justify-content:initial!important;background:#080808f5!important;
-    border:0!important;border-top:1px solid #292929!important;
-    backdrop-filter:blur(15px)!important;isolation:isolate!important
-  }
-  .mobile-nav:before{
-    content:""!important;position:absolute!important;z-index:0!important;
-    top:5px!important;left:1%!important;width:19.6%!important;height:39px!important;
-    border:0!important;border-radius:50%!important;outline:0!important;
-    background:radial-gradient(ellipse at center,rgba(255,112,0,.30) 0%,rgba(255,112,0,.14) 42%,rgba(255,112,0,0) 76%)!important;
-    box-shadow:none!important;filter:blur(2px)!important;
-    transform:translateX(calc(var(--active-index,0)*100%))!important;
-    transition:transform .62s cubic-bezier(.22,1.38,.42,1)!important;
-    pointer-events:none!important
-  }
-  .mobile-nav a{
-    position:relative!important;z-index:1!important;isolation:isolate!important;
-    display:flex!important;flex-direction:column!important;align-items:center!important;
-    justify-content:center!important;gap:1px!important;min-width:0!important;height:50px!important;
-    color:#858585!important;transition:color .22s ease!important
-  }
-  .mobile-nav svg{
-    width:20px!important;height:20px!important;fill:none!important;stroke:currentColor!important;
-    stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important;filter:none!important
-  }
-  .mobile-nav small{font-size:7.5px!important;letter-spacing:.2px!important;color:inherit!important;text-shadow:none!important}
-  .mobile-nav a:hover,.mobile-nav a.current{color:#ff8700!important}
-  .mobile-nav a.current:before{content:none!important;display:none!important}
-  .mobile-nav a.current svg{filter:drop-shadow(0 0 2px rgba(255,135,0,.35))!important}
+ body{padding-top:9px}
+ main{width:94%}
+ .topbar{height:53px;margin-bottom:10px}
+ .banner{border-radius:15px;margin-bottom:12px}
+ .banner img{height:150px}
+ .heading{padding:7px 3px 13px}
+ .order-panel{padding:16px 13px;border-radius:19px}
+ .packages{gap:9px}
+ .package{min-height:69px;gap:8px;border-radius:13px}
+ .package .coin{width:32px;height:32px;font-size:19px}
+ .amount-area{grid-template-columns:1fr;gap:12px}
+ .pay-button{height:63px}
+ .mobile-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;height:calc(64px + env(safe-area-inset-bottom));padding:3px 1% env(safe-area-inset-bottom);background:#080808f5;border-top:1px solid #292929}
+ .mobile-nav a{min-width:0;height:50px;gap:1px}
+ .mobile-nav svg{width:20px;height:20px;stroke-width:2}
+ .mobile-nav small{font-size:7.5px}
 }
-@media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
 <main>
-<h1>COMPRA <em>USDT.</em></h1>
-<div class="layout">
-<section class="panel">
-<h2>Calculadora USDT</h2>
-<p class="sub">Introduce un importe en dólares para ver su equivalencia.</p>
-<label class="label" for="usd">Importe en USD</label>
-<div class="amount-wrap"><span>$</span><input id="usd" type="number" inputmode="decimal" min="1" max="100000" step="0.01" value="10" aria-describedby="amount-hint"></div>
-<p class="hint" id="amount-hint">Importe de ejemplo · Puedes modificarlo</p>
-<div class="conversion"><span>Tipo de cambio</span><strong>1 USD = 1 USDT</strong></div>
-<div class="conversion"><span>Comisión mostrada</span><strong>0 USD</strong></div>
-<div class="receive"><div><span>Recibirías (estimación)</span><strong id="result">10.00 USDT</strong></div><div class="coin"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 8h30M24 8v32M14 15h20M10 17c0 4 6.3 7 14 7s14-3 14-7M10 17v5c0 4 6.3 7 14 7s14-3 14-7v-5"/></svg></div></div>
-<div class="rate"><span>◎</span> Conversión de referencia <b>1:1</b></div>
+<header class="topbar">
+<a href="index.html" aria-label="Volver al inicio"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6M9 12h12"/></svg></a>
+<div class="brand">NOVA<em>TOPUP</em></div>
+<a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 9h18m-5 5h2"/></svg></a>
+</header>
+<div class="banner"><img src="fuentes/novatopup_tienda_banner.webp" alt="Banner de NovaTopUp"></div>
+<section class="heading">
+<div class="eyebrow">Recarga tu saldo</div>
+<h1>Comprar <em>USDT.</em></h1>
+<p>Selecciona un paquete y consulta el importe que recibirías.</p>
 </section>
-<aside class="panel info-panel">
+<section class="order-panel" aria-label="Comprar USDT">
+<h2 class="section-title"><span class="symbol"><svg viewBox="0 0 36 36"><path d="M18 3 32 11v14L18 33 4 25V11L18 3Z"/><path d="m4 11 14 8 14-8M18 19v14"/></svg></span>Selecciona el paquete</h2>
+<div class="packages" role="group" aria-label="Paquetes USDT">
+<button class="package" type="button" data-amount="5"><span class="coin">₮</span>5<span class="check">✓</span></button>
+<button class="package selected" type="button" data-amount="10" aria-pressed="true"><span class="coin">₮</span>10<span class="check">✓</span></button>
+<button class="package" type="button" data-amount="25"><span class="coin">₮</span>25<span class="check">✓</span></button>
+<button class="package" type="button" data-amount="50"><span class="coin">₮</span>50<span class="check">✓</span></button>
+<button class="package" type="button" data-amount="75"><span class="coin">₮</span>75<span class="check">✓</span></button>
+<button class="package" type="button" data-amount="100"><span class="coin">₮</span>100<span class="check">✓</span></button>
+</div>
+<div class="amount-area">
 <div>
-<div class="usdt-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 8h30M24 8v32M14 15h20M10 17c0 4 6.3 7 14 7s14-3 14-7M10 17v5c0 4 6.3 7 14 7s14-3 14-7v-5"/></svg></div>
-<h2>Tu saldo, en digital.</h2>
-<p>USDT es una stablecoin diseñada para mantener una paridad aproximada con el dólar estadounidense. Su valor y disponibilidad pueden variar según la plataforma y las condiciones del mercado.</p>
+<label class="field-label" for="usd">Importe en USD</label>
+<div class="input-shell"><span class="prefix">$</span><input id="usd" type="number" inputmode="decimal" min="1" max="100000" step="0.01" value="10"></div>
+<p class="helper">Puedes elegir un paquete o escribir otro importe.</p>
 </div>
-<div class="rate-card"><small>TIPO DE CAMBIO DE ESTA DEMO</small><strong>1 USD <em>→</em> 1 USDT</strong></div>
-<div class="notice"><span>ⓘ</span><div><b>Vista previa.</b> Esta página todavía no procesa compras, pagos ni transferencias reales. El cálculo es únicamente ilustrativo.</div></div>
-<button class="coming" type="button" disabled>COMPRAS PRÓXIMAMENTE</button>
-</aside>
+<div>
+<span class="field-label">Recibirías (estimación)</span>
+<div class="receive"><div><small>Equivalencia estimada</small><strong id="result">10.00 USDT</strong></div><span class="tether">₮</span></div>
+<p class="helper">Tipo de cambio de referencia: 1 USD = 1 USDT.</p>
 </div>
+</div>
+<div class="divider"></div>
+<h2 class="pay-title"><svg viewBox="0 0 36 36"><path d="M18 3 31 9v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><circle cx="18" cy="17" r="5"/><path d="M18 22v5"/></svg>Dirección de pago</h2>
+<div class="address"><span>La dirección estará disponible cuando se habiliten los pagos.</span><button class="copy" type="button" disabled aria-label="Copiar dirección"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
+<button class="pay-button" type="button" disabled><span>▣</span>Pagar</button>
+<h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
+<input class="txid" type="text" placeholder="Escribe aquí el TXID..." disabled>
+<div class="preview-note"><span>ⓘ</span><div><b>Vista previa.</b> El diseño está preparado, pero las compras, direcciones de pago y validación de TXID todavía no están activas. No realices transferencias desde esta pantalla.</div></div>
+</section>
+<p class="footer-note">Internacional Web · NovaTopUp</p>
 </main>
 <nav class="mobile-nav" aria-label="Navegación inferior">
 <a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
@@ -114,9 +152,34 @@ h1{font:900 clamp(48px,8vw,78px)/.9 var(--display);letter-spacing:-1px;margin:18
 <a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
 <script>
-const usd=document.getElementById("usd"),result=document.getElementById("result");
-function updateEstimate(){const amount=Number(usd.value);result.textContent=Number.isFinite(amount)&&amount>=0?amount.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" USDT":"— USDT"}
-usd.addEventListener("input",updateEstimate);
+const usd=document.getElementById('usd');
+const result=document.getElementById('result');
+const packages=[...document.querySelectorAll('.package')];
+function updateEstimate(){
+ const amount=Number(usd.value);
+ result.textContent=Number.isFinite(amount)&&amount>=0
+  ?amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' USDT'
+  :'— USDT';
+}
+function selectPackage(button){
+ packages.forEach(item=>{
+  const active=item===button;
+  item.classList.toggle('selected',active);
+  item.setAttribute('aria-pressed',String(active));
+ });
+ usd.value=button.dataset.amount;
+ updateEstimate();
+}
+packages.forEach(button=>button.addEventListener('click',()=>selectPackage(button)));
+usd.addEventListener('input',()=>{
+ updateEstimate();
+ packages.forEach(button=>{
+  const active=Number(usd.value)===Number(button.dataset.amount);
+  button.classList.toggle('selected',active);
+  button.setAttribute('aria-pressed',String(active));
+ });
+});
+updateEstimate();
 </script>
 </body>
 </html>
