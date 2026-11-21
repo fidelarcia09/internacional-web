@@ -96,12 +96,19 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
     const userId = auth?.user?.id || auth?.currentSession?.user?.id;
     if (!userId) return;
     const cached = localStorage.getItem("iw-account-identity:" + userId);
-    if (!cached) return;
-    const identity = JSON.parse(cached);
-    const name = document.querySelector(".username");
-    const id = document.querySelector(".user-id");
-    if (name) name.textContent = identity.username || "Usuario";
-    if (id) id.textContent = "ID: " + (identity.user_code || "No disponible");
+    if (cached) {
+      const identity = JSON.parse(cached);
+      const name = document.querySelector(".username");
+      const id = document.querySelector(".user-id");
+      if (name) name.textContent = identity.username || "Usuario";
+      if (id) id.textContent = "ID: " + (identity.user_code || "No disponible");
+    }
+    const cachedBalance = localStorage.getItem("iw-account-balance:" + userId);
+    if (cachedBalance !== null) {
+      const balance = Number(cachedBalance);
+      const value = document.getElementById("usdt-balance-value");
+      if (value && Number.isFinite(balance)) value.textContent = balance.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:8});
+    }
   } catch (error) { console.warn("No se pudo precargar la identidad:", error); }
 })();
 </script>
@@ -137,16 +144,19 @@ async function loadAccountIdentity() {
   if (!walletError && wallet) {
     const balance = Number(wallet.balance);
     if (Number.isFinite(balance)) {
-      balanceElement.textContent = balance.toLocaleString("en-US", {
+      const formatted = balance.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 8
       });
+      balanceElement.textContent = formatted;
+      try { localStorage.setItem("iw-account-balance:" + user.id, String(balance)); } catch (cacheError) {}
     }
   } else if (walletError) {
     console.warn("No se pudo cargar el saldo USDT:", walletError);
-    balanceElement.textContent = "No disponible";
+    if (balanceElement.textContent === "—") balanceElement.textContent = "No disponible";
   } else {
     balanceElement.textContent = "0.00";
+    try { localStorage.setItem("iw-account-balance:" + user.id, "0"); } catch (cacheError) {}
   }
 
   const cacheKey = `iw-account-identity:${user.id}`;
@@ -163,9 +173,7 @@ async function loadAccountIdentity() {
     console.warn("No se pudo leer la identidad guardada:", cacheError);
   }
 
-  // Si ya existe la identidad guardada, no repetimos la consulta al servidor.
-  if (hasCachedIdentity) return;
-
+  // Actualizamos la identidad en segundo plano para corregir cualquier dato antiguo.
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("username, user_code")
