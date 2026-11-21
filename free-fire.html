@@ -127,6 +127,7 @@ function renderRegions(){
    button.addEventListener("click",()=>{
      selectedRegion=region;
      selectedProduct=null;
+     clearValidation();
      regions.querySelectorAll(".choice").forEach(el=>el.classList.toggle("selected",el===button));
      renderProducts();
    });
@@ -153,6 +154,7 @@ function renderProducts(){
    button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?product.priceUSDT.toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
    button.addEventListener("click",()=>{
      selectedProduct=product;
+     clearValidation();
      packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
      updateRequirements();
    });
