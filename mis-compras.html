@@ -24,7 +24,24 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .tab.active{color:#fff;background:linear-gradient(105deg,#9b4808,#d96a08 58%,#ff8a18);box-shadow:0 0 14px #ff79002b}
 .content-panel{min-height:320px;border:0;border-radius:0;background:transparent;box-shadow:none;display:grid;place-items:center;padding:18px 0;text-align:center}\n.history-list{width:100%;display:flex;flex-direction:column;gap:22px;text-align:left}\n.day-group{display:flex;flex-direction:column;gap:11px}\n.day-label{margin:0;color:#f5f4f1;font-size:13px;font-weight:800;letter-spacing:.2px}\n.transaction-card{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 16px;border:1px solid #ff790078;border-radius:16px;background:linear-gradient(105deg,#17110c,#0d0e11 65%);box-shadow:inset 0 0 16px #ff79000b}\n.transaction-info{min-width:0;display:flex;flex-direction:column;gap:5px}\n.transaction-name{margin:0;font-size:12px;font-weight:800;color:#f5f4f1}\n.transaction-detail{margin:0;font-size:10px;line-height:1.5;color:#92959e}\n.transaction-amount{flex-shrink:0;font-size:13px;font-weight:800;color:#ff922e;white-space:nowrap}
 
-.history-list{width:100%;display:flex;flex-direction:column;gap:18px;text-align:left}
+.history-list{width:100%;display:flex;flex-direction:column;gap:13px;text-align:left}
+.day-group{display:flex;flex-direction:column;gap:8px}
+.day-label{margin:9px 2px 2px;color:#ff922e;font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:capitalize}
+.history-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0;border:1px solid #ff79005c;border-radius:13px;background:linear-gradient(105deg,#17110c,#0d0e11 65%);overflow:hidden}
+.order-details{width:100%;min-width:0}
+.order-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;padding:11px 12px;cursor:pointer}
+.order-summary::-webkit-details-marker{display:none}
+.order-summary:after{content:"⌄";color:#ff922e;font-size:17px;transition:transform .2s}
+.order-details[open] .order-summary:after{transform:rotate(180deg)}
+.order-summary-main{min-width:0;display:flex;flex-direction:column;gap:4px}
+.order-summary-title{font-size:11px;font-weight:800;overflow-wrap:anywhere}
+.order-summary-date{font-size:9px;color:#92959e}
+.order-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;padding:10px 12px 12px;border-top:1px solid #ffffff12}
+.order-detail{min-width:0;display:flex;flex-direction:column;gap:3px}
+.order-detail label{font-size:8px;color:#858892;text-transform:uppercase;letter-spacing:.6px}
+.order-detail strong{font-size:10px;color:#f5f4f1;overflow-wrap:anywhere}
+.order-status{flex-shrink:0;align-self:center;margin-right:0}
+.history-list .history-item:not(:has(.order-details)){padding:11px 12px}
 .history-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid #ff790078;border-radius:15px;background:linear-gradient(105deg,#17110c,#0d0e11 65%)}
 .history-main{min-width:0;display:flex;flex-direction:column;gap:5px}
 .history-title{font-size:12px;font-weight:800;overflow-wrap:anywhere}
@@ -53,6 +70,11 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 @media(max-width:520px){main{width:90%;margin:20px auto 28px}.page-head{align-items:flex-start;gap:9px;margin-bottom:20px}h1{font-size:clamp(34px,9vw,44px)}.page-kicker{font-size:8px}.tabs{gap:2px;padding:3px;border-radius:11px;margin-top:15px}.tab{font-size:9px;padding:9px 9px}.content-panel{min-height:285px;padding:20px 0;border-radius:0}.transaction-card{padding:13px 12px;border-radius:14px}.history-list{gap:19px}.empty-icon{width:65px;height:65px}}
 @media(max-width:370px){.page-head{flex-wrap:wrap}.tabs{margin-top:0;margin-left:auto}.page-head{align-items:center}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+.mobile-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;padding:5px 1%;height:76px;align-items:center}
+.mobile-nav:before{content:"";position:absolute;z-index:0;top:9px;left:1%;width:19.6%;height:54px;border:1px solid #ff8700;border-radius:15px;box-shadow:0 0 13px #ff79002b,inset 0 0 12px #ff790018;transform:translateX(calc(var(--active-index,4)*100%));transition:transform .34s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.mobile-nav a{z-index:1;min-width:0;height:60px}
+@media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
 </style>
 </head>
 <body>
@@ -79,7 +101,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 </div>
 </section>
 </main>
-<nav class="mobile-nav" aria-label="Navegación inferior">
+<nav class="mobile-nav" aria-label="Navegación inferior" style="--active-index:4">
 <a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
 <a href="tienda.html" aria-label="Tienda"><svg viewBox="0 0 24 24"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5M9 13v3m6-3v3"/></svg><small>Tienda</small></a>
 <a href="revendedores.html" aria-label="Revendedores"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revendedores</small></a>
@@ -140,26 +162,30 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
   main.append(name);
   if(isOrder) {
     const parts=orderDateParts(date);
-    [
-      "Pedido: "+code,
-      "ID del jugador: "+(playerId || "No indicado"),
-      "Hora: "+parts.hour,
-      "Fecha: "+parts.date
-    ].forEach(value=>{
-      const line=document.createElement("span");
-      line.className="history-meta";
-      line.textContent=value;
-      main.append(line);
+    const details=document.createElement("details"); details.className="order-details";
+    const summary=document.createElement("summary"); summary.className="order-summary";
+    const summaryMain=document.createElement("span"); summaryMain.className="order-summary-main";
+    const summaryTitle=document.createElement("strong"); summaryTitle.className="order-summary-title"; summaryTitle.textContent=title||"Pedido de juego";
+    const summaryDate=document.createElement("span"); summaryDate.className="order-summary-date"; summaryDate.textContent=parts.date+" · "+parts.hour;
+    summaryMain.append(summaryTitle,summaryDate);
+    const right=document.createElement("span"); right.className="history-right order-status";
+    const badge=document.createElement("span"); badge.className="history-status "+String(status||"").toLowerCase(); badge.textContent=statusLabel(status);
+    right.append(badge); summary.append(summaryMain,right);
+    const grid=document.createElement("div"); grid.className="order-detail-grid";
+    const fields=[
+      ["Producto",title||"No disponible"],
+      ["ID del jugador",playerId||"No indicado"],
+      ["Precio",amount===null||amount===undefined?"No disponible":Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT"],
+      ["Pedido",code||"No disponible"],
+      ["Fecha y hora",parts.date+" · "+parts.hour]
+    ];
+    fields.forEach(([labelText,valueText])=>{
+      const field=document.createElement("div");field.className="order-detail";
+      const label=document.createElement("label");label.textContent=labelText;
+      const value=document.createElement("strong");value.textContent=valueText;
+      field.append(label,value);grid.append(field);
     });
-    if(status==="failed") {
-      const right=document.createElement("div"); right.className="history-right";
-      const badge=document.createElement("span"); badge.className="history-status failed";
-      badge.textContent="Reembolsado";
-      right.append(badge);
-      item.append(main,right);
-    } else {
-      item.append(main);
-    }
+    details.append(summary,grid); item.append(details);
     return item;
   }
   const meta=document.createElement("span"); meta.className="history-meta";
@@ -182,10 +208,24 @@ function renderOrders(rows) {
     return;
   }
   const list=document.createElement("div"); list.className="history-list";
-  rows.forEach(order=>list.append(makeHistoryItem({
-    title:order.description,code:order.order_code,playerId:order.player_id,
-    date:order.created_at,status:order.status,isOrder:true
-  })));
+  const days=new Map();
+  rows.forEach(order=>{
+    const date=new Date(order.created_at);
+    const key=Number.isNaN(date.getTime())?"sin-fecha":date.toLocaleDateString("sv-SE");
+    if(!days.has(key)) days.set(key,[]);
+    days.get(key).push(order);
+  });
+  days.forEach((orders,key)=>{
+    const group=document.createElement("section");group.className="day-group";
+    const heading=document.createElement("h3");heading.className="day-label";
+    heading.textContent=key==="sin-fecha"?"Fecha no disponible":new Date(orders[0].created_at).toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+    group.append(heading);
+    orders.forEach(order=>group.append(makeHistoryItem({
+      title:order.description,code:order.order_code,playerId:order.player_id,
+      amount:order.amount_usdt,date:order.created_at,status:order.status,isOrder:true
+    })));
+    list.append(group);
+  });
   gamesPanel.replaceChildren(list);
 }
 function renderDeposits(rows, ledgerRows) {
@@ -245,6 +285,10 @@ async function loadHistory() {
   }
 }
 loadHistory();
+</script>
+
+<script>
+(()=>{const nav=document.querySelector(".mobile-nav");if(!nav)return;const links=[...nav.querySelectorAll("a")];const file=location.pathname.split("/").pop()||"index.html";let active=links.findIndex(a=>{const target=(a.getAttribute("href")||"").split("#")[0];return target===file||(file==="mis-compras.html"&&target==="cuenta.html")});if(active<0)active=4;nav.style.setProperty("--active-index",active);links.forEach((a,i)=>{a.classList.toggle("current",i===active);if(i===active)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})})();
 </script>
 </body>
 </html>
