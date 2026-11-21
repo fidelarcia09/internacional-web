@@ -59,7 +59,7 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 <section class="section" aria-labelledby="packages-title">
 <h2 class="section-head" id="packages-title"><span class="ico">💎</span>Paquetes de Cristales génesis</h2>
 <div class="packages" id="packages"><div class="catalog-state">Conectando con el catálogo oficial…</div></div>
-<button class="cta" id="buy-button" type="button" disabled>Checkout próximamente</button>
+<button class="cta" id="buy-button" type="button" disabled>Recargar ahora</button>
 <div class="toast" id="message" role="status"></div>
 </section>
 </main>
@@ -132,7 +132,6 @@ function renderProducts(){
      selectedProduct=product;
      packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
      updateRequirements();
-     notify("Producto del catálogo oficial seleccionado. El checkout se habilitará cuando estén configurados los precios de venta.");
    });
    packages.append(button);
  });
@@ -156,7 +155,7 @@ function updateRequirements(){
 async function loadCatalog(){
  packages.innerHTML='<div class="catalog-state">Conectando con el catálogo de Next Level…</div>';
  buyButton.disabled=true;
- buyButton.textContent="Checkout próximamente";
+ buyButton.textContent="Recargar ahora";
  try{
    const response=await fetch(CATALOG_URL+"?game="+encodeURIComponent(GAME),{method:"GET",headers:{Accept:"application/json"}});
    const data=await response.json();
