@@ -33,6 +33,9 @@
 .section-search svg{position:absolute;right:13px;top:50%;width:17px;height:17px;transform:translateY(-50%);fill:none;stroke:#aeb0b8;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
 @media(max-width:700px){.section-search{width:100%;min-width:0}.section-search input{height:37px}.section-title{align-items:flex-start}.section-title h2{width:100%}.section-name{gap:9px}.section-count{font-size:14px}}
 
+
+@media(max-width:620px){.mobile-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;padding:5px 1%;align-items:center}.mobile-nav:before{content:"";position:absolute;z-index:0;top:9px;left:1%;width:19.6%;height:54px;border:1px solid #ff8700;border-radius:15px;box-shadow:0 0 13px #ff79002b,inset 0 0 12px #ff790018;transform:translateX(calc(var(--active-index,1)*100%));transition:transform .34s cubic-bezier(.2,.8,.2,1);pointer-events:none}.mobile-nav a{z-index:1;min-width:0}}
+@media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
 </style>
 </head>
 <body>
@@ -64,7 +67,7 @@
 <a class="product cod" href="call-of-duty-mobile.html" aria-label="Abrir recargas de Call of Duty Mobile"><div class="visual"><div class="brand-mark">CALL OF DUTY<br>MOBILE</div></div><div class="product-info"><strong>Call of Duty Mobile</strong><span class="arrow">→</span></div></a>
 </div></section>
 </main>
-<nav class="mobile-nav" aria-label="Navegación inferior">
+<nav class="mobile-nav" aria-label="Navegación inferior" style="--active-index:1">
 <a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
 <a class="current" href="tienda.html" aria-current="page" aria-label="Tienda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5M9 13v3m6-3v3"/></svg><small>Tienda</small></a>
 <a href="revendedores.html" aria-label="Revendedores"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revendedores</small></a>
@@ -132,5 +135,9 @@ document.querySelectorAll('a.product[href$=".html"]').forEach(link=>{
     window.location.href=link.href;
   });
 });
+</script>
+
+<script>
+(()=>{const nav=document.querySelector(".mobile-nav");if(!nav)return;const links=[...nav.querySelectorAll("a")];const file=location.pathname.split("/").pop()||"index.html";let active=links.findIndex(a=>{const target=(a.getAttribute("href")||"").split("#")[0];return target===file});if(active<0)active=1;nav.style.setProperty("--active-index",active);links.forEach((a,i)=>{a.classList.toggle("current",i===active);if(i===active)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})})();
 </script>
 </body></html>
