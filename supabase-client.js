@@ -11,3 +11,22 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     detectSessionInUrl: true
   }
 });
+
+
+// Si la cuenta tiene un factor TOTP verificado, no permitir que una sesión AAL1
+// permanezca en páginas privadas: debe completar primero el segundo paso.
+const currentPage = window.location.pathname.split("/").pop() || "";
+const mfaExemptPages = new Set(["login.html", "verificar-2fa.html", "registro.html"]);
+if (!mfaExemptPages.has(currentPage)) {
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (!session || !["INITIAL_SESSION", "SIGNED_IN", "TOKEN_REFRESHED", "USER_UPDATED"].includes(event)) return;
+    window.setTimeout(async () => {
+      const { data: current } = await supabase.auth.getSession();
+      if (!current?.session) return;
+      const { data: assurance, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      if (!error && assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
+        window.location.replace(SITE_URL + "verificar-2fa.html");
+      }
+    }, 0);
+  });
+}
