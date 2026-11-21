@@ -104,7 +104,7 @@ depositsTab.addEventListener('click',()=>selectTab(false));
 
 </script>
 <script type="module">
-import { supabase } from "./supabase-client.js";
+import { supabase, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-client.js";
 
 const gamesPanel = document.getElementById("games-panel");
 const depositsPanel = document.getElementById("deposits-panel");
@@ -125,13 +125,56 @@ function makeEmpty(title, description) {
   box.append(h,p);
   return box;
 }
-function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDeposit=false}) {
+async function consultProviderOrder(orderId, statusNode, button) {
+  const {data:{session},error:sessionError}=await supabase.auth.getSession();
+  if(sessionError || !session?.access_token) {
+    statusNode.textContent="Inicia sesión para consultar el pedido.";
+    return;
+  }
+  button.disabled=true;
+  button.textContent="Consultando…";
+  statusNode.textContent="Consultando estado en Next Level…";
+  try {
+    const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-consultar-pedido?orderId="+encodeURIComponent(orderId),{
+      method:"GET",
+      headers:{
+        apikey:SUPABASE_PUBLISHABLE_KEY,
+        Authorization:"Bearer "+session.access_token,
+        Accept:"application/json"
+      }
+    });
+    const result=await response.json().catch(()=>null);
+    if(!response.ok || !result?.ok) throw new Error(result?.error || "No se pudo consultar el pedido.");
+    const providerStatus=result.provider?.status;
+    statusNode.textContent=providerStatus
+      ? "Estado Next Level: "+providerStatus
+      : "Pedido registrado; aún no hay pedido asociado en Next Level.";
+    if(result.provider?.reviewRequired) statusNode.textContent+=" · Revisión requerida";
+  } catch(error) {
+    statusNode.textContent="No se pudo consultar ahora. Inténtalo de nuevo.";
+  } finally {
+    button.disabled=false;
+    button.textContent="Consultar estado";
+  }
+}
+function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDeposit=false,orderId=null}) {
   const item=document.createElement("article"); item.className="history-item";
   const main=document.createElement("div"); main.className="history-main";
   const name=document.createElement("strong"); name.className="history-title"; name.textContent=title;
   const meta=document.createElement("span"); meta.className="history-meta";
   meta.textContent=[code,transaction ? "Movimiento "+transaction : "",dateLabel(date),kind || ""].filter(Boolean).join(" · ");
   main.append(name,meta);
+  if(orderId) {
+    const providerStatus=document.createElement("span");
+    providerStatus.className="history-meta";
+    providerStatus.textContent="Estado Next Level: sin consultar";
+    const consult=document.createElement("button");
+    consult.type="button";
+    consult.textContent="Consultar estado";
+    consult.style.cssText="align-self:flex-start;margin-top:5px;padding:7px 10px;border:1px solid #ff790078;border-radius:9px;background:#17110c;color:#ffad55;font:700 10px Inter,sans-serif;cursor:pointer";
+    consult.addEventListener("click",()=>consultProviderOrder(orderId,providerStatus,consult));
+    main.append(providerStatus,consult);
+  }
   const right=document.createElement("div"); right.className="history-right";
   const value=document.createElement("div"); value.className="history-amount";
   const sign=isDeposit?(status==="confirmed"?"+":""):(status==="failed"?"+":"−");
@@ -163,7 +206,7 @@ async function loadHistory() {
     const list=document.createElement("div"); list.className="history-list";
     ordersResult.data.forEach(order=>list.append(makeHistoryItem({
       title:order.description,code:"Pedido "+order.order_code,transaction:ledgerByOrder.get(order.id),
-      amount:order.amount_usdt,status:order.status,date:order.created_at,kind:"Compra"
+      amount:order.amount_usdt,status:order.status,date:order.created_at,kind:"Compra",orderId:order.id
     })));
     gamesPanel.replaceChildren(list);
   }
