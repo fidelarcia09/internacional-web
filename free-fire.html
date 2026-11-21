@@ -222,6 +222,11 @@ async function verifyNicknameAutomatically(){
  if(!/^\d{5,20}$/.test(playerId)||!selectedRegion) return;
  const validationProduct=selectedProduct||products.find(p=>p.region===selectedRegion&&p.requiresPlayerId&&p.supportsPlayerValidation);
  if(!validationProduct) return;
+ const zoneId=document.getElementById("provider-zone-id")?.value.trim()||"";
+ if(validationProduct.requiresZoneId&&!zoneId){
+   showValidation("Ingresa también tu Zone ID para verificar esta cuenta.","error");
+   return;
+ }
  try{
    const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
    if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
@@ -236,13 +241,15 @@ async function verifyNicknameAutomatically(){
        "Content-Type":"application/json",
        Accept:"application/json"
      },
-     body:JSON.stringify({productId:validationProduct.productId,playerId})
+     body:JSON.stringify({game:GAME,productId:validationProduct.productId,playerId,zoneId:zoneId||undefined})
    });
    const data=await response.json().catch(()=>({}));
    if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
    if(!response.ok||!data.ok){
      const errors={
        INVALID_PLAYER_ID:"El Player ID debe contener entre 5 y 20 números.",
+       ZONE_ID_REQUIRED:"Este producto requiere un Zone ID.",
+       INVALID_ZONE_ID:"El Zone ID no tiene un formato válido.",
        PLAYER_VALIDATION_NOT_SUPPORTED:"Este producto no permite verificar el nickname.",
        PLAYER_NOT_FOUND:"No encontramos una cuenta con ese Player ID. Revísalo e inténtalo otra vez.",
        NICKNAME_NOT_RETURNED:"No se pudo obtener el nickname de esta cuenta.",
@@ -269,6 +276,9 @@ function scheduleNicknameValidation(){
 playerInput?.addEventListener("input",()=>{
  message.classList.remove("show");
  scheduleNicknameValidation();
+});
+document.addEventListener("input",(event)=>{
+ if(event.target?.id==="provider-zone-id") scheduleNicknameValidation();
 });
 
 helpButton?.addEventListener("click",()=>{
