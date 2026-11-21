@@ -133,38 +133,6 @@ function makeEmpty(title, description) {
   box.append(h,p);
   return box;
 }
-async function consultProviderOrder(orderId, statusNode, button) {
-  const {data:{session},error:sessionError}=await supabase.auth.getSession();
-  if(sessionError || !session?.access_token) {
-    statusNode.textContent="Inicia sesión para consultar el pedido.";
-    return;
-  }
-  button.disabled=true;
-  button.textContent="Consultando…";
-  statusNode.textContent="Consultando estado en Next Level…";
-  try {
-    const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-consultar-pedido?orderId="+encodeURIComponent(orderId),{
-      method:"GET",
-      headers:{
-        apikey:SUPABASE_PUBLISHABLE_KEY,
-        Authorization:"Bearer "+session.access_token,
-        Accept:"application/json"
-      }
-    });
-    const result=await response.json().catch(()=>null);
-    if(!response.ok || !result?.ok) throw new Error(result?.error || "No se pudo consultar el pedido.");
-    const providerStatus=result.provider?.status;
-    statusNode.textContent=providerStatus
-      ? "Estado Next Level: "+providerStatus
-      : "Pedido registrado; aún no hay pedido asociado en Next Level.";
-    if(result.provider?.reviewRequired) statusNode.textContent+=" · Revisión requerida";
-  } catch(error) {
-    statusNode.textContent="No se pudo consultar ahora. Inténtalo de nuevo.";
-  } finally {
-    button.disabled=false;
-    button.textContent="Consultar estado";
-  }
-}
 function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDeposit=false,isOrder=false,playerId=null}) {
   const item=document.createElement("article"); item.className="history-item";
   const main=document.createElement("div"); main.className="history-main";
