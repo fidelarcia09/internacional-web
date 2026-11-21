@@ -353,7 +353,7 @@ function renderNotifications(rows) {
 async function loadNotifications(userId) {
   const { data, error } = await supabase
     .from("user_notifications")
-    .select("id,event_type,title,message,created_at")
+    .select("id,event_type,title,message,created_at,read_at")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(100);
@@ -367,6 +367,18 @@ async function loadNotifications(userId) {
     return;
   }
   renderNotifications(data || []);
+
+  // Al entrar en Notificaciones, marcar como leídas todas las pendientes
+  // del usuario autenticado. La política RLS limita la actualización a sus filas.
+  const { error: readError } = await supabase
+    .from("user_notifications")
+    .update({ read_at: new Date().toISOString() })
+    .eq("user_id", userId)
+    .is("read_at", null);
+
+  if (readError) {
+    console.warn("No se pudieron marcar las notificaciones como leídas:", readError);
+  }
 }
 
 async function init() {
