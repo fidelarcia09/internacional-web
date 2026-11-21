@@ -239,6 +239,7 @@ async function loadCatalog(){
  }
 }
 let purchaseInProgress=false;
+let pendingClientReference="";
 buyButton.addEventListener("click",async()=>{
  if(purchaseInProgress) return;
  if(!selectedProduct){notify("Selecciona primero un producto.");return;}
@@ -259,7 +260,8 @@ buyButton.addEventListener("click",async()=>{
    if(sessionError) throw new Error("No se pudo comprobar tu sesión.");
    const accessToken=sessionData?.session?.access_token;
    if(!accessToken) throw new Error("Inicia sesión para realizar una compra.");
-   const clientReference="IW-"+crypto.randomUUID().replace(/-/g,"");
+   if(!pendingClientReference) pendingClientReference="IW-"+crypto.randomUUID().replace(/-/g,"");
+   const clientReference=pendingClientReference;
    const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-crear-pedido",{
      method:"POST",
      headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+accessToken,"Content-Type":"application/json",Accept:"application/json"},
@@ -267,8 +269,10 @@ buyButton.addEventListener("click",async()=>{
    });
    const data=await response.json().catch(()=>({}));
    if(response.status===402&&data.error==="insufficient_usdt_balance"){
+     pendingClientReference="";
      notify("Saldo USDT insuficiente. No se realizó el pedido.");
    }else if(data.refunded===true){
+     pendingClientReference="";
      notify("Next Level rechazó el pedido ("+(data.error||"rechazado")+"). El saldo fue reembolsado.");
    }else if(response.status===202||data.error==="provider_submission_pending_confirmation"){
      notify("Pedido pendiente de confirmación. No repitas la compra; consulta soporte. Código: "+(data.order?.code||"pendiente"));
@@ -276,6 +280,7 @@ buyButton.addEventListener("click",async()=>{
      throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":(data.error||"No se pudo crear el pedido."));
    }else{
      const status=data.order?.status||"pending";
+     pendingClientReference="";
      notify("Pedido "+(status==="completed"?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
    }
  }catch(error){
