@@ -117,6 +117,14 @@ function dateLabel(value) {
   return Number.isNaN(date.getTime()) ? "Fecha no disponible" :
     date.toLocaleString("es", {day:"2-digit",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
 }
+function orderDateParts(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return {hour:"No disponible",date:"No disponible"};
+  return {
+    hour:date.toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"}),
+    date:date.toLocaleDateString("es",{day:"2-digit",month:"long",year:"numeric"})
+  };
+}
 function makeEmpty(title, description) {
   const box=document.createElement("div");
   box.className="empty-state";
@@ -157,24 +165,30 @@ async function consultProviderOrder(orderId, statusNode, button) {
     button.textContent="Consultar estado";
   }
 }
-function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDeposit=false,orderId=null}) {
+function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDeposit=false,isOrder=false,playerId=null}) {
   const item=document.createElement("article"); item.className="history-item";
   const main=document.createElement("div"); main.className="history-main";
   const name=document.createElement("strong"); name.className="history-title"; name.textContent=title;
+  main.append(name);
+  if(isOrder) {
+    const parts=orderDateParts(date);
+    [
+      "Pedido: "+code,
+      "ID del jugador: "+(playerId || "No indicado"),
+      "Hora: "+parts.hour,
+      "Fecha: "+parts.date
+    ].forEach(value=>{
+      const line=document.createElement("span");
+      line.className="history-meta";
+      line.textContent=value;
+      main.append(line);
+    });
+    item.append(main);
+    return item;
+  }
   const meta=document.createElement("span"); meta.className="history-meta";
   meta.textContent=[code,transaction ? "Movimiento "+transaction : "",dateLabel(date),kind || ""].filter(Boolean).join(" · ");
-  main.append(name,meta);
-  if(orderId) {
-    const providerStatus=document.createElement("span");
-    providerStatus.className="history-meta";
-    providerStatus.textContent="Estado Next Level: sin consultar";
-    const consult=document.createElement("button");
-    consult.type="button";
-    consult.textContent="Consultar estado";
-    consult.style.cssText="align-self:flex-start;margin-top:5px;padding:7px 10px;border:1px solid #ff790078;border-radius:9px;background:#17110c;color:#ffad55;font:700 10px Inter,sans-serif;cursor:pointer";
-    consult.addEventListener("click",()=>consultProviderOrder(orderId,providerStatus,consult));
-    main.append(providerStatus,consult);
-  }
+  main.append(meta);
   const right=document.createElement("div"); right.className="history-right";
   const value=document.createElement("div"); value.className="history-amount";
   const sign=isDeposit?(status==="confirmed"?"+":""):(status==="failed"?"+":"−");
@@ -194,7 +208,7 @@ async function loadHistory() {
   showLoading(depositsPanel,"Estamos buscando tus depósitos.");
 
   const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
-    supabase.from("usdt_orders").select("id,order_code,description,amount_usdt,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
+    supabase.from("usdt_orders").select("id,order_code,description,player_id,amount_usdt,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
     supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).eq("status","confirmed").order("created_at",{ascending:false}),
     supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
   ]);
@@ -202,12 +216,11 @@ async function loadHistory() {
   if(ordersResult.error) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
   else if(!(ordersResult.data||[]).length) gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras."));
   else {
-    const ledgerByOrder=new Map((ledgerResult.data||[]).filter(x=>x.order_id).map(x=>[x.order_id,x.transaction_code]));
     const list=document.createElement("div"); list.className="history-list";
     ordersResult.data.forEach(order=>{
       list.append(makeHistoryItem({
-        title:order.description,code:"Pedido "+order.order_code,transaction:ledgerByOrder.get(order.id),
-        amount:order.amount_usdt,status:order.status,date:order.created_at,kind:"Compra",orderId:order.id
+        title:order.description,code:order.order_code,playerId:order.player_id,
+        date:order.created_at,isOrder:true
       }));
     });
     gamesPanel.replaceChildren(list);
