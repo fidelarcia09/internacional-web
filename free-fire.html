@@ -243,7 +243,7 @@ buyButton.addEventListener("click",async()=>{
  purchaseInProgress=true;
  buyButton.disabled=true;
  buyButton.textContent="Enviando pedido…";
- notify("Comprobando sesión y saldo. No cierres esta página.");
+ notify("Enviando el pedido de forma segura. No cierres esta página.");
  try{
    const accessToken=activeSession?.access_token;
    if(!accessToken) throw new Error("Tu sesión ya no está activa. Vuelve a iniciar sesión.");
