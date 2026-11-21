@@ -55,6 +55,8 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;letter-sp
 .mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
 @media(max-width:620px){main{margin:22px auto 28px;width:90%}h1{margin-bottom:22px}.security-options{gap:10px}.security-option{min-height:82px;padding:12px 13px;grid-template-columns:48px minmax(0,1fr) 18px;gap:12px;border-radius:15px}.security-icon{width:44px;height:44px;border-radius:12px}.security-copy strong{font-size:13px}.security-copy small{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+.mfa-status{font-size:13px;font-weight:800;color:#ffad32;margin:0 0 10px}.mfa-qr{display:block;width:min(220px,100%);height:auto;margin:12px auto;padding:10px;background:#fff;border-radius:12px}.mfa-secret-label{margin:10px 0 6px;color:#d7d7dc;font-size:10px;font-weight:800}.mfa-secret{display:block;overflow-wrap:anywhere;padding:11px;border:1px solid #ffffff20;border-radius:10px;background:#08090c;color:#ffcf91;font-size:11px;user-select:all}.mfa-code-field{margin:10px 0 12px}.mfa-code-field input{text-align:center;letter-spacing:6px;font-size:18px;font-weight:800}.mfa-message{margin-top:12px}
 </style>
 <style id="mobile-nav-final-unified">
 @media(max-width:620px){
@@ -102,11 +104,29 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;letter-sp
 <div class="password-message" id="passwordMessage" role="status" aria-live="polite"></div>
 </form>
 </section>
-<div class="security-option">
+<button class="security-option" id="toggleMfaPanel" type="button" aria-expanded="false" aria-controls="mfaPanel">
 <span class="security-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3 26 7v7.5c0 6.1-4.2 10.6-10 14-5.8-3.4-10-7.9-10-14V7l10-4Z"/><path class="accent" d="m11 16 3.2 3.2L21.5 12"/><path d="M16 8v2"/></svg></span>
-<span class="security-copy"><strong>Verificación 2F</strong><small>Añade una capa extra de protección</small></span>
+<span class="security-copy"><strong>Verificación en dos pasos</strong><small id="mfaSummary">Protege tu cuenta con una app de códigos</small></span>
 <span class="security-arrow" aria-hidden="true">›</span>
-</div>
+</button>
+<section class="password-panel" id="mfaPanel" aria-label="Configuración de verificación en dos pasos">
+  <div class="mfa-status" id="mfaStatus">Comprobando estado...</div>
+  <p class="password-help">Método: <strong>App de códigos</strong>. Compatible con Google Authenticator y otras apps TOTP.</p>
+  <div id="mfaSetup" hidden>
+    <p class="password-help">1. Abre Google Authenticator y escanea este código QR. También puedes introducir la clave manualmente.</p>
+    <img id="mfaQr" alt="Código QR para vincular la app de códigos" class="mfa-qr">
+    <p class="mfa-secret-label">Clave de configuración</p>
+    <code id="mfaSecret" class="mfa-secret"></code>
+    <p class="password-help">2. Escribe el código de 6 dígitos que aparece en tu aplicación para confirmar la vinculación.</p>
+    <label class="password-field mfa-code-field">
+      <input id="mfaEnrollCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="Código de 6 dígitos" aria-label="Código de 6 dígitos">
+    </label>
+    <button class="password-submit" id="confirmMfa" type="button">CONFIRMAR Y ACTIVAR</button>
+  </div>
+  <button class="password-submit" id="startMfa" type="button">ACTIVAR APP DE CÓDIGOS</button>
+  <button class="password-submit" id="disableMfa" type="button" hidden>DESACTIVAR VERIFICACIÓN</button>
+  <div class="password-message" id="mfaMessage" role="status" aria-live="polite"></div>
+</section>
 <div class="security-option">
 <span class="security-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="4" width="14" height="23" rx="2.5"/><path d="M10 8h4m-3 15h2"/><path class="accent" d="M20 12h7m-3-3 3 3-3 3M19 21h8"/></svg></span>
 <span class="security-copy"><strong>Cerrar sesión en todos los dispositivos</strong><small>Finaliza las sesiones abiertas de tu cuenta</small></span>
@@ -205,6 +225,116 @@ changeForm.addEventListener("submit", async event => {
   changeForm.reset();
   showPasswordMessage("¡Contraseña actualizada correctamente!");
 });
+
+
+// Verificación en dos pasos mediante TOTP (Google Authenticator y apps compatibles).
+const mfaToggle = document.getElementById("toggleMfaPanel");
+const mfaPanel = document.getElementById("mfaPanel");
+const mfaStatus = document.getElementById("mfaStatus");
+const mfaSummary = document.getElementById("mfaSummary");
+const mfaSetup = document.getElementById("mfaSetup");
+const mfaQr = document.getElementById("mfaQr");
+const mfaSecret = document.getElementById("mfaSecret");
+const mfaMessage = document.getElementById("mfaMessage");
+const startMfa = document.getElementById("startMfa");
+const confirmMfa = document.getElementById("confirmMfa");
+const disableMfa = document.getElementById("disableMfa");
+let pendingFactorId = null;
+let pendingChallengeId = null;
+let verifiedFactorId = null;
+
+function showMfaMessage(message, isError = false) {
+  mfaMessage.textContent = message;
+  mfaMessage.classList.toggle("error", isError);
+  mfaMessage.classList.add("show");
+}
+function setMfaBusy(button, busy, text) {
+  button.disabled = busy;
+  if (busy) button.dataset.originalText = button.textContent;
+  button.textContent = busy ? text : (button.dataset.originalText || text);
+}
+async function loadMfaState() {
+  mfaStatus.textContent = "Comprobando estado...";
+  const { data, error } = await supabase.auth.mfa.listFactors();
+  if (error) {
+    mfaStatus.textContent = "No se pudo consultar el estado";
+    showMfaMessage("No pudimos consultar la configuración de seguridad. Actualiza la página e inténtalo de nuevo.", true);
+    return;
+  }
+  const totp = data?.totp || [];
+  const verified = totp.find(factor => factor.status === "verified");
+  verifiedFactorId = verified?.id || null;
+  if (verifiedFactorId) {
+    mfaStatus.textContent = "Estado: Activada";
+    mfaSummary.textContent = "Protección adicional activada";
+    startMfa.hidden = true;
+    disableMfa.hidden = false;
+    mfaSetup.hidden = true;
+  } else {
+    mfaStatus.textContent = "Estado: Desactivada";
+    mfaSummary.textContent = "Protege tu cuenta con una app de códigos";
+    startMfa.hidden = false;
+    disableMfa.hidden = true;
+  }
+}
+
+mfaToggle.addEventListener("click", async () => {
+  const open = mfaPanel.classList.toggle("open");
+  mfaToggle.setAttribute("aria-expanded", String(open));
+  mfaToggle.querySelector(".security-arrow").textContent = open ? "⌄" : "›";
+  if (open) await loadMfaState();
+});
+
+startMfa.addEventListener("click", async () => {
+  setMfaBusy(startMfa, true, "PREPARANDO...");
+  mfaMessage.classList.remove("show", "error");
+  try {
+    const { data: factors, error: listError } = await supabase.auth.mfa.listFactors();
+    if (listError) throw listError;
+    const unverified = (factors?.totp || []).filter(factor => factor.status !== "verified");
+    for (const factor of unverified) await supabase.auth.mfa.unenroll({ factorId: factor.id });
+    const { data, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: "App de códigos" });
+    if (error) throw error;
+    pendingFactorId = data.id;
+    mfaQr.src = data.totp.qr_code;
+    mfaSecret.textContent = data.totp.secret;
+    const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ factorId: pendingFactorId });
+    if (challengeError) throw challengeError;
+    pendingChallengeId = challenge.id;
+    mfaSetup.hidden = false;
+    startMfa.hidden = true;
+    showMfaMessage("Escanea el QR y confirma el código generado por tu aplicación.");
+  } catch (error) {
+    showMfaMessage(error?.message || "No se pudo iniciar la configuración. Inténtalo de nuevo.", true);
+    setMfaBusy(startMfa, false, "ACTIVAR APP DE CÓDIGOS");
+  }
+});
+
+confirmMfa.addEventListener("click", async () => {
+  const code = document.getElementById("mfaEnrollCode").value.trim();
+  if (!/^\\d{6}$/.test(code)) { showMfaMessage("Introduce el código de 6 dígitos de tu app.", true); return; }
+  setMfaBusy(confirmMfa, true, "VERIFICANDO...");
+  const { error } = await supabase.auth.mfa.verify({ factorId: pendingFactorId, challengeId: pendingChallengeId, code });
+  setMfaBusy(confirmMfa, false, "CONFIRMAR Y ACTIVAR");
+  if (error) { showMfaMessage("El código no es válido o ha caducado. Comprueba la app e inténtalo otra vez.", true); return; }
+  document.getElementById("mfaEnrollCode").value = "";
+  mfaSetup.hidden = true;
+  pendingFactorId = null;
+  pendingChallengeId = null;
+  showMfaMessage("¡App de códigos activada correctamente! Tu cuenta ya tiene verificación en dos pasos.");
+  await loadMfaState();
+});
+
+disableMfa.addEventListener("click", async () => {
+  if (!verifiedFactorId) return;
+  setMfaBusy(disableMfa, true, "DESACTIVANDO...");
+  const { error } = await supabase.auth.mfa.unenroll({ factorId: verifiedFactorId });
+  setMfaBusy(disableMfa, false, "DESACTIVAR VERIFICACIÓN");
+  if (error) { showMfaMessage("No se pudo desactivar. Verifica tu sesión e inténtalo de nuevo.", true); return; }
+  showMfaMessage("La verificación en dos pasos se ha desactivado.");
+  await loadMfaState();
+});
+
 </script>
 </body>
 </html>
