@@ -110,6 +110,12 @@ function renderRegions(){
    regions.append(button);
  });
 }
+function productAmount(product){
+ const direct=[product.amount,product.quantity,product.denomination,product.value].find(value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value))&&Number(value)>0);
+ if(direct!==undefined) return Number(direct);
+ const match=String(product.name||"").replace(/,/g,"").match(/\d+(?:\.\d+)?/);
+ return match?Number(match[0]):0;
+}
 function renderProducts(){
  packages.innerHTML="";
  const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion);
@@ -121,12 +127,12 @@ function renderProducts(){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles para esta región.</div>';
    return;
  }
- visible.forEach(product=>{
+ [...visible].sort((a,b)=>productAmount(b)-productAmount(a)||Number(b.priceUSDT||0)-Number(a.priceUSDT||0)).forEach(product=>{
    const button=document.createElement("button");
    button.type="button";
    button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");
    button.dataset.productId=product.productId;
-   const icon=product.type==="GIFT_CARD"?"🎁":"✦";
+   const icon=product.type==="GIFT_CARD"?"🎁":"🪙";
    button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?product.priceUSDT.toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
    button.addEventListener("click",()=>{
      selectedProduct=product;
