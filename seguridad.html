@@ -312,7 +312,7 @@ startMfa.addEventListener("click", async () => {
 
 confirmMfa.addEventListener("click", async () => {
   const code = document.getElementById("mfaEnrollCode").value.trim();
-  if (!/^\\d{6}$/.test(code)) { showMfaMessage("Introduce el código de 6 dígitos de tu app.", true); return; }
+  if (!/^\d{6}$/.test(code)) { showMfaMessage("Introduce el código de 6 dígitos de tu app.", true); return; }
   setMfaBusy(confirmMfa, true, "VERIFICANDO...");
   const { error } = await supabase.auth.mfa.verify({ factorId: pendingFactorId, challengeId: pendingChallengeId, code });
   setMfaBusy(confirmMfa, false, "CONFIRMAR Y ACTIVAR");
