@@ -282,7 +282,7 @@ buyButton.addEventListener("click",async()=>{
  if(selectedProduct.requiresZoneId&&!zoneId){notify("Ingresa tu Zone ID antes de continuar.");document.getElementById("provider-zone-id")?.focus();return;}
  const price=Number(selectedProduct.priceUSDT);
  if(!Number.isFinite(price)||price<=0){notify("No se pudo comprobar el precio. Actualiza el catálogo.");return;}
- const accepted=window.confirm("Vas a realizar una compra REAL de "+selectedProduct.name+" por "+price.toFixed(2)+" USDT.\n\nSe descontará de tu saldo interno si el proveedor acepta el pedido. Si Next Level lo rechaza, el sistema intentará reembolsarlo automáticamente. ¿Confirmas que deseas continuar?");
+ const accepted=window.confirm("¿Confirmas "+selectedProduct.name+" por "+price.toFixed(2)+" USDT? Se descontará de tu saldo.");
  if(!accepted) return;
  purchaseInProgress=true;
  buyButton.disabled=true;
