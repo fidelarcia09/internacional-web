@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090a0d">
+<title>Verificación en dos pasos — INTERNACIONAL WEB</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090a0d;--orange:#ff7928;--gold:#ffad32;--white:#f5f5f5}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(ellipse at 50% 15%,#ff79201c,transparent 45%),var(--bg);color:var(--white);font-family:Inter,sans-serif}
+.card{width:min(100%,430px);padding:30px 24px;border:1px solid #ff792899;border-radius:23px;background:linear-gradient(145deg,#15110e,#090a0d);box-shadow:0 0 35px #ff79282b;text-align:center}
+.icon{width:58px;height:58px;margin:0 auto 16px;display:grid;place-items:center;border:1px solid #ff9a2b88;border-radius:17px;color:var(--gold);font-size:27px}
+h1{margin:0;font:900 39px/.98 "Barlow Condensed",sans-serif}p{color:#b9bac1;font-size:13px;line-height:1.6;margin:13px 0 22px}
+input{width:100%;height:58px;border:1px solid #ff792899;border-radius:14px;background:#08090c;color:#fff;text-align:center;letter-spacing:9px;font-size:24px;font-weight:800;outline:none}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 2px #ffad3228}
+button{width:100%;height:53px;margin-top:15px;border:1px solid #ffc05c;border-radius:14px;background:linear-gradient(100deg,#ffb52e,#ff8121 55%,#ff9d25);color:#17100a;font-weight:900;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}.message{display:none;margin-top:15px;padding:11px;border-radius:11px;background:#ff8b2c12;border:1px solid #ff9a2b70;color:#ffd29d;font-size:12px;line-height:1.5}.message.show{display:block}.message.error{border-color:#ff5d5d88;color:#ffb5b5;background:#ff5d5d12}
+.secondary{display:block;margin-top:18px;color:#ffad32;text-decoration:none;font-size:12px;font-weight:700}
+</style>
+</head>
+<body><main class="card">
+<div class="icon" aria-hidden="true">⌑</div>
+<h1>VERIFICACIÓN EN DOS PASOS</h1>
+<p>Abre tu App de códigos e introduce el código temporal de 6 dígitos para continuar.</p>
+<form id="verifyForm">
+<input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="••••••" aria-label="Código de 6 dígitos" required>
+<button id="verifyButton" type="submit">VERIFICAR Y CONTINUAR</button>
+</form>
+<div class="message" id="message" role="status" aria-live="polite"></div>
+<a class="secondary" href="login.html" id="back">Volver al inicio de sesión</a>
+</main>
+<script type="module">
+import { supabase, SITE_URL } from "./supabase-client.js";
+const form=document.getElementById("verifyForm"), codeInput=document.getElementById("code"), button=document.getElementById("verifyButton"), message=document.getElementById("message"), back=document.getElementById("back");
+let factorId=null,challengeId=null;
+function show(text,error=false){message.textContent=text;message.classList.toggle("error",error);message.classList.add("show")}
+async function prepare(){
+ const {data:sessionData}=await supabase.auth.getSession();
+ if(!sessionData?.session){show("Tu sesión no está disponible. Inicia sesión nuevamente.",true);return}
+ const {data,error}=await supabase.auth.mfa.listFactors();
+ if(error){show("No se pudo consultar tu método de verificación. Vuelve a iniciar sesión.",true);return}
+ const factor=(data?.totp||[]).find(item=>item.status==="verified");
+ if(!factor){window.location.replace(SITE_URL+"index.html");return}
+ factorId=factor.id;
+ const {data:challenge,error:challengeError}=await supabase.auth.mfa.challenge({factorId});
+ if(challengeError){show("No se pudo preparar el código. Actualiza la página e inténtalo de nuevo.",true);return}
+ challengeId=challenge.id;
+ codeInput.focus();
+}
+form.addEventListener("submit",async event=>{
+ event.preventDefault();const code=codeInput.value.trim();
+ if(!/^\d{6}$/.test(code)){show("Introduce los 6 dígitos de tu aplicación.",true);return}
+ if(!factorId||!challengeId){show("La verificación no está preparada. Actualiza la página.",true);return}
+ button.disabled=true;button.textContent="VERIFICANDO...";
+ const {error}=await supabase.auth.mfa.verify({factorId,challengeId,code});
+ button.disabled=false;button.textContent="VERIFICAR Y CONTINUAR";
+ if(error){show("Código incorrecto o caducado. Comprueba tu app e inténtalo otra vez.",true);codeInput.value="";codeInput.focus();return}
+ show("Verificación correcta. Entrando...");
+ window.location.replace(SITE_URL+"index.html");
+});
+const {data:sessionData}=await supabase.auth.getSession();
+if(sessionData?.session){back.href="login.html";prepare()}else{show("Inicia sesión primero para poder verificar tu identidad.",true)}
+</script>
+</body></html>
