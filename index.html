@@ -501,7 +501,7 @@
 
 <style id="home-games-marquee">
 .games-showcase{display:flex;flex-direction:column;gap:16px;overflow:hidden;width:100%;padding:2px 0 8px;contain:layout paint}
-.games-marquee{width:100%;overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent 0%,#000 3%,#000 97%,transparent 100%)}
+.games-marquee{width:100%;overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent 0%,#000 1.5%,#000 98.5%,transparent 100%)}
 .games-track{display:flex;flex-wrap:nowrap;gap:0;width:max-content;will-change:transform;animation-timing-function:linear;animation-iteration-count:infinite;animation-duration:58s}.games-set{display:flex;flex:0 0 auto;flex-wrap:nowrap;gap:15px;padding-right:15px}
 .games-track-left{animation-name:home-games-left}
 .games-track-right{animation-name:home-games-right;animation-duration:64s}
@@ -512,7 +512,7 @@
 @keyframes home-games-left{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 @keyframes home-games-right{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
 .games-showcase:hover .games-track{animation-play-state:paused}
-@media(max-width:620px){.games-showcase{gap:11px;padding:1px 0 5px}.games-track{animation-duration:66s}.games-set{gap:10px;padding-right:10px}.games-track-right{animation-duration:72s}.games-track .game{flex-basis:218px;width:218px}.games-track .art{height:124px}.games-track .game-info{min-height:61px;padding:11px 10px}.games-track .game-info h3{font-size:16px}.games-track .game-info p{font-size:8px}.games-marquee{mask-image:linear-gradient(90deg,transparent 0%,#000 2%,#000 98%,transparent 100%)}}
+@media(max-width:620px){.games-showcase{gap:11px;padding:1px 0 5px}.games-track{animation-duration:66s}.games-set{gap:10px;padding-right:10px}.games-track-right{animation-duration:72s}.games-track .game{flex-basis:218px;width:218px}.games-track .art{height:124px}.games-track .game-info{min-height:61px;padding:11px 10px}.games-track .game-info h3{font-size:16px}.games-track .game-info p{font-size:8px}.games-marquee{mask-image:linear-gradient(90deg,transparent 0%,#000 1%,#000 99%,transparent 100%)}}
 @media(prefers-reduced-motion:reduce){.games-track{animation:none!important;transform:none!important;will-change:auto}}
 </style>
 <style id="see-all-border-refine">
