@@ -63,7 +63,6 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 <h2 class="section-head" id="player-title"><span class="ico player-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg></span>Tu Player ID</h2>
 <div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Ingresa tu Player ID aquí..." maxlength="32" aria-label="Tu Player ID"></div><button class="help" id="help-button" type="button">¿Dónde encontrarlo?</button></div>
 <p class="hint"><b>ⓘ</b>Ejemplo: 1234567890</p>
-<div class="validate-row"><button class="validate-btn" id="validate-player" type="button">Verificar nickname</button></div>
 <div class="validation-result" id="validation-result" role="status" aria-live="polite"></div>
 </section>
 <section class="section" aria-labelledby="packages-title">
@@ -91,9 +90,10 @@ const buyButton=document.getElementById("buy-button");
 const playerSection=document.getElementById("player-title").closest(".section");
 const playerInput=document.getElementById("player-id");
 const helpButton=document.getElementById("help-button");
-const validateButton=document.getElementById("validate-player");
 const validationResult=document.getElementById("validation-result");
 let validatedPlayerId="";
+let validationTimer=null;
+let validationRequest=0;
 function showValidation(text,state=""){
  validationResult.textContent=text;
  validationResult.className="validation-result show"+(state?" "+state:"");
@@ -130,6 +130,7 @@ function renderRegions(){
      clearValidation();
      regions.querySelectorAll(".choice").forEach(el=>el.classList.toggle("selected",el===button));
      renderProducts();
+     scheduleNicknameValidation();
    });
    regions.append(button);
  });
@@ -157,6 +158,7 @@ function renderProducts(){
      clearValidation();
      packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
      updateRequirements();
+     scheduleNicknameValidation();
    });
    packages.append(button);
  });
@@ -204,32 +206,18 @@ buyButton.addEventListener("click",()=>{
  notify("El checkout todavía no está habilitado. No se ha realizado ningún cobro.");
 });
 
-validateButton?.addEventListener("click",async()=>{
+async function verifyNicknameAutomatically(){
  const playerId=playerInput?.value.trim()||"";
- if(!/^\d{5,20}$/.test(playerId)){
-   showValidation("Escribe un Player ID válido de 5 a 20 números.","error");
-   return;
- }
- if(!selectedRegion){
-   showValidation("Selecciona primero la región de tu cuenta.","error");
-   return;
- }
+ const requestId=++validationRequest;
+ if(!/^\\d{5,20}$/.test(playerId)||!selectedRegion) return;
  const validationProduct=selectedProduct||products.find(p=>p.region===selectedRegion&&p.requiresPlayerId&&p.supportsPlayerValidation);
- if(!validationProduct){
-   showValidation("No hay un producto disponible para verificar esta región.","error");
-   return;
- }
- validateButton.disabled=true;
- validateButton.textContent="Verificando…";
- showValidation("Comprobando tu cuenta con Next Level…");
+ if(!validationProduct) return;
  try{
    const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
+   if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
    if(sessionError) throw new Error("No se pudo comprobar tu sesión.");
    const accessToken=sessionData?.session?.access_token;
-   if(!accessToken){
-     showValidation("Inicia sesión en Internacional Web para verificar tu cuenta.","error");
-     return;
-   }
+   if(!accessToken) throw new Error("Inicia sesión en Internacional Web para verificar tu cuenta.");
    const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-player-validate",{
      method:"POST",
      headers:{
@@ -241,30 +229,36 @@ validateButton?.addEventListener("click",async()=>{
      body:JSON.stringify({productId:validationProduct.productId,playerId})
    });
    const data=await response.json().catch(()=>({}));
+   if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
    if(!response.ok||!data.ok){
      const errors={
        INVALID_PLAYER_ID:"El Player ID debe contener entre 5 y 20 números.",
        PLAYER_VALIDATION_NOT_SUPPORTED:"Este producto no permite verificar el nickname.",
        PLAYER_NOT_FOUND:"No encontramos una cuenta con ese Player ID. Revísalo e inténtalo otra vez.",
-       NICKNAME_NOT_RETURNED:"Next Level no devolvió el nickname de esta cuenta.",
+       NICKNAME_NOT_RETURNED:"No se pudo obtener el nickname de esta cuenta.",
        UPSTREAM_TIMEOUT:"La verificación tardó demasiado. Inténtalo de nuevo.",
-       UPSTREAM_UNREACHABLE:"No se pudo conectar con Next Level. Inténtalo más tarde."
+       UPSTREAM_UNREACHABLE:"No se pudo conectar. Inténtalo más tarde."
      };
      throw new Error(errors[data.error]||"No se pudo verificar el Player ID. Inténtalo de nuevo.");
    }
-   if(playerInput.value.trim()!==playerId) return;
    validatedPlayerId=playerId;
-   showValidation("✓ Cuenta verificada: "+data.nickname,"success");
+   showValidation("✓ "+data.nickname,"success");
  }catch(error){
+   if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
    showValidation(error instanceof Error?error.message:"No se pudo verificar la cuenta.","error");
- }finally{
-   validateButton.disabled=false;
-   validateButton.textContent="Verificar nickname";
  }
-});
+}
+function scheduleNicknameValidation(){
+ clearTimeout(validationTimer);
+ validationRequest++;
+ clearValidation();
+ const playerId=playerInput?.value.trim()||"";
+ if(!/^\\d{5,20}$/.test(playerId)||!selectedRegion) return;
+ validationTimer=setTimeout(verifyNicknameAutomatically,650);
+}
 playerInput?.addEventListener("input",()=>{
  message.classList.remove("show");
- clearValidation();
+ scheduleNicknameValidation();
 });
 
 helpButton?.addEventListener("click",()=>{
