@@ -341,10 +341,6 @@ $("newTicketBtn").addEventListener("click",()=>{$("ticketCreateForm").hidden=fal
 $("cancelCreate").addEventListener("click",()=>$("ticketCreateForm").hidden=true);
 $("ticketCreateForm").addEventListener("submit",createTicket);
 $("refreshTickets").addEventListener("click",async()=>{try{await loadTickets();alertBox("Lista actualizada.",true);}catch(e){alertBox("No se pudieron actualizar los tickets: "+e.message);}});
-supabase.auth.onAuthStateChange((_event,session)=>{
-  if(!session){state.user=null;state.isSupport=false;state.tickets=[];state.activeTicket=null;$("ticketLogin").hidden=false;$("ticketWorkspace").hidden=true;$("newTicketBtn").hidden=true;}
-  else if(!state.user||state.user.id!==session.user.id){state.user=session.user;init().catch(e=>alertBox("No se pudo cargar soporte: "+e.message));}
-});
 init().catch(error=>alertBox("No se pudo iniciar el centro de soporte: "+error.message));
 </script>
 <script>
