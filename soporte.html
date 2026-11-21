@@ -333,7 +333,6 @@ async function createTicket(event){
     state.activeTicket=ticket;
     alertBox("Ticket "+ticket.ticket_code+" creado correctamente.",true);
     await loadTickets();
-    await openTicket(ticket);
   }catch(error){alertBox("No se pudo crear el ticket: "+error.message);}
   finally{button.disabled=false;}
 }
