@@ -63,14 +63,14 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 <section class="section" aria-labelledby="packages-title">
 <h2 class="section-head" id="packages-title"><span class="ico">R$</span>Paquetes de Robux</h2>
 <div class="packages" id="packages">
-<button class="package" type="button" disabled><span class="diamond">R$</span><strong>Paquete básico</strong><small>Robux · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">R$</span><strong>Paquete estándar</strong><small>Robux · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">R$</span><strong>Paquete avanzado</strong><small>Robux · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">R$</span><strong>Paquete premium</strong><small>Robux · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">R$</span><strong>Paquete especial</strong><small>Robux · catálogo pendiente</small></button>
-<button class="package" type="button" disabled><span class="diamond">R$</span><strong>Paquete máximo</strong><small>Robux · catálogo pendiente</small></button>
+<button class="package" type="button"><span class="diamond">R$</span><strong>Paquete básico</strong><small>Robux</small></button>
+<button class="package" type="button"><span class="diamond">R$</span><strong>Paquete estándar</strong><small>Robux</small></button>
+<button class="package" type="button"><span class="diamond">R$</span><strong>Paquete avanzado</strong><small>Robux</small></button>
+<button class="package" type="button"><span class="diamond">R$</span><strong>Paquete premium</strong><small>Robux</small></button>
+<button class="package" type="button"><span class="diamond">R$</span><strong>Paquete especial</strong><small>Robux</small></button>
+<button class="package" type="button"><span class="diamond">R$</span><strong>Paquete máximo</strong><small>Robux</small></button>
 </div>
-<button class="cta" id="buy-button" type="button" disabled>R$ &nbsp; Próximamente &nbsp; →</button>
+<button class="cta" id="buy-button" type="button">R$ &nbsp; Recargar Ahora &nbsp; →</button>
 <div class="toast" id="message" role="status"></div>
 </section>
 </main>
@@ -87,6 +87,10 @@ function notify(text){message.textContent=text;message.classList.add("show")}
 document.querySelectorAll("#regions .choice").forEach(button=>button.addEventListener("click",()=>{
  document.querySelectorAll("#regions .choice").forEach(item=>item.classList.toggle("selected",item===button));
 }));
+document.querySelectorAll("#packages .package").forEach(button=>button.addEventListener("click",()=>{
+ document.querySelectorAll("#packages .package").forEach(item=>item.classList.toggle("selected",item===button));
+}));
+document.getElementById("buy-button").addEventListener("click",()=>notify("El catálogo de Roblox todavía se está configurando. Tu selección no genera ningún cobro."));
 
 document.getElementById("help-button").addEventListener("click",()=>notify("Abre Roblox, entra en tu perfil y busca el ID que aparece debajo de tu nombre. Cópialo aquí."));
 document.getElementById("player-id").addEventListener("input",()=>{message.classList.remove("show")});
