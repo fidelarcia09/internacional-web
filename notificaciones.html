@@ -76,5 +76,165 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 <a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
 <a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
+
+<script type="module" id="notifications-runtime">
+import { supabase } from "./supabase-client.js";
+
+const list = document.getElementById("notice-list");
+let currentUserId = null;
+let channel = null;
+
+function makeEmpty(title, description) {
+  const box = document.createElement("div");
+  box.className = "empty-state";
+  const icon = document.createElement("div");
+  icon.className = "empty-icon";
+  icon.setAttribute("aria-hidden", "true");
+  icon.innerHTML = '<svg viewBox="0 0 36 36"><path d="M27 14a9 9 0 0 0-18 0c0 10-4 10-4 13h26c0-3-4-3-4-13ZM15 31h6"/></svg>';
+  const heading = document.createElement("h2");
+  heading.textContent = title;
+  const copy = document.createElement("p");
+  copy.textContent = description;
+  box.append(icon, heading, copy);
+  return box;
+}
+
+function formatTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Fecha no disponible";
+  return date.toLocaleString("es", {
+    day: "2-digit", month: "long", year: "numeric",
+    hour: "2-digit", minute: "2-digit"
+  });
+}
+
+function dayKey(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "sin-fecha" : date.toLocaleDateString("sv-SE");
+}
+
+function dayTitle(value) {
+  if (value === "sin-fecha") return "Fecha no disponible";
+  const date = new Date(value + "T12:00:00");
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  const same = (a, b) => a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  if (same(date, today)) return "Hoy";
+  if (same(date, yesterday)) return "Ayer";
+  return date.toLocaleDateString("es", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric"
+  });
+}
+
+function iconFor(type) {
+  if (type === "purchase_completed") {
+    return '<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="9"/></svg>';
+  }
+  if (type === "purchase_failed") {
+    return '<svg viewBox="0 0 24 24"><path d="M12 8v5m0 4h.01"/><path d="M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>';
+  }
+  return '<svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>';
+}
+
+function renderNotifications(rows) {
+  if (!rows.length) {
+    list.replaceChildren(makeEmpty(
+      "Todo al día",
+      "Cuando se cree una compra o cambie su estado final, recibirás aquí la notificación."
+    ));
+    return;
+  }
+
+  const groups = new Map();
+  rows.forEach(row => {
+    const key = dayKey(row.created_at);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(row);
+  });
+
+  const fragment = document.createDocumentFragment();
+  groups.forEach((items, key) => {
+    const group = document.createElement("section");
+    group.className = "day-group";
+    const heading = document.createElement("h2");
+    heading.className = "day-label";
+    heading.textContent = dayTitle(key);
+    group.append(heading);
+
+    items.forEach(row => {
+      const card = document.createElement("article");
+      card.className = "notice-card";
+      const icon = document.createElement("div");
+      icon.className = "notice-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.innerHTML = iconFor(row.event_type);
+
+      const copy = document.createElement("div");
+      copy.className = "notice-copy";
+      const title = document.createElement("h3");
+      title.className = "notice-title";
+      title.textContent = row.title || "Actualización de compra";
+      const message = document.createElement("p");
+      message.className = "notice-message";
+      message.textContent = row.message || "";
+      const time = document.createElement("time");
+      time.className = "notice-time";
+      time.dateTime = row.created_at;
+      time.textContent = formatTime(row.created_at);
+      copy.append(title, message, time);
+      card.append(icon, copy);
+      group.append(card);
+    });
+    fragment.append(group);
+  });
+  list.replaceChildren(fragment);
+}
+
+async function loadNotifications(userId) {
+  const { data, error } = await supabase
+    .from("user_notifications")
+    .select("id,event_type,title,message,created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (error) {
+    console.error("No se pudieron cargar las notificaciones:", error);
+    list.replaceChildren(makeEmpty(
+      "No se pudieron cargar",
+      "No fue posible consultar tus notificaciones. Inténtalo de nuevo en unos momentos."
+    ));
+    return;
+  }
+  renderNotifications(data || []);
+}
+
+async function init() {
+  list.replaceChildren(makeEmpty("Cargando...", "Estamos buscando tus notificaciones."));
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error || !session?.user?.id) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  currentUserId = session.user.id;
+  await loadNotifications(currentUserId);
+
+  channel = supabase
+    .channel("user-notifications-page-" + currentUserId)
+    .on("postgres_changes", {
+      event: "INSERT",
+      schema: "public",
+      table: "user_notifications",
+      filter: "user_id=eq." + currentUserId
+    }, () => loadNotifications(currentUserId))
+    .subscribe();
+}
+
+init();
+</script>
+
 </body>
 </html>
