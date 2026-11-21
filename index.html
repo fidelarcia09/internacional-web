@@ -457,7 +457,7 @@
 
 .entry-link[hidden]{display:none!important}
 
-@media(max-width:620px){.mobile-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;padding:5px 1%;align-items:center}.mobile-nav:before{content:"";position:absolute;z-index:0;top:9px;left:1%;width:19.6%;height:54px;border:1px solid #ff8700;border-radius:15px;box-shadow:0 0 13px #ff79002b,inset 0 0 12px #ff790018;transform:translateX(calc(var(--active-index,0)*100%));transition:transform .34s cubic-bezier(.2,.8,.2,1);pointer-events:none}.mobile-nav a{z-index:1;min-width:0}}
+@media(max-width:620px){.mobile-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;padding:5px 1%;align-items:center}.mobile-nav:before{content:"";position:absolute;z-index:0;top:9px;left:1%;width:19.6%;height:54px;border:0;border-radius:50%;background:radial-gradient(ellipse,#ff790044 0%,#ff790020 48%,transparent 76%);box-shadow:none;transform:translateX(calc(var(--active-index,0)*100%));transition:transform .34s cubic-bezier(.2,.8,.2,1);pointer-events:none}.mobile-nav a{z-index:1;min-width:0}}
 @media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
 </style>
 </head>
