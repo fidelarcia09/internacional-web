@@ -171,5 +171,16 @@ usd.addEventListener('input',()=>{
 });
 updateEstimate();
 </script>
+
+<script>
+// Guarda automáticamente el banner para que permanezca disponible al volver a abrir la página.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch((error) => {
+      console.warn("No se pudo activar la caché de imágenes:", error);
+    });
+  }, { once: true });
+}
+</script>
 </body>
 </html>
