@@ -75,6 +75,7 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 .order-info strong{color:#6ce5a5}
 .order-code{display:block;margin-top:4px;color:#fff;font:800 17px var(--display);letter-spacing:.7px;word-break:break-all}
 .payment-status{min-height:20px;margin:10px 2px 0;color:#c7b8a7;font-size:11px;line-height:1.6}
+.deposit-timer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;padding:12px 14px;border:1px solid #a95012;border-radius:12px;background:linear-gradient(100deg,#1b1007,#0b0907)}.deposit-timer span{color:#ffb36a;font-size:10px;font-weight:800;letter-spacing:.7px}.deposit-timer strong{color:#ffd078;font:900 27px "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}.deposit-timer.urgent{border-color:#e44c32;background:#210c08}.deposit-timer.urgent strong{color:#ff806c}
 .payment-status.success{color:#69e6a4}
 .payment-status.error{color:#ff9a83}
 .verify-button{width:100%;height:54px;margin-top:10px;border:1px solid #ffb000;border-radius:14px;background:linear-gradient(100deg,#ff8a00,#ffb000);color:#160d05;font:900 23px var(--display);cursor:pointer}
@@ -142,6 +143,7 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
   <span class="order-code" id="orderCode"></span>
   <small>Red: BNB Smart Chain · BEP20</small>
 </div>
+<div class="deposit-timer" id="depositTimer" hidden><span>TIEMPO RESTANTE DEL PEDIDO</span><strong id="depositCountdown">10:00</strong></div>
 <p class="payment-status" id="paymentStatus" role="status" aria-live="polite"></p>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
 <input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false">
@@ -219,6 +221,11 @@ const statusText = document.getElementById("paymentStatus");
 let activeDeposit = null;
 let busy = false;
 let signedIn = false;
+let countdownInterval = null;
+let countdownStartedAt = 0;
+let countdownRemainingMs = 0;
+const timerBox = document.getElementById("depositTimer");
+const timerText = document.getElementById("depositCountdown");
 
 function setStatus(message, kind = "") {
   statusText.textContent = message;
@@ -240,12 +247,54 @@ function validTxid(value) {
 function updatePayButton() {
   payButton.disabled = !signedIn || !validTxid(txInput.value) || busy;
 }
+async function startServerCountdown(deposit) {
+  if (countdownInterval) clearInterval(countdownInterval);
+  timerBox.hidden = false;
+  payButton.disabled = true;
+  const { data: serverTime, error } = await supabase.rpc("get_usdt_server_time");
+  if (error || !serverTime || !deposit.created_at) {
+    setStatus("No pudimos sincronizar la hora oficial del servidor. Recarga la página para continuar.", "error");
+    payButton.disabled = true;
+    return;
+  }
+  const deadline = new Date(deposit.created_at).getTime() + 10 * 60 * 1000;
+  const serverNow = new Date(serverTime).getTime();
+  if (!Number.isFinite(deadline) || !Number.isFinite(serverNow)) {
+    setStatus("No pudimos validar la vigencia del pedido.", "error");
+    return;
+  }
+  countdownRemainingMs = deadline - serverNow;
+  countdownStartedAt = performance.now();
+  const tick = async () => {
+    const remaining = Math.max(0, countdownRemainingMs - (performance.now() - countdownStartedAt));
+    const seconds = Math.ceil(remaining / 1000);
+    timerText.textContent = String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
+    timerBox.classList.toggle("urgent", seconds <= 60);
+    if (remaining <= 0) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+      busy = true;
+      payButton.disabled = true;
+      txInput.disabled = true;
+      setStatus("El tiempo del pedido terminó. Volviendo al inicio…", "error");
+      try {
+        await supabase.rpc("expire_usdt_deposit", { p_deposit_id: deposit.id });
+      } catch (error) {
+        console.error("expire USDT deposit", error);
+      }
+      window.location.replace("index.html");
+    }
+  };
+  await tick();
+  if (countdownRemainingMs > 0) countdownInterval = setInterval(tick, 250);
+}
 function displayDeposit(deposit) {
   activeDeposit = deposit;
   orderInfo.hidden = false;
   orderAmount.textContent = formatAmount(deposit.amount_usdt) + " USDT";
   orderCode.textContent = deposit.deposit_code;
   lockAmount(true);
+  startServerCountdown(deposit);
 }
 function errorMessage(code) {
   const messages = {
@@ -258,6 +307,7 @@ function errorMessage(code) {
     txid_already_used_or_linked: "Ese TXID ya está asociado a otro pedido.",
     another_txid_already_linked: "Este pedido ya tiene otro TXID asociado.",
     deposit_not_found: "No encontramos tu pedido. Actualiza la página e inicia sesión de nuevo.",
+    deposit_expired: "El tiempo de este pedido terminó. Crea uno nuevo.",
     invalid_session: "Tu sesión ha caducado. Inicia sesión otra vez."
   };
   return messages[code] || "No se pudo verificar el pago. Inténtalo de nuevo más tarde.";
@@ -332,13 +382,13 @@ payButton.addEventListener("click", async () => {
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
       if (!row?.deposit_id || !row?.deposit_code) throw new Error("No se recibió el pedido creado.");
-      displayDeposit({
-        id: row.deposit_id,
-        deposit_code: row.deposit_code,
-        amount_usdt: amount,
-        status: row.deposit_status || "pending",
-        payment_reference: null
-      });
+      const { data: createdDeposit, error: createdError } = await supabase
+        .from("usdt_deposits")
+        .select("id,deposit_code,amount_usdt,status,payment_method,payment_reference,created_at")
+        .eq("id", row.deposit_id)
+        .single();
+      if (createdError || !createdDeposit) throw new Error("No pudimos cargar la hora oficial del pedido.");
+      displayDeposit(createdDeposit);
     }
 
     const { data, error } = await supabase.functions.invoke("verify-usdt-deposit", {
