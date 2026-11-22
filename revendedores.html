@@ -109,31 +109,44 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 }
 @media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
 </style>
+
+<style id="vendor-clean-layout">
+.partner-page{width:min(900px,90%);padding-top:4px}
+.recargas-summary{margin:0 0 25px;padding:17px 18px 14px;border:1px solid rgba(255,121,40,.48);border-radius:16px;background:linear-gradient(105deg,#19120e,#111318 72%);box-shadow:0 8px 24px #0004}
+.recargas-summary-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.recargas-summary-top span{font-size:12px;font-weight:800;letter-spacing:1.2px;color:#e6e6e6}
+.recargas-summary-top strong{font:900 34px/1 var(--display);color:var(--orange)}
+.recargas-summary-track{height:5px;margin-top:13px;overflow:hidden;border-radius:99px;background:#ffffff18}
+.recargas-summary-track span{display:block;width:100%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#ff7928,#ffbd19);opacity:.85}
+.vendor-hero{padding:10px 0 24px}
+.vendor-kicker{margin-bottom:9px;color:#ff9b48;font-size:10px;font-weight:800;letter-spacing:2px}
+.vendor-hero h1{margin:0;font:900 clamp(40px,7vw,68px)/.95 var(--display);letter-spacing:-1px}
+.vendor-hero h1 em{display:inline;color:var(--orange);font-style:italic}
+.vendor-hero p{margin:10px 0 0;color:#c6c6ca;font-size:14px}
+.vendor-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.vendor-action{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 18px;border:1px solid #ffffff20;border-radius:14px;background:#12151b;color:#f5f5f5;font-size:15px;font-weight:750;transition:border-color .2s,background .2s,transform .2s}
+.vendor-action b{font-size:27px;font-weight:400;color:var(--orange)}
+.vendor-action:hover{border-color:#ff7928;background:#1b1714;transform:translateY(-2px)}
+.vendor-action.primary{border-color:#ff7928;background:linear-gradient(110deg,#321b0e,#171318)}
+@media(max-width:620px){.partner-page{width:90%;padding-top:0}.recargas-summary{margin-bottom:19px;padding:15px}.vendor-hero{padding:7px 0 19px}.vendor-hero h1{font-size:clamp(39px,11vw,56px)}.vendor-actions{grid-template-columns:1fr;gap:9px}.vendor-action{min-height:56px;padding:0 15px}}
+</style>
 </head>
 <body>
 <main class="partner-page">
-<section class="hero">
-<div class="hero-copy">
-<h1>REVENDEDORES<em>Únete a nuestro programa de revendedores</em></h1>
-<p>Haz crecer tu negocio con nosotros y gana más en cada recarga.</p>
-</div>
+<section class="recargas-summary" aria-label="Resumen de recargas">
+  <div class="recargas-summary-top"><span>RECARGAS HECHAS</span><strong id="recargas-hechas-count">—</strong></div>
+  <div class="recargas-summary-track" aria-hidden="true"><span></span></div>
 </section>
-<section class="feature-grid" aria-label="Beneficios del programa">
-<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M32 7h16l3 9 8 4 9-3 8 14-7 7v9l7 7-8 14-10-3-7 4-3 9H32l-3-9-8-4-9 3-8-14 7-7v-9l-7-7 8-14 10 3 7-4 3-9Z" fill="currentColor" stroke="none"/><circle cx="40" cy="40" r="13" fill="#111318" stroke="none"/></svg></div><div class="feature-copy"><h2>Acceso API</h2><p>Integra nuestras APIs y realiza recargas de forma automática.</p></div><span class="chevron">›</span></article>
-<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M9 66h13V48H9v18Zm24 0h13V35H33v31Zm24 0h13V18H57v48Z" fill="currentColor" stroke="none"/><path d="m8 39 20-18 13 8L67 8M55 8h12v12" stroke="currentColor" stroke-width="5" fill="none"/></svg></div><div class="feature-copy"><h2>Recargas hechas</h2><p>Controla tus ventas y sigue tu progreso.</p></div><span class="chevron">›</span></article>
-<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="23" r="13" fill="currentColor" stroke="none"/><circle cx="17" cy="31" r="10" fill="currentColor" stroke="none"/><circle cx="63" cy="31" r="10" fill="currentColor" stroke="none"/><path d="M18 67V55c0-11 9-18 22-18s22 7 22 18v12H18ZM2 65V53c0-8 5-13 13-14m63 26V53c0-8-5-13-13-14" fill="currentColor" stroke="none"/></svg></div><div class="feature-copy"><h2>Clientes frecuentes</h2><p>Tus clientes siempre vuelven.</p></div><span class="chevron">›</span></article>
-<article class="feature"><div class="feature-icon"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="m40 5 10 22 24 3-18 16 5 24-21-12-21 12 5-24L6 30l24-3L40 5Z" fill="currentColor" stroke="none"/></svg></div><div class="feature-copy"><h2>Niveles de revendedor</h2><p>Crece y desbloquea mejores beneficios.</p></div><span class="chevron">›</span></article>
+<section class="vendor-hero">
+  <div class="vendor-kicker">CANAL DE REVENDEDOR</div>
+  <h1>Tu espacio <em>de vendedor</em></h1>
+  <p>Gestiona tus recargas y consulta tus compras.</p>
 </section>
-<section aria-labelledby="tiers-title">
-<div class="tier-heading"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="m8 20 12 9 12-20 12 20 12-9-6 29H14L8 20Z"/><path d="M15 55h34" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg><h2 id="tiers-title">Descuentos <em>por Nivel</em></h2></div>
-<div class="tiers">
-<article class="tier bronze"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>BRONCE</h3><p class="discount-label">Descuento</p><p class="discount">2%</p></article>
-<article class="tier silver"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>PLATA</h3><p class="discount-label">Descuento</p><p class="discount">3%</p></article>
-<article class="tier gold"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>ORO</h3><p class="discount-label">Descuento</p><p class="discount">4%</p></article>
-<article class="tier diamond"><div class="medal"><svg viewBox="0 0 72 72" aria-hidden="true"><path d="M36 5 44 23 64 26 49 40 53 61 36 51 19 61 23 40 8 26 28 23 36 5Z"/><path d="M27 15 17 5m28 10L55 5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div><h3>DIAMANTE</h3><p class="discount-label">Descuento</p><p class="discount">5%</p></article>
-</div>
-</section>
-<section class="reward-banner"><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 32c-5-8-22-12-22-22 0-8 13-10 22 10 9-20 22-18 22-10 0 10-17 14-22 22ZM7 34h66v13H7zM13 47h54v27H13zM35 34h10v40H35z"/></svg><p>¡Cuanto más recargas,<br>mayor será <em>tu descuento!</em></p></section>
+<nav class="vendor-actions" aria-label="Opciones de revendedor">
+  <a class="vendor-action primary" href="tienda.html"><span>Tienda</span><b aria-hidden="true">›</b></a>
+  <a class="vendor-action" href="mis-compras.html"><span>Mis compras</span><b aria-hidden="true">›</b></a>
+  <a class="vendor-action" href="cuenta.html"><span>Mi cuenta</span><b aria-hidden="true">›</b></a>
+</nav>
 </main>
 <nav class="mobile-nav" aria-label="Navegación inferior">
 <a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
@@ -142,6 +155,22 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 <a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
 <a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
+
+
+<script type="module">
+import { supabase } from "./supabase-client.js";
+(async () => {
+  const counter = document.getElementById("recargas-hechas-count");
+  if (!counter) return;
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError || !session?.user) { counter.textContent = "0"; return; }
+  const { count, error } = await supabase.from("usdt_orders")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", session.user.id).eq("status", "completed");
+  counter.textContent = error ? "—" : String(count ?? 0);
+  if (error) console.warn("No se pudo cargar el total de recargas completadas:", error);
+})();
+</script>
 
 <script>
 (()=>{
