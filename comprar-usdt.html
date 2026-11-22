@@ -144,7 +144,7 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 </div>
 <p class="payment-status" id="paymentStatus" role="status" aria-live="polite"></p>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
-<input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
+<input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false">
 <button class="verify-button" id="payButton" type="button" disabled>Pagar</button>
 
 </section>
@@ -163,8 +163,8 @@ const packages=[...document.querySelectorAll('.package')];
 function updateEstimate(){
  const amount=Number(usd.value);
  result.textContent=Number.isFinite(amount)&&amount>=0
-  ?amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:8})+' BSC-USD'
-  :'— BSC-USD';
+  ?amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:8})+' USDT'
+  :'— USDT';
 }
 function selectPackage(button){
  packages.forEach(item=>{
