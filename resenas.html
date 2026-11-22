@@ -12,30 +12,26 @@
 <style>
 :root{--bg:#090a0d;--panel:#121419;--panel2:#17191f;--orange:#ff7928;--gold:#ffad32;--white:#f5f5f5;--muted:#a0a1a9;--line:#ffffff16;--font:'Inter',sans-serif;--display:'Barlow Condensed',sans-serif}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#71300022,transparent 42%),var(--bg);color:var(--white);font-family:var(--font)}a{color:inherit;text-decoration:none}
-.topbar{height:76px;padding:0 max(5%,calc((100% - 1040px)/2));display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line);background:#090a0deF;position:sticky;top:0;z-index:5;backdrop-filter:blur(16px)}
-.back{width:42px;height:42px;display:grid;place-items:center;border:1px solid #ffffff25;border-radius:13px;color:#fff;font-size:23px}
-.brand{font:900 20px/.9 var(--display);letter-spacing:.4px}.brand span{display:block;color:var(--orange);font-size:12px;letter-spacing:2px;margin-top:4px}
 main{width:min(100% - 32px,900px);margin:34px auto 70px}
-.hero{margin-bottom:24px}.eyebrow{color:var(--orange);font-size:10px;font-weight:800;letter-spacing:2px}.hero h1{font:900 clamp(43px,8vw,66px)/.9 var(--display);margin:12px 0 8px}.hero p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
-.summary{display:grid;grid-template-columns:180px 1fr;gap:24px;align-items:center;padding:23px;border:1px solid #ff79284a;border-radius:20px;background:linear-gradient(135deg,#17191f,#101115);box-shadow:0 12px 35px #0005;margin:22px 0}
+.hero{margin-bottom:24px}.hero h1{font:900 clamp(43px,8vw,66px)/.9 var(--display);margin:0}
+.summary{display:grid;grid-template-columns:180px 1fr;gap:24px;align-items:center;padding:23px 0;border:0;border-radius:0;background:linear-gradient(135deg,#17191f,#101115);box-shadow:0 12px 35px #0005;margin:22px 0}
 .average{text-align:center}.average strong{display:block;font:900 58px/.9 var(--display)}.stars{color:var(--gold);letter-spacing:3px;font-size:18px}.average small{display:block;margin-top:7px;color:var(--muted);font-size:10px}
 .bars{display:grid;gap:8px}.bar-row{display:grid;grid-template-columns:13px 1fr 30px;gap:9px;align-items:center;color:#c8c8cd;font-size:10px}.bar{height:7px;border-radius:20px;background:#ffffff12;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--gold));border-radius:20px;width:0}
 .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 15px}.toolbar h2{font:800 27px var(--display);margin:0}.actions{display:flex;gap:9px;flex-wrap:wrap}
 .btn{min-height:42px;padding:0 15px;border:1px solid #ff8b3d88;border-radius:12px;background:linear-gradient(110deg,#ffad32,#ff7928);color:#17100a;font:800 11px var(--font);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn.secondary{background:#17191f;color:#f5f5f5;border-color:#ffffff25}.btn:disabled{opacity:.55;cursor:not-allowed}
 .sort{height:40px;padding:0 12px;border:1px solid #ffffff25;border-radius:11px;background:#121419;color:#ddd;font:600 11px var(--font)}
-.review-list{display:grid;gap:12px}.review{padding:18px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#15171d,#101115)}
+.review-list{display:grid;gap:12px}.review{padding:18px 0;border:0;border-bottom:1px solid #ffffff12;border-radius:0;background:transparent}
 .review-head{display:flex;align-items:center;gap:11px}.avatar{width:39px;height:39px;flex:0 0 39px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffad32,#ff7021);color:#16100a;font-weight:900}.author{min-width:0;flex:1}.author b{display:block;font-size:12px}.author small{display:block;color:#81838c;font-size:10px;margin-top:4px}.review-stars{color:var(--gold);font-size:13px;letter-spacing:1px;white-space:nowrap}.review h3{font-size:13px;margin:14px 0 6px}.review p{font-size:12px;color:#b8bac2;line-height:1.75;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.review-foot{display:flex;justify-content:flex-end;margin-top:12px}.review-foot button{border:0;background:none;color:var(--gold);font:700 10px var(--font);cursor:pointer}
-.empty,.loading{padding:35px 20px;text-align:center;border:1px dashed #ffffff25;border-radius:17px;color:var(--muted);font-size:12px;line-height:1.7}.empty b{display:block;color:#fff;font:800 24px var(--display);margin-bottom:5px}
-.form-panel{display:none;margin:18px 0 24px;padding:21px;border:1px solid #ff79286b;border-radius:19px;background:linear-gradient(145deg,#17191f,#101115);box-shadow:0 10px 30px #0005}.form-panel.open{display:block}.form-panel h2{font:800 28px var(--display);margin:0 0 5px}.form-panel>p{font-size:11px;color:var(--muted);margin:0 0 18px}
+.empty,.loading{padding:35px 0;text-align:center;border:0;border-radius:0;color:var(--muted);font-size:12px;line-height:1.7}.empty b{display:block;color:#fff;font:800 24px var(--display);margin-bottom:5px}
+.form-panel{display:none;margin:18px 0 24px;padding:21px 0;border:0;border-radius:0;background:linear-gradient(145deg,#17191f,#101115);box-shadow:0 10px 30px #0005}.form-panel.open{display:block}.form-panel h2{font:800 28px var(--display);margin:0 0 5px}.form-panel>p{font-size:11px;color:var(--muted);margin:0 0 18px}
 .rating-picker{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:5px;margin:0 0 16px}.rating-picker input{position:absolute;opacity:0;pointer-events:none}.rating-picker label{font-size:31px;color:#555;cursor:pointer;line-height:1}.rating-picker label:hover,.rating-picker label:hover~label,.rating-picker input:checked~label{color:var(--gold)}
 .field{display:grid;gap:7px;margin:12px 0}.field label{font-size:10px;font-weight:800;color:#ddd}.field input,.field textarea{width:100%;border:1px solid #ffffff25;border-radius:11px;background:#0c0e12;color:#fff;padding:13px;font:500 12px var(--font);outline:none}.field input:focus,.field textarea:focus{border-color:var(--orange);box-shadow:0 0 0 2px #ff792822}.field textarea{min-height:105px;resize:vertical;line-height:1.6}.form-actions{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}.notice{display:none;margin-top:13px;padding:11px 12px;border-radius:10px;background:#ff792817;border:1px solid #ff792866;color:#ffd4ad;font-size:11px;line-height:1.5}.notice.show{display:block}
-@media(max-width:600px){.topbar{height:66px;padding:0 16px}.brand{font-size:18px}main{margin:25px auto 45px}.summary{grid-template-columns:105px 1fr;gap:12px;padding:16px}.average strong{font-size:48px}.stars{font-size:14px;letter-spacing:1px}.bar-row{grid-template-columns:12px 1fr 24px;gap:6px}.toolbar{align-items:flex-start;flex-direction:column}.toolbar h2{font-size:25px}.sort{width:100%}.review{padding:15px}.review-stars{font-size:12px}.form-panel{padding:17px}}
+@media(max-width:600px){main{margin:25px auto 45px}.summary{grid-template-columns:105px 1fr;gap:12px;padding:16px}.average strong{font-size:48px}.stars{font-size:14px;letter-spacing:1px}.bar-row{grid-template-columns:12px 1fr 24px;gap:6px}.toolbar{align-items:flex-start;flex-direction:column}.toolbar h2{font-size:25px}.sort{width:100%}.review{padding:15px}.review-stars{font-size:12px}.form-panel{padding:17px}}
 </style>
 </head>
 <body>
-<header class="topbar"><a class="back" href="index.html" aria-label="Volver al inicio">‹</a><a class="brand" href="index.html">INTERNACIONAL WEB<span>COMUNIDAD GAMING</span></a></header>
 <main>
-<section class="hero"><div class="eyebrow">VOCES DE LA COMUNIDAD</div><h1>RESEÑAS</h1><p>Lee las experiencias de otros usuarios y comparte cómo ha sido la tuya.</p></section>
+<section class="hero"><h1>RESEÑAS</h1></section>
 <section class="summary" aria-label="Resumen de valoraciones">
  <div class="average"><strong id="average">—</strong><div class="stars" id="averageStars">☆☆☆☆☆</div><small id="totalReviews">Cargando reseñas…</small></div>
  <div class="bars" id="ratingBars">
@@ -46,7 +42,7 @@ main{width:min(100% - 32px,900px);margin:34px auto 70px}
   <div class="bar-row"><span>1</span><div class="bar"><i></i></div><span>0</span></div>
  </div>
 </section>
-<div class="toolbar"><h2>Opiniones de usuarios</h2><div class="actions"><select class="sort" id="sortReviews" aria-label="Ordenar reseñas"><option value="new">Más recientes</option><option value="high">Mejor valoradas</option><option value="low">Menor valoración</option></select><button class="btn" id="writeReview">✎ Crear reseña</button></div></div>
+<div class="toolbar"><h2>Opiniones de usuarios</h2><div class="actions"><button class="btn" id="writeReview">✎ Crear reseña</button></div></div>
 <section class="form-panel" id="formPanel">
  <h2 id="formTitle">Comparte tu experiencia</h2><p>Tu opinión ayuda a otros usuarios de la comunidad.</p>
  <form id="reviewForm">
@@ -95,8 +91,7 @@ function updateSummary(){
  });
 }
 function renderReviews(){
- const mode=document.getElementById("sortReviews").value;
- const ordered=[...reviews].sort((a,b)=>mode==="high"?b.rating-a.rating||new Date(b.created_at)-new Date(a.created_at):mode==="low"?a.rating-b.rating||new Date(b.created_at)-new Date(a.created_at):new Date(b.created_at)-new Date(a.created_at));
+ const ordered=[...reviews].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
  list.replaceChildren();
  if(!ordered.length){const empty=document.createElement("div");empty.className="empty";const title=document.createElement("b");title.textContent="Sé el primero en opinar";empty.append(title,document.createTextNode("Todavía no hay reseñas publicadas. Comparte tu experiencia con la comunidad."));list.append(empty);return;}
  ordered.forEach(item=>{
@@ -133,7 +128,6 @@ function openEditor(item=null){
 }
 writeButton.addEventListener("click",()=>openEditor());
 document.getElementById("cancelReview").addEventListener("click",()=>panel.classList.remove("open"));
-document.getElementById("sortReviews").addEventListener("change",renderReviews);
 form.addEventListener("submit",async event=>{
  event.preventDefault();
  if(!currentUser){window.location.href=SITE_URL+"login.html?next=resenas.html";return;}
