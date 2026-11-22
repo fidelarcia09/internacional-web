@@ -122,6 +122,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;letter-sp
       <input id="mfaEnrollCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="Código de 6 dígitos" aria-label="Código de 6 dígitos">
     </label>
     <button class="password-submit" id="confirmMfa" type="button">CONFIRMAR Y ACTIVAR</button>
+    <button class="password-submit" id="cancelMfa" type="button">CANCELAR CONFIGURACIÓN</button>
   </div>
   <button class="password-submit" id="startMfa" type="button">ACTIVAR APP DE CÓDIGOS</button>
   <button class="password-submit" id="disableMfa" type="button" hidden>DESACTIVAR VERIFICACIÓN</button>
@@ -238,10 +239,46 @@ const mfaSecret = document.getElementById("mfaSecret");
 const mfaMessage = document.getElementById("mfaMessage");
 const startMfa = document.getElementById("startMfa");
 const confirmMfa = document.getElementById("confirmMfa");
+const cancelMfa = document.getElementById("cancelMfa");
 const disableMfa = document.getElementById("disableMfa");
 let pendingFactorId = null;
 let pendingChallengeId = null;
 let verifiedFactorId = null;
+let mfaVerificationInProgress = false;
+
+async function cleanupUnverifiedMfaFactors(exceptFactorId = null) {
+  const { data, error } = await supabase.auth.mfa.listFactors();
+  if (error) throw error;
+  const pending = (data?.totp || []).filter(factor =>
+    factor.status === "unverified" && factor.id !== exceptFactorId
+  );
+  for (const factor of pending) {
+    const { error: removeError } = await supabase.auth.mfa.unenroll({ factorId: factor.id });
+    if (removeError) throw removeError;
+  }
+  return pending.length;
+}
+
+async function cancelMfaSetup(message = "Configuración cancelada. El código pendiente se ha eliminado.") {
+  const factorId = pendingFactorId;
+  pendingFactorId = null;
+  pendingChallengeId = null;
+  mfaVerificationInProgress = false;
+  mfaSetup.hidden = true;
+  document.getElementById("mfaEnrollCode").value = "";
+  mfaQr.removeAttribute("src");
+  mfaSecret.textContent = "";
+  if (factorId) {
+    const { error } = await supabase.auth.mfa.unenroll({ factorId });
+    if (error) {
+      pendingFactorId = factorId;
+      showMfaMessage("No se pudo eliminar la configuración pendiente. Al volver a Seguridad se intentará limpiar de nuevo.", true);
+      return;
+    }
+  }
+  showMfaMessage(message);
+  await loadMfaState();
+}
 
 function showMfaMessage(message, isError = false) {
   mfaMessage.textContent = message;
@@ -255,6 +292,14 @@ function setMfaBusy(button, busy, text) {
 }
 async function loadMfaState() {
   mfaStatus.textContent = "Comprobando estado...";
+  try {
+    // Al volver a Seguridad, elimina cualquier alta que quedó abandonada.
+    await cleanupUnverifiedMfaFactors(pendingFactorId);
+  } catch (error) {
+    mfaStatus.textContent = "No se pudo limpiar la configuración pendiente";
+    showMfaMessage("No pudimos eliminar una configuración anterior: " + (error?.message || "error desconocido"), true);
+    return;
+  }
   const { data, error } = await supabase.auth.mfa.listFactors();
   if (error) {
     mfaStatus.textContent = "No se pudo consultar el estado";
@@ -282,7 +327,11 @@ mfaToggle.addEventListener("click", async () => {
   const open = mfaPanel.classList.toggle("open");
   mfaToggle.setAttribute("aria-expanded", String(open));
   mfaToggle.querySelector(".security-arrow").textContent = open ? "⌄" : "›";
-  if (open) await loadMfaState();
+  if (open) {
+    await loadMfaState();
+  } else if (pendingFactorId && !mfaVerificationInProgress) {
+    await cancelMfaSetup("Saliste de la configuración. El registro pendiente se eliminó.");
+  }
 });
 
 startMfa.addEventListener("click", async () => {
@@ -326,11 +375,30 @@ startMfa.addEventListener("click", async () => {
   }
 });
 
+cancelMfa.addEventListener("click", async () => {
+  if (mfaVerificationInProgress) return;
+  cancelMfa.disabled = true;
+  await cancelMfaSetup();
+  cancelMfa.disabled = false;
+});
+
+window.addEventListener("pagehide", () => {
+  // Limpieza de mejor esfuerzo al cerrar o abandonar la página.
+  // Si el navegador corta la petición, loadMfaState la repetirá al volver.
+  if (pendingFactorId && !mfaVerificationInProgress) {
+    const factorId = pendingFactorId;
+    pendingFactorId = null;
+    supabase.auth.mfa.unenroll({ factorId }).catch(() => {});
+  }
+});
+
 confirmMfa.addEventListener("click", async () => {
   const code = document.getElementById("mfaEnrollCode").value.trim();
   if (!/^\d{6}$/.test(code)) { showMfaMessage("Introduce el código de 6 dígitos de tu app.", true); return; }
   setMfaBusy(confirmMfa, true, "VERIFICANDO...");
+  mfaVerificationInProgress = true;
   const { error } = await supabase.auth.mfa.verify({ factorId: pendingFactorId, challengeId: pendingChallengeId, code });
+  mfaVerificationInProgress = false;
   setMfaBusy(confirmMfa, false, "CONFIRMAR Y ACTIVAR");
   if (error) { showMfaMessage("El código no es válido o ha caducado. Comprueba la app e inténtalo otra vez.", true); return; }
   document.getElementById("mfaEnrollCode").value = "";
