@@ -64,7 +64,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 <body>
 <main>
 <header class="page-head">
-<div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite">Comprobando si este dispositivo ya tiene las notificaciones activadas.</p></div>
+<div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite" hidden></p></div>
 <button class="push-button" id="push-toggle" type="button" hidden>Activar notificaciones</button>
 </header>
 <section class="notice-list" id="notice-list" aria-live="polite">
@@ -197,7 +197,7 @@ async function enablePush() {
     }
 
     await saveBrowserSubscription(subscription);
-    setPushStatus("Este dispositivo ya tiene las notificaciones activadas y registradas.", "Activar notificaciones", false, true);
+    setPushStatus("", "Activar notificaciones", false, true, true);
   } catch (error) {
     console.error("No se pudieron activar las notificaciones push:", error);
     setPushStatus("No se pudieron activar los avisos. Comprueba la conexión e inténtalo otra vez.", "Reintentar");
