@@ -420,10 +420,10 @@ payButton.addEventListener("click", async () => {
     throw new Error(data?.error || "verification_failed");
   } catch (error) {
     console.error("USDT payment", error);
-    setStatus(errorMessage(error.message) + " La página se recargará automáticamente en 15 segundos.", "error");
+    setStatus(errorMessage(error.message), "error");
     window.setTimeout(() => {
       window.location.reload();
-    }, 15000);
+    }, 7200);
   } finally {
     busy = false;
     if (!txInput.disabled) {
