@@ -64,7 +64,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 <body>
 <main>
 <header class="page-head">
-<div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite">Activa los avisos para recibir las novedades de tus compras en el teléfono.</p></div>
+<div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite">Activa los avisos para recibir novedades de tu cuenta directamente en el teléfono.</p></div>
 <button class="push-button" id="push-toggle" type="button">Activar notificaciones</button>
 </header>
 <section class="notice-list" id="notice-list" aria-live="polite">
@@ -165,7 +165,7 @@ async function refreshPushStatus() {
     }
 
     await saveBrowserSubscription(subscription);
-    setPushStatus("Este dispositivo ya está preparado para recibir avisos de tus compras.", "Desactivar avisos");
+    setPushStatus("Este dispositivo ya está preparado para recibir avisos de tu cuenta.", "Desactivar avisos");
   } catch (error) {
     console.error("No se pudo activar la suscripción push al entrar:", error);
     setPushStatus("No pudimos activar los avisos automáticamente. Puedes reintentarlo aquí.", "Reintentar");
@@ -205,7 +205,7 @@ async function enablePush() {
     }
 
     await saveBrowserSubscription(subscription);
-    setPushStatus("¡Listo! Este dispositivo recibirá las notificaciones de tus compras.", "Desactivar avisos");
+    setPushStatus("¡Listo! Este dispositivo recibirá las notificaciones de tu cuenta.", "Desactivar avisos");
   } catch (error) {
     console.error("No se pudieron activar las notificaciones push:", error);
     setPushStatus("No se pudieron activar los avisos. Comprueba la conexión e inténtalo otra vez.", "Reintentar");
@@ -287,6 +287,12 @@ function dayTitle(value) {
 }
 
 function iconFor(type) {
+  if (type.startsWith("deposit_")) {
+    return '<svg viewBox="0 0 24 24"><path d="M12 3v18m6-14H9a3 3 0 0 0 0 6h6a3 3 0 0 1 0 6H6"/></svg>';
+  }
+  if (type === "password_changed" || type.startsWith("two_factor_")) {
+    return '<svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3"/></svg>';
+  }
   if (type === "purchase_completed") {
     return '<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="9"/></svg>';
   }
@@ -300,7 +306,7 @@ function renderNotifications(rows) {
   if (!rows.length) {
     list.replaceChildren(makeEmpty(
       "Todo al día",
-      "Cuando se cree una compra o cambie su estado final, recibirás aquí la notificación."
+      "Cuando haya novedades sobre tus compras, depósitos o la seguridad de tu cuenta, aparecerán aquí."
     ));
     return;
   }
