@@ -247,15 +247,21 @@ let pendingChallengeId = null;
 let verifiedFactorId = null;
 let mfaVerificationInProgress = false;
 
+function getAllMfaFactors(data) {
+  // "all" incluye factores de cualquier tipo; el nombre debe ser único
+  // entre todos los factores de la cuenta, no solo entre los TOTP.
+  return data?.all || [...(data?.totp || []), ...(data?.phone || [])];
+}
+
 async function cleanupUnverifiedMfaFactors(exceptFactorId = null) {
   const { data, error } = await supabase.auth.mfa.listFactors();
   if (error) throw error;
-  const pending = (data?.totp || []).filter(factor =>
+  const pending = getAllMfaFactors(data).filter(factor =>
     factor.status === "unverified" && factor.id !== exceptFactorId
   );
   for (const factor of pending) {
     const { error: removeError } = await supabase.auth.mfa.unenroll({ factorId: factor.id });
-    if (removeError) throw removeError;
+    if (removeError && removeError.code !== "mfa_factor_not_found") throw removeError;
   }
   return pending.length;
 }
@@ -343,28 +349,44 @@ startMfa.addEventListener("click", async () => {
   setMfaBusy(startMfa, true, "PREPARANDO...");
   mfaMessage.classList.remove("show", "error");
   try {
+    // Primero revisamos TODOS los tipos de factor: Supabase exige que el
+    // friendly name sea único en la cuenta completa.
     const { data: factors, error: listError } = await supabase.auth.mfa.listFactors();
     if (listError) throw listError;
-    const unverified = (factors?.totp || []).filter(factor => factor.status === "unverified");
-    for (const factor of unverified) {
+    const existingNamedFactors = getAllMfaFactors(factors).filter(
+      factor => factor.friendly_name === "App de códigos"
+    );
+    const verifiedNamedFactor = existingNamedFactors.find(factor => factor.status === "verified");
+    if (verifiedNamedFactor) {
+      await loadMfaState();
+      throw new Error("Ya existe un método verificado con el nombre «App de códigos». No lo eliminamos por seguridad.");
+    }
+
+    // Solo se eliminan factores sin verificar. Los verificados jamás se tocan.
+    for (const factor of existingNamedFactors.filter(factor => factor.status === "unverified")) {
       const { error: cleanupError } = await supabase.auth.mfa.unenroll({ factorId: factor.id });
-      if (cleanupError) {
-        throw new Error("Hay una configuración anterior sin terminar y no se pudo limpiar: " + cleanupError.message);
+      if (cleanupError && cleanupError.code !== "mfa_factor_not_found") {
+        throw new Error("No se pudo eliminar la configuración pendiente anterior: " + cleanupError.message);
       }
     }
 
-    // Confirma que el factor pendiente ya no existe antes de crear uno nuevo.
+    // Volvemos a consultar al servidor para confirmar que el nombre quedó libre.
     const { data: refreshedFactors, error: refreshError } = await supabase.auth.mfa.listFactors();
     if (refreshError) throw refreshError;
-    const remainingPending = (refreshedFactors?.totp || []).some(factor =>
-      factor.status === "unverified" && factor.friendly_name === "App de códigos"
+    const nameStillInUse = getAllMfaFactors(refreshedFactors).some(
+      factor => factor.friendly_name === "App de códigos"
     );
-    if (remainingPending) {
-      throw new Error("Ya existe una configuración pendiente de App de códigos. Actualiza la página y vuelve a intentarlo.");
+    if (nameStillInUse) {
+      throw new Error("Supabase todavía registra «App de códigos». No crearemos otro factor ni borraremos uno verificado. Cierra sesión y vuelve a entrar para actualizar la sesión.");
     }
 
     const { data, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: "App de códigos" });
-    if (error) throw error;
+    if (error) {
+      if (error.code === "mfa_factor_name_conflict") {
+        throw new Error("Supabase detectó otro factor con ese nombre. No se eliminó ningún método verificado. Vuelve a cargar Seguridad y revisa el estado.");
+      }
+      throw error;
+    }
     pendingFactorId = data.id;
     mfaQr.src = data.totp.qr_code;
     mfaSecret.textContent = data.totp.secret;
