@@ -224,6 +224,7 @@ let signedIn = false;
 let countdownInterval = null;
 let countdownStartedAt = 0;
 let countdownRemainingMs = 0;
+let countdownReady = false;
 const timerBox = document.getElementById("depositTimer");
 const timerText = document.getElementById("depositCountdown");
 
@@ -245,7 +246,7 @@ function validTxid(value) {
   return /^0x[a-fA-F0-9]{64}$/.test(value.trim());
 }
 function updatePayButton() {
-  payButton.disabled = !signedIn || !validTxid(txInput.value) || busy;
+  payButton.disabled = !signedIn || !validTxid(txInput.value) || busy || (!!activeDeposit && !countdownReady);
 }
 async function startServerCountdown(deposit) {
   if (countdownInterval) clearInterval(countdownInterval);
@@ -264,6 +265,8 @@ async function startServerCountdown(deposit) {
     return;
   }
   countdownRemainingMs = deadline - serverNow;
+  countdownReady = true;
+  updatePayButton();
   countdownStartedAt = performance.now();
   const tick = async () => {
     const remaining = Math.max(0, countdownRemainingMs - (performance.now() - countdownStartedAt));
