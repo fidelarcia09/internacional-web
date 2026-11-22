@@ -214,19 +214,19 @@ function makeEmpty(title, description) {
   box.append(h,p);
   return box;
 }
-function gameImageForOrder(title) {
-  const name=String(title||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
-  const games=[
-    {keys:["free fire","freefire"],src:"fuentes/free_fire.webp",alt:"Free Fire"},
-    {keys:["mobile legends","mobilelegend","mlbb"],src:"fuentes/grok_1795312374293.webp",alt:"Mobile Legends"},
-    {keys:["pubg"],src:"fuentes/grok_1795312370899.webp",alt:"PUBG Mobile"},
-    {keys:["genshin"],src:"fuentes/genshin_impact.webp",alt:"Genshin Impact"},
-    {keys:["honor of kings","honorofkings","hok"],src:"fuentes/honor_of_kings.webp",alt:"Honor of Kings"},
-    {keys:["arena breakout","arenabreakout"],src:"fuentes/arena_breakout.webp",alt:"Arena Breakout"},
-    {keys:["blood strike","bloodstrike"],src:"fuentes/blood_strike.webp",alt:"Blood Strike"},
-    {keys:["call of duty","cod mobile","codm"],src:"fuentes/call_of_duty.webp",alt:"Call of Duty Mobile"}
-  ];
-  return games.find(game=>game.keys.some(key=>name.includes(key)))||null;
+function gameImageForOrder(game) {
+  const key=String(game||"").trim().toLowerCase().replace(/_/g,"-").replace(/\s+/g,"-");
+  const games={
+    "free-fire":{src:"fuentes/free_fire.webp",alt:"Free Fire"},
+    "mobile-legends":{src:"fuentes/grok_1795312374293.webp",alt:"Mobile Legends"},
+    "pubg-mobile":{src:"fuentes/grok_1795312370899.webp",alt:"PUBG Mobile"},
+    "genshin-impact":{src:"fuentes/genshin_impact.webp",alt:"Genshin Impact"},
+    "honor-of-kings":{src:"fuentes/honor_of_kings.webp",alt:"Honor of Kings"},
+    "arena-breakout":{src:"fuentes/arena_breakout.webp",alt:"Arena Breakout"},
+    "blood-strike":{src:"fuentes/blood_strike.webp",alt:"Blood Strike"},
+    "call-of-duty-mobile":{src:"fuentes/call_of_duty.webp",alt:"Call of Duty Mobile"}
+  };
+  return games[key]||null;
 }
 function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDeposit=false,isOrder=false,playerId=null,gameImage=null}) {
   const item=document.createElement("article"); item.className="history-item";
@@ -315,7 +315,7 @@ function renderOrders(rows) {
     orders.forEach(order=>group.append(makeHistoryItem({
       title:order.description,code:order.order_code,playerId:order.player_id,
       amount:order.amount_usdt,date:order.created_at,status:order.status,isOrder:true,
-      gameImage:gameImageForOrder(order.description)
+      gameImage:gameImageForOrder(order.game)
     })));
     list.append(group);
   });
@@ -353,7 +353,7 @@ async function loadHistory() {
   }
 
   const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
-    supabase.from("usdt_orders").select("id,order_code,description,player_id,amount_usdt,status,created_at").eq("user_id",session.user.id).order("created_at",{ascending:false}),
+    supabase.from("usdt_orders").select("id,order_code,description,player_id,amount_usdt,status,created_at,game").eq("user_id",session.user.id).order("created_at",{ascending:false}),
     supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).eq("status","confirmed").order("created_at",{ascending:false}),
     supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
   ]);
