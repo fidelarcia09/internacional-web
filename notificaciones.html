@@ -30,7 +30,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .notice-time{display:block;margin-top:8px;color:#777b85;font-size:9px}
 .push-description{margin:9px 0 0;color:#92959e;font-size:10px;line-height:1.6;max-width:390px}
 .push-button{flex:0 0 auto;min-height:42px;padding:0 15px;border:1px solid #ff790078;border-radius:12px;background:linear-gradient(110deg,#ff7900,#ff9b35);color:#17100a;font:800 10px var(--font);letter-spacing:.2px;cursor:pointer;box-shadow:0 5px 18px #ff79001c}
-.push-button:disabled{opacity:.65;cursor:default}
+.push-button:disabled{opacity:.65;cursor:default}.push-button[hidden]{display:none!important}
 @media(max-width:520px){.page-head{align-items:flex-start;flex-direction:column}.push-button{width:100%}.push-description{max-width:none}}
 
 .empty-state{min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 18px}
@@ -99,10 +99,11 @@ function base64UrlToUint8Array(value) {
   return Uint8Array.from(raw, char => char.charCodeAt(0));
 }
 
-function setPushStatus(message, buttonText, disabled = false) {
+function setPushStatus(message, buttonText, disabled = false, hideButton = false) {
   pushStatus.textContent = message;
   pushToggle.textContent = buttonText;
   pushToggle.disabled = disabled;
+  pushToggle.hidden = hideButton;
 }
 
 async function getPushRegistration() {
@@ -165,7 +166,7 @@ async function refreshPushStatus() {
     }
 
     await saveBrowserSubscription(subscription);
-    setPushStatus("Este dispositivo ya está preparado para recibir avisos de tu cuenta.", "Desactivar avisos");
+    setPushStatus("Este dispositivo ya tiene las notificaciones activadas y registradas.", "Activar notificaciones", false, true);
   } catch (error) {
     console.error("No se pudo activar la suscripción push al entrar:", error);
     setPushStatus("No pudimos activar los avisos automáticamente. Puedes reintentarlo aquí.", "Reintentar");
@@ -205,7 +206,7 @@ async function enablePush() {
     }
 
     await saveBrowserSubscription(subscription);
-    setPushStatus("¡Listo! Este dispositivo recibirá las notificaciones de tu cuenta.", "Desactivar avisos");
+    setPushStatus("Este dispositivo ya tiene las notificaciones activadas y registradas.", "Activar notificaciones", false, true);
   } catch (error) {
     console.error("No se pudieron activar las notificaciones push:", error);
     setPushStatus("No se pudieron activar los avisos. Comprueba la conexión e inténtalo otra vez.", "Reintentar");
@@ -229,7 +230,7 @@ async function disablePush() {
       if (error) throw error;
       await subscription.unsubscribe();
     }
-    setPushStatus("Los avisos push están desactivados en este dispositivo.", "Activar notificaciones");
+    setPushStatus("Los avisos push están desactivados en este dispositivo.", "Activar notificaciones", false, false);
   } catch (error) {
     console.error("No se pudieron desactivar las notificaciones push:", error);
     setPushStatus("No se pudo desactivar este dispositivo. Inténtalo otra vez.", "Reintentar");
