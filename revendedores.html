@@ -219,14 +219,24 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 @media(max-width:360px){.plan-tile strong{font-size:9px}.business-option{gap:6px;padding:8px 6px}.business-option strong{font-size:9px}}
 </style>
 
+<style id="reseller-professional-icons">
+/* Iconografía SVG uniforme y profesional */
+.plan-symbol svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.stat-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.business-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.api-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.reseller-primary .primary-icon{width:31px;height:31px;display:grid;place-items:center;border:1.5px solid currentColor;border-radius:50%;font-size:0}
+.reseller-primary .primary-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.reseller-primary b{width:25px;height:25px;display:grid;place-items:center;font-size:0}
+.reseller-primary b svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
 </head>
 <body>
 <main class="partner-page reseller-dashboard">
   <header class="reseller-header">
     <div class="reseller-kicker"><i></i> GAMERS GOLD TOP-UP</div>
     <h1>Panel de <em>revendedor</em></h1>
-    <p>Administra tu negocio y consulta el progreso de tus recargas.</p>
-  </header>
+    </header>
 
   <section class="current-plan">
     <div class="plan-top"><span>Tu plan actual</span><b class="plan-status"><i></i> Por configurar</b></div>
@@ -236,33 +246,33 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
   <section class="plan-section" aria-label="Niveles de revendedor">
     <div class="section-title"><span></span><h2>Planes y niveles</h2></div>
     <div class="plan-grid">
-      <article class="plan-tile"><span class="plan-symbol">I</span><strong>Revendedor</strong><small>Nivel inicial</small></article>
-      <article class="plan-tile elite"><span class="plan-symbol">II</span><strong>Elite</strong><small>Nivel avanzado</small></article>
-      <article class="plan-tile reseller"><span class="plan-symbol">III</span><strong>Reseller</strong><small>Nivel profesional</small></article>
-      <article class="plan-tile partner"><span class="plan-symbol">IV</span><strong>Partner</strong><small>Nivel premium</small></article>
+      <article class="plan-tile"><span class="plan-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l4 3 5-6 5 6 4-3-2 11H5L3 7Z"/><path d="M5 21h14"/></svg></span><strong>Revendedor</strong><small>Nivel inicial</small></article>
+      <article class="plan-tile elite"><span class="plan-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l4 3 5-6 5 6 4-3-2 11H5L3 7Z"/><path d="M5 21h14"/></svg></span><strong>Elite</strong><small>Nivel avanzado</small></article>
+      <article class="plan-tile reseller"><span class="plan-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 2.4-5 6-5s6 1.5 6 5m1-10 2 2 3-3"/></svg></span><strong>Reseller</strong><small>Nivel profesional</small></article>
+      <article class="plan-tile partner"><span class="plan-symbol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 20 5v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5l8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><strong>Partner</strong><small>Nivel premium</small></article>
     </div>
   </section>
 
   <section class="reseller-stats">
-    <article class="reseller-stat"><span class="stat-icon">↗</span><div><small>RECARGAS DEL MES</small><strong id="recargas-mes-count">—</strong></div></article>
-    <article class="reseller-stat"><span class="stat-icon">％</span><div><small>TU DESCUENTO</small><strong>—</strong><em>Se configurará más adelante</em></div></article>
+    <article class="reseller-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5m0 14h16"/><path d="m7 14 4-4 3 2 5-6"/><path d="M15 6h4v4"/></svg></span><div><small>RECARGAS DEL MES</small><strong id="recargas-mes-count">—</strong></div></article>
+    <article class="reseller-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m19 5-14 14"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg></span><div><small>TU DESCUENTO</small><strong>—</strong><em>Se configurará más adelante</em></div></article>
   </section>
 
-  <a class="reseller-primary" href="tienda.html"><span>＋</span> Hacer una recarga <b>›</b></a>
+  <a class="reseller-primary" href="tienda.html"><span class="primary-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span> Hacer una recarga <b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></b></a>
 
   <section class="business-section">
     <div class="section-title"><span></span><h2>Tu negocio</h2></div>
     <div class="business-grid">
-      <a class="business-option" href="mis-compras.html"><span class="business-icon">↗</span><span><strong>Mis ventas</strong><small>Actividad e historial</small></span><b>›</b></a>
-      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">▤</span><span><strong>Lista de precios</strong><small>Copiar y compartir</small></span><b>Pronto</b></a>
-      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">♙</span><span><strong>Clientes frecuentes</strong><small>Tus IDs guardados</small></span><b>Pronto</b></a>
-      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">◇</span><span><strong>Tu marca</strong><small>Logo y comprobantes</small></span><b>Pronto</b></a>
-      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">♧</span><span><strong>Equipo de trabajo</strong><small>Miembros y permisos</small></span><b>Pronto</b></a>
+      <a class="business-option" href="mis-compras.html"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17 9 12l4 3 7-8"/><path d="M14 7h6v6"/></svg></span><span><strong>Mis ventas</strong><small>Actividad e historial</small></span><b>›</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span><span><strong>Lista de precios</strong><small>Copiar y compartir</small></span><b>Pronto</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 2.4-5 6-5s6 1.5 6 5m2-11a3 3 0 0 1 0 6m1 2c2 .5 3 1.5 3 3"/></svg></span><span><strong>Clientes frecuentes</strong><small>Tus IDs guardados</small></span><b>Pronto</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 8v8l-9 5-9-5V8l9-5Z"/><path d="m8 12 2.5 2.5L16 9"/></svg></span><span><strong>Tu marca</strong><small>Logo y comprobantes</small></span><b>Pronto</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="8" r="2.5"/><circle cx="12" cy="5" r="2.5"/><path d="M2.5 19c0-2.5 1.8-4 4.5-4m14.5 4c0-2.5-1.8-4-4.5-4M6 21c0-3.5 2.2-5 6-5s6 1.5 6 5"/></svg></span><span><strong>Equipo de trabajo</strong><small>Miembros y permisos</small></span><b>Pronto</b></a>
     </div>
   </section>
 
   <section class="api-panel">
-    <div class="api-heading"><span class="api-icon">⌘</span><div><h2>Acceso API</h2><small><i></i> Preparando integración</small></div></div>
+    <div class="api-heading"><span class="api-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-2-11-4 14"/></svg></span><div><h2>Acceso API</h2><small><i></i> Preparando integración</small></div></div>
     <p>Conecta tu tienda con la API de Gamers Gold cuando esté disponible.</p>
     <button type="button" disabled>Gestionar API <span>›</span></button>
     <a class="api-docs" href="#" aria-disabled="true">Ver documentación <span>↗</span></a>
