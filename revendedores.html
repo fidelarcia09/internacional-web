@@ -130,23 +130,142 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 .vendor-action.primary{border-color:#ff7928;background:linear-gradient(110deg,#321b0e,#171318)}
 @media(max-width:620px){.partner-page{width:90%;padding-top:0}.recargas-summary{margin-bottom:19px;padding:15px}.vendor-hero{padding:7px 0 19px}.vendor-hero h1{font-size:clamp(39px,11vw,56px)}.vendor-actions{grid-template-columns:1fr;gap:9px}.vendor-action{min-height:56px;padding:0 15px}}
 </style>
+
+<style id="vendor-dashboard-reference">
+.vendor-dashboard{width:min(900px,92%);padding-top:12px;padding-bottom:24px}
+.vendor-welcome{position:relative;isolation:isolate;min-height:205px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:27px 27px;margin:0 0 15px;overflow:hidden;border:1px solid #ff6b2477;border-radius:22px;background:linear-gradient(112deg,#21130d 0%,#121419 57%,#0d0e12 100%);box-shadow:0 12px 30px #0006,inset 0 0 25px #ff6b2410}
+.vendor-welcome:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(135deg,transparent 48%,#ff6b2410 48.2%,transparent 48.7%),linear-gradient(45deg,transparent 67%,#ffbd1910 67.2%,transparent 67.7%);pointer-events:none}
+.vendor-welcome-copy{position:relative;z-index:1;max-width:70%}
+.vendor-kicker{display:flex;align-items:center;gap:8px;margin-bottom:12px;color:#ffbd19;font-size:10px;font-weight:850;letter-spacing:1.7px}
+.vendor-kicker i{width:7px;height:7px;border-radius:50%;background:#ff6b24;box-shadow:0 0 10px #ff6b24}
+.vendor-welcome h1{margin:0;font:900 clamp(36px,6vw,58px)/.95 var(--display);letter-spacing:-.6px;text-transform:uppercase}
+.vendor-welcome h1 em{display:block;margin-top:5px;color:#ff6b24;font-style:italic}
+.vendor-welcome p{max-width:390px;margin:12px 0 0;color:#c2c2c8;font-size:13px;line-height:1.55}
+.vendor-welcome-mark{position:relative;z-index:1;flex:0 0 116px;width:116px;height:116px;display:grid;place-items:center;color:#ffbd19;border:1px solid #ffbd1955;border-radius:27px;background:linear-gradient(145deg,#ffbd191a,#ff6b240b);box-shadow:0 0 28px #ff8b2022,inset 0 0 22px #ffbd1910;transform:rotate(3deg)}
+.vendor-welcome-mark svg{width:83px;height:83px;filter:drop-shadow(0 0 9px #ff9a3444)}
+.vendor-welcome-glow{position:absolute;z-index:-1;right:5%;top:-80px;width:270px;height:270px;border-radius:50%;background:#ff6b2414;filter:blur(42px);pointer-events:none}
+.vendor-stat-card{position:relative;display:flex;align-items:center;gap:16px;min-height:112px;margin-bottom:14px;padding:17px 20px;overflow:hidden;border:1px solid #ffffff18;border-radius:18px;background:linear-gradient(110deg,#17191f,#101115);box-shadow:0 8px 22px #0004}
+.vendor-stat-icon{flex:0 0 58px;width:58px;height:58px;display:grid;place-items:center;border:1px solid #ff6b244c;border-radius:50%;background:#ff6b2415;color:#ff8a35}
+.vendor-stat-icon svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.vendor-stat-copy{display:flex;flex-direction:column;gap:2px}
+.vendor-stat-copy span{color:#b9bac1;font-size:10px;font-weight:800;letter-spacing:1.2px}
+.vendor-stat-copy strong{color:#fff;font:900 35px/1.05 var(--display)}
+.vendor-stat-copy small{color:#858791;font-size:10px}
+.vendor-stat-accent{position:absolute;right:0;top:0;bottom:0;width:4px;background:linear-gradient(#ffbd19,#ff6b24)}
+.vendor-recharge{min-height:68px;display:flex;align-items:center;gap:14px;margin:0 0 28px;padding:0 19px;border:1px solid #ff9a43;border-radius:15px;background:linear-gradient(105deg,#ff8a24,#ff6b24 58%,#e9541a);color:#101114;font-size:16px;font-weight:900;box-shadow:0 8px 22px #ff6b2433;transition:transform .2s,filter .2s}
+.vendor-recharge:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.vendor-recharge-icon{width:36px;height:36px;display:grid;place-items:center;border:1.5px solid #17171788;border-radius:50%}
+.vendor-recharge-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round}
+.vendor-recharge-arrow{width:25px;height:25px;margin-left:auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.vendor-section-heading{display:flex;align-items:center;gap:11px;margin:0 0 13px}
+.vendor-section-heading h2{margin:0;color:#f5f4f1;font:800 25px/1 var(--display);letter-spacing:.2px}
+.vendor-section-line{width:4px;height:25px;border-radius:5px;background:#ff6b24;box-shadow:0 0 10px #ff6b2455}
+.vendor-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.vendor-shortcut{min-height:91px;display:flex;align-items:center;gap:13px;padding:13px 14px;border:1px solid #ffffff16;border-radius:17px;background:linear-gradient(115deg,#17191f,#111318);box-shadow:0 7px 18px #0003;transition:border-color .2s,transform .2s,background .2s}
+.vendor-shortcut:hover{border-color:#ff6b2477;background:#1b1715;transform:translateY(-2px)}
+.vendor-shortcut-icon{flex:0 0 52px;width:52px;height:52px;display:grid;place-items:center;border:1px solid #ff6b2455;border-radius:50%;background:linear-gradient(145deg,#ff8a261e,#ff6b240c);color:#ff8a35}
+.vendor-shortcut-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.vendor-shortcut-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.vendor-shortcut-copy strong{color:#f5f4f1;font-size:13px;font-weight:800}
+.vendor-shortcut-copy small{color:#92949c;font-size:10px}
+.vendor-shortcut-arrow{width:19px;height:19px;flex:0 0 19px;margin-left:auto;fill:none;stroke:#ff6b24;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:620px){
+ .vendor-dashboard{width:92%;padding-top:9px;padding-bottom:20px}
+ .vendor-welcome{min-height:178px;margin-bottom:12px;padding:20px 17px;border-radius:19px}
+ .vendor-welcome-copy{max-width:72%}
+ .vendor-kicker{font-size:8px;letter-spacing:1.2px;margin-bottom:10px}
+ .vendor-welcome h1{font-size:clamp(34px,9vw,47px)}
+ .vendor-welcome p{font-size:11px;margin-top:9px}
+ .vendor-welcome-mark{flex-basis:78px;width:78px;height:78px;border-radius:20px}
+ .vendor-welcome-mark svg{width:57px;height:57px}
+ .vendor-stat-card{min-height:94px;margin-bottom:11px;padding:13px 15px;gap:12px;border-radius:15px}
+ .vendor-stat-icon{flex-basis:48px;width:48px;height:48px}
+ .vendor-stat-icon svg{width:25px;height:25px}
+ .vendor-stat-copy span{font-size:9px}
+ .vendor-stat-copy strong{font-size:31px}
+ .vendor-stat-copy small{font-size:9px}
+ .vendor-recharge{min-height:60px;margin-bottom:23px;padding:0 14px;font-size:14px;border-radius:13px}
+ .vendor-recharge-icon{width:32px;height:32px}
+ .vendor-section-heading h2{font-size:23px}
+ .vendor-shortcuts{gap:9px}
+ .vendor-shortcut{min-height:84px;gap:9px;padding:10px 9px;border-radius:14px}
+ .vendor-shortcut-icon{flex-basis:42px;width:42px;height:42px}
+ .vendor-shortcut-icon svg{width:23px;height:23px}
+ .vendor-shortcut-copy strong{font-size:11px}
+ .vendor-shortcut-copy small{font-size:9px}
+ .vendor-shortcut-arrow{width:16px;height:16px;flex-basis:16px}
+}
+@media(max-width:360px){
+ .vendor-welcome{padding:17px 13px}
+ .vendor-welcome-mark{flex-basis:66px;width:66px;height:66px}
+ .vendor-welcome-mark svg{width:49px;height:49px}
+ .vendor-shortcut{gap:7px;padding:9px 7px}
+ .vendor-shortcut-icon{flex-basis:37px;width:37px;height:37px}
+ .vendor-shortcut-copy strong{font-size:10px}
+ .vendor-shortcut-copy small{font-size:8px}
+}
+</style>
+
 </head>
 <body>
-<main class="partner-page">
-<section class="recargas-summary" aria-label="Resumen de recargas">
-  <div class="recargas-summary-top"><span>RECARGAS HECHAS</span><strong id="recargas-hechas-count">—</strong></div>
-  <div class="recargas-summary-track" aria-hidden="true"><span></span></div>
-</section>
-<section class="vendor-hero">
-  <div class="vendor-kicker">CANAL DE REVENDEDOR</div>
-  <h1>Tu espacio <em>de vendedor</em></h1>
-  <p>Gestiona tus recargas y consulta tus compras.</p>
-</section>
-<nav class="vendor-actions" aria-label="Opciones de revendedor">
-  <a class="vendor-action primary" href="tienda.html"><span>Tienda</span><b aria-hidden="true">›</b></a>
-  <a class="vendor-action" href="mis-compras.html"><span>Mis compras</span><b aria-hidden="true">›</b></a>
-  <a class="vendor-action" href="cuenta.html"><span>Mi cuenta</span><b aria-hidden="true">›</b></a>
-</nav>
+<main class="partner-page vendor-dashboard">
+  <section class="vendor-welcome" aria-label="Panel de revendedor">
+    <div class="vendor-welcome-copy">
+      <div class="vendor-kicker"><i></i> GAMERS GOLD TOP-UP</div>
+      <h1>Panel de <em>revendedor</em></h1>
+      <p>Tu espacio para gestionar las recargas y seguir tu actividad.</p>
+    </div>
+    <div class="vendor-welcome-mark" aria-hidden="true">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M50 8 82 20v26c0 22-13 37-32 47C31 83 18 68 18 46V20L50 8Z" stroke="currentColor" stroke-width="2.5"/>
+        <path d="m29 57 13-15 10 10 19-23M29 68h42" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="vendor-welcome-glow" aria-hidden="true"></span>
+  </section>
+
+  <section class="vendor-stat-card" aria-label="Resumen de recargas">
+    <div class="vendor-stat-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M4 19V10m5 9V5m5 14v-7m5 7V8"/></svg>
+    </div>
+    <div class="vendor-stat-copy">
+      <span>RECARGAS HECHAS</span>
+      <strong id="recargas-hechas-count">—</strong>
+      <small>Recargas completadas en tu cuenta</small>
+    </div>
+    <div class="vendor-stat-accent" aria-hidden="true"></div>
+  </section>
+
+  <a class="vendor-recharge" href="tienda.html">
+    <span class="vendor-recharge-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    </span>
+    <span>Hacer una recarga</span>
+    <svg class="vendor-recharge-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+  </a>
+
+  <section class="vendor-business" aria-labelledby="vendor-business-title">
+    <div class="vendor-section-heading">
+      <span class="vendor-section-line"></span>
+      <h2 id="vendor-business-title">Tu negocio</h2>
+    </div>
+    <div class="vendor-shortcuts">
+      <a class="vendor-shortcut" href="mis-compras.html">
+        <span class="vendor-shortcut-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 17 9 12l4 3 7-8M14 7h6v6"/></svg>
+        </span>
+        <span class="vendor-shortcut-copy"><strong>Mis compras</strong><small>Actividad e historial</small></span>
+        <svg class="vendor-shortcut-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+      <a class="vendor-shortcut" href="cuenta.html">
+        <span class="vendor-shortcut-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-3.5 3-5.3 7-5.3s6.3 1.8 7 5.3"/></svg>
+        </span>
+        <span class="vendor-shortcut-copy"><strong>Mi cuenta</strong><small>Datos y configuración</small></span>
+        <svg class="vendor-shortcut-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+    </div>
+  </section>
 </main>
 <nav class="mobile-nav" aria-label="Navegación inferior">
 <a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
