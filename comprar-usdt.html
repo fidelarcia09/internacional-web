@@ -135,14 +135,14 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 </div>
 <div class="divider"></div>
 <h2 class="pay-title"><svg viewBox="0 0 36 36"><path d="M18 3 31 9v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><circle cx="18" cy="17" r="5"/><path d="M18 22v5"/></svg>Dirección de pago</h2>
-<div class="address"><span><strong style="display:block;color:#f4eee7;font-size:12px;word-break:break-all">0xd2364c69d339bbd96915BC80b4dbAc23c9209f9C</strong><small style="display:block;margin-top:5px;color:#65e6a6;font-size:10px;font-weight:800;letter-spacing:.5px">USDT (BINANCE-PEG BSC-USD) · BEP20 (BNB SMART CHAIN)</small><small style="display:block;margin-top:5px;color:#b6a89b;font-size:9px;word-break:break-all">Contrato: 0x55d398326f99059fF775485246999027B3197955 · <a href="https://bscscan.com/token/0x55d398326f99059fF775485246999027B3197955" target="_blank" rel="noopener noreferrer" style="color:#ffb34e;text-decoration:underline">verificar</a></small></span><button class="copy" id="copyAddress" type="button" aria-label="Copiar dirección" title="Copiar dirección" style="opacity:1;cursor:pointer"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
+<div class="address"><span><strong style="display:block;color:#f4eee7;font-size:12px;word-break:break-all">0xd2364c69d339bbd96915BC80b4dbAc23c9209f9C</strong><small style="display:block;margin-top:5px;color:#65e6a6;font-size:10px;font-weight:800;letter-spacing:.5px">BINANCE-PEG BSC-USD · BEP20 (BNB SMART CHAIN)</small><small style="display:block;margin-top:4px;color:#d1a77a;font-size:9px">Activo vinculado al dólar; no es USD₮ oficial emitido por Tether.</small><small style="display:block;margin-top:5px;color:#b6a89b;font-size:9px;word-break:break-all">Contrato: 0x55d398326f99059fF775485246999027B3197955 · <a href="https://bscscan.com/token/0x55d398326f99059fF775485246999027B3197955" target="_blank" rel="noopener noreferrer" style="color:#ffb34e;text-decoration:underline">verificar</a></small></span><button class="copy" id="copyAddress" type="button" aria-label="Copiar dirección" title="Copiar dirección" style="opacity:1;cursor:pointer"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
 <button class="pay-button" id="createDeposit" type="button"><svg viewBox="0 0 48 36" aria-hidden="true"><rect x="3" y="4" width="42" height="28" rx="4" fill="currentColor" stroke="none"/><path d="M4 12h40M10 23h11M10 27h7" stroke="#ff9a00" stroke-width="2.5" stroke-linecap="round"/><rect x="30" y="22" width="8" height="5" rx="1" fill="#ff9a00" stroke="none"/></svg>Crear pedido</button>
 <div class="order-info" id="orderInfo" hidden>
   Pedido creado. Envía exactamente <strong id="orderAmount">— USDT</strong> a la dirección indicada.
   <span class="order-code" id="orderCode"></span>
   <small>Red: BNB Smart Chain · BEP20</small>
 </div>
-<p class="payment-status" id="paymentStatus" role="status" aria-live="polite">Selecciona un importe y crea tu pedido. Después envía el importe exacto y verifica el TXID.</p>
+<p class="payment-status" id="paymentStatus" role="status" aria-live="polite">Selecciona un importe y crea tu pedido. Después envía exactamente ese importe de BSC-USD y verifica el TXID.</p>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
 <input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
 <button class="verify-button" id="verifyTx" type="button" disabled>Verificar pago</button>
@@ -163,8 +163,8 @@ const packages=[...document.querySelectorAll('.package')];
 function updateEstimate(){
  const amount=Number(usd.value);
  result.textContent=Number.isFinite(amount)&&amount>=0
-  ?amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:8})+' USDT'
-  :'— USDT';
+  ?amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:8})+' BSC-USD'
+  :'— BSC-USD';
 }
 function selectPackage(button){
  packages.forEach(item=>{
@@ -237,12 +237,13 @@ function lockAmount(locked) {
 function displayDeposit(deposit) {
   activeDeposit = deposit;
   orderInfo.hidden = false;
-  orderAmount.textContent = formatAmount(deposit.amount_usdt) + " USDT";
+  orderAmount.textContent = formatAmount(deposit.amount_usdt) + " BSC-USD";
   orderCode.textContent = deposit.deposit_code;
   lockAmount(true);
   txInput.disabled = false;
   txInput.value = deposit.payment_reference || "";
   verifyButton.disabled = !txInput.value.trim();
+  verifyButton.textContent = "Verificar pago";
   createButton.disabled = true;
   createButton.textContent = "Pedido creado";
 }
@@ -265,7 +266,7 @@ async function restorePendingDeposit() {
   const { data: sessionData } = await supabase.auth.getSession();
   if (!sessionData.session) {
     createButton.disabled = true;
-    setStatus("Inicia sesión en tu cuenta para crear un pedido de USDT.", "error");
+    setStatus("Inicia sesión en tu cuenta para crear un pedido de BSC-USD.", "error");
     return;
   }
   const { data, error } = await supabase
@@ -320,7 +321,7 @@ createButton.addEventListener("click", async () => {
       payment_reference: null
     };
     displayDeposit(deposit);
-    setStatus("Pedido creado. Envía exactamente " + formatAmount(amount) + " USDT por BEP20 a la dirección indicada. Luego pega el TXID.", "success");
+    setStatus("Pedido creado. Envía exactamente " + formatAmount(amount) + " BSC-USD por BEP20 a la dirección indicada. Luego pega el TXID.", "success");
   } catch (error) {
     console.error("create USDT deposit", error);
     createButton.disabled = false;
@@ -358,7 +359,7 @@ verifyButton.addEventListener("click", async () => {
       return;
     }
     if (data?.status === "confirmed") {
-      setStatus("¡Pago verificado! Se acreditaron " + formatAmount(data.credited || activeDeposit.amount_usdt) + " USDT en tu billetera.", "success");
+      setStatus("¡Pago verificado! Se acreditaron " + formatAmount(data.credited || activeDeposit.amount_usdt) + " BSC-USD en tu billetera.", "success");
       txInput.disabled = true;
       verifyButton.disabled = true;
       verifyButton.textContent = "Pago confirmado";
