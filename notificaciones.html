@@ -129,6 +129,8 @@ async function saveBrowserSubscription(subscription) {
 
 async function refreshPushStatus() {
   if (!currentUserId) return;
+  // Mantener oculto cualquier texto de estado mientras se comprueba el dispositivo.
+  setPushStatus("", "Activar notificaciones", false, true, true);
   if (!("Notification" in window) || !("serviceWorker" in navigator) || !("PushManager" in window)) {
     setPushStatus("Tu navegador no permite recibir notificaciones push web.", "No compatible", true, false);
     return;
