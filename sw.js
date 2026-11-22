@@ -1,11 +1,14 @@
-const CACHE_NAME = "internacional-web-home-image-v8";
+const CACHE_NAME = "internacional-web-home-image-v9";
 const IMAGE_PATHS = [
   "fuentes/personaje_gamer_cuadrado.webp",
   "fuentes/novatopup_tienda_banner.webp",
   "fuentes/novatopup_tienda_banner(1).webp",
   "fuentes/blood_strike.webp",
   "fuentes/free_fire.webp",
-  "fuentes/honor_of_kings.webp"
+  "fuentes/honor_of_kings.webp",
+  "fuentes/arena_breakout.webp",
+  "fuentes/call_of_duty.webp",
+  "fuentes/genshin_impact.webp"
 ];
 
 self.addEventListener("install", (event) => {
