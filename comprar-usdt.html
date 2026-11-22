@@ -142,7 +142,7 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
   <span class="order-code" id="orderCode"></span>
   <small>Red: BNB Smart Chain · BEP20</small>
 </div>
-<p class="payment-status" id="paymentStatus" role="status" aria-live="polite">Introduce el TXID de tu transferencia para continuar con el pago.</p>
+<p class="payment-status" id="paymentStatus" role="status" aria-live="polite"></p>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
 <input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
 <button class="verify-button" id="payButton" type="button" disabled>Pagar</button>
@@ -294,7 +294,7 @@ async function restorePendingDeposit() {
     displayDeposit(data);
     setStatus("Tienes un pedido pendiente. Pega el TXID del pago para continuar.");
   } else {
-    setStatus("Selecciona el importe, realiza la transferencia y pega el TXID para pagar.");
+    setStatus("");
   }
   updatePayButton();
 }
