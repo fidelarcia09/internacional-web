@@ -84,7 +84,7 @@ self.addEventListener("push", event => {
 
   const title = payload.title || "INTERNACIONAL WEB";
   const options = {
-    body: payload.body || "Tienes una actualización sobre tu compra.",
+    body: payload.body || "Tienes una actualización sobre tu cuenta.",
     icon: new URL("fuentes/personaje_gamer_cuadrado.webp", self.registration.scope).href,
     data: { url: payload.url || "notificaciones.html" },
     tag: payload.tag || "internacional-web-notification",
