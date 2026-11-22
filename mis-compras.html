@@ -215,7 +215,7 @@ function makeEmpty(title, description) {
   return box;
 }
 function gameImageForOrder(title) {
-  const name=String(title||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
+  const name=String(title||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const games=[
     {keys:["free fire","freefire"],src:"fuentes/free_fire.webp",alt:"Free Fire"},
     {keys:["mobile legends","mobilelegend","mlbb"],src:"fuentes/grok_1795312374293.webp",alt:"Mobile Legends"},
@@ -262,7 +262,7 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
     if(gameImage) {
       const thumb=document.createElement("div");thumb.className="game-order-thumb";
       const image=document.createElement("img");image.src=gameImage.src;image.alt=gameImage.alt;image.loading="lazy";image.decoding="async";
-      image.onerror=()=>{thumb.replaceChildren();thumb.classList.add("game-order-thumb-fallback");thumb.textContent=gameImage.alt.split(/\\s+/).map(part=>part[0]).join("").slice(0,3).toUpperCase();};
+      image.onerror=()=>{thumb.replaceChildren();thumb.classList.add("game-order-thumb-fallback");thumb.textContent=gameImage.alt.split(/\s+/).map(part=>part[0]).join("").slice(0,3).toUpperCase();};
       thumb.append(image);item.classList.add("game-order-card");item.append(thumb,details);
     } else {
       item.append(details);
