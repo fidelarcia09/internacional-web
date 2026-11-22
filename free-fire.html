@@ -48,12 +48,26 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 
  .catalog-state,.catalog-prompt{grid-column:1/-1;padding:16px;border:1px dashed #ff9a0066;border-radius:13px;color:#c5c5ca;font-size:12px;text-align:center;line-height:1.6}.catalog-prompt{margin-bottom:3px}.package{overflow-wrap:anywhere}.package strong{font-size:clamp(13px,2.5vw,18px);text-align:center;line-height:1.25}.package small{font-size:10px;color:#ffc400} .section[hidden]{display:none!important}
 
-.game-banner{position:relative;z-index:0;overflow:hidden;width:calc(100% + 36px);height:clamp(235px,34vw,330px);margin:0 -18px -42px;border:0;border-radius:0;background:transparent;transform:perspective(1000px) rotateX(1.5deg) scale(1.045);transform-origin:center bottom;filter:drop-shadow(0 15px 12px #000b)}
-.game-banner img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 42%;transform:scale(1.34);transform-origin:center 42%;filter:saturate(1.08) contrast(1.05);-webkit-mask-image:linear-gradient(to bottom,#000 38%,rgba(0,0,0,.98) 54%,rgba(0,0,0,.82) 68%,rgba(0,0,0,.48) 82%,rgba(0,0,0,.16) 93%,transparent 100%);mask-image:linear-gradient(to bottom,#000 38%,rgba(0,0,0,.98) 54%,rgba(0,0,0,.82) 68%,rgba(0,0,0,.48) 82%,rgba(0,0,0,.16) 93%,transparent 100%)}
-.game-banner:before{content:"";position:absolute;z-index:1;inset:-8px -18px;pointer-events:none;background:linear-gradient(90deg,#08090c 0%,rgba(8,9,12,.78) 2%,rgba(8,9,12,.32) 8%,transparent 16%,transparent 84%,rgba(8,9,12,.32) 92%,rgba(8,9,12,.78) 98%,#08090c 100%);filter:blur(15px)}
-.game-banner:after{content:"";position:absolute;z-index:2;inset:-32px -26px -48px;pointer-events:none;background:linear-gradient(180deg,transparent 34%,#08090c08 46%,#08090c38 58%,#08090c9c 74%,#08090cf5 91%,#08090c 100%);filter:blur(38px);transform:scaleY(1.28);transform-origin:center bottom}
-.section[aria-labelledby="region-title"]{position:relative;z-index:2;margin-top:11px}
-@media(max-width:700px){.game-banner{height:clamp(220px,57vw,285px);margin:0 -18px -38px;width:calc(100% + 36px);transform:perspective(800px) rotateX(1.5deg) scale(1.035)}.game-banner img{transform:scale(1.34)}}
+body{overflow-x:hidden}
+.topbar{position:absolute;z-index:20;top:0;left:0;right:0;width:100%;height:62px;margin:0;padding:0 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;pointer-events:none}
+.topbar .back,.topbar .balance{pointer-events:auto}
+.back{height:40px;margin-top:8px;padding:0 13px;border:1px solid #ffffff38;border-radius:12px;background:rgba(8,9,12,.58);color:#fff;box-shadow:0 5px 18px #0008;backdrop-filter:blur(9px)}
+.balance{position:absolute;top:8px;right:16px;margin:0;padding:9px 13px;border:1px solid #ffc4009c;border-radius:12px;background:rgba(8,9,12,.64);box-shadow:0 5px 18px #0009;color:#fff;backdrop-filter:blur(9px)}
+.balance small{display:none}
+main{position:relative;z-index:1;width:min(1100px,calc(100% - 16px));margin:0 auto}
+.game-banner{position:relative;z-index:1;overflow:hidden;width:calc(100% + 36px);height:clamp(255px,38vw,360px);margin:0 -18px -104px;border:0;border-radius:0;background:transparent;transform:perspective(720px) rotateX(7deg) scale(1.055);transform-origin:center top;filter:drop-shadow(0 24px 18px rgba(0,0,0,.72));}
+.game-banner img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 42%;transform:scale(1.38);transform-origin:center 42%;filter:saturate(1.12) contrast(1.08);-webkit-mask-image:linear-gradient(to bottom,#000 48%,rgba(0,0,0,.98) 62%,rgba(0,0,0,.78) 77%,rgba(0,0,0,.35) 91%,transparent 100%);mask-image:linear-gradient(to bottom,#000 48%,rgba(0,0,0,.98) 62%,rgba(0,0,0,.78) 77%,rgba(0,0,0,.35) 91%,transparent 100%)}
+.game-banner:before{content:"";position:absolute;z-index:2;inset:-10px -22px;pointer-events:none;background:linear-gradient(90deg,#08090c 0%,rgba(8,9,12,.62) 5%,transparent 20%,transparent 80%,rgba(8,9,12,.62) 95%,#08090c 100%);filter:blur(16px)}
+.game-banner:after{content:"";position:absolute;z-index:3;left:-8%;right:-8%;bottom:-42px;height:130px;pointer-events:none;background:radial-gradient(ellipse at center,rgba(0,0,0,.72) 0%,rgba(8,9,12,.48) 38%,transparent 76%);filter:blur(18px)}
+.section[aria-labelledby="region-title"]{position:relative;z-index:5;margin-top:0;padding:14px;border:1px solid #ff8a25b8;border-radius:19px;background:linear-gradient(145deg,rgba(18,19,23,.99),rgba(8,9,12,.99) 76%);box-shadow:0 -12px 32px rgba(0,0,0,.52),0 10px 25px rgba(255,121,0,.10),inset 0 0 22px rgba(255,130,24,.06)}
+@media(max-width:700px){
+ .topbar{height:58px;padding:0 12px}
+ .back{height:38px;margin-top:7px;padding:0 11px}
+ .balance{top:7px;right:12px;padding:8px 10px;font-size:11px}
+ .game-banner{height:clamp(235px,66vw,300px);margin:0 -18px -88px;width:calc(100% + 36px);transform:perspective(620px) rotateX(7deg) scale(1.045);filter:drop-shadow(0 21px 16px rgba(0,0,0,.75))}
+ .game-banner img{transform:scale(1.38)}
+ .section[aria-labelledby="region-title"]{padding:11px;margin-top:0;border-radius:15px}
+}
 </style>
 <style id="mobile-nav-final-unified">
 @media(max-width:620px){
