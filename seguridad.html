@@ -247,7 +247,7 @@ let pendingChallengeId = null;
 let verifiedFactorId = null;
 let mfaVerificationInProgress = false;
 
-async async function cleanupUnverifiedMfaFactors(exceptFactorId = null) {
+async function cleanupUnverifiedMfaFactors(exceptFactorId = null) {
   const { data, error } = await supabase.auth.mfa.listFactors();
   if (error) throw error;
   const pending = (data?.totp || []).filter(factor =>
