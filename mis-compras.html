@@ -261,7 +261,7 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
     details.append(summary,grid);
     if(gameImage) {
       const thumb=document.createElement("div");thumb.className="game-order-thumb";
-      const image=document.createElement("img");image.src=gameImage.src;image.alt=gameImage.alt;image.loading="lazy";image.decoding="async";
+      const image=document.createElement("img");image.src=gameImage.src;image.alt=gameImage.alt;image.loading="eager";image.decoding="async";image.setAttribute("fetchpriority","high");
       image.onerror=()=>{thumb.replaceChildren();thumb.classList.add("game-order-thumb-fallback");thumb.textContent=gameImage.alt.split(/\s+/).map(part=>part[0]).join("").slice(0,3).toUpperCase();};
       thumb.append(image);item.classList.add("game-order-card");item.append(thumb,details);
     } else {
@@ -338,18 +338,24 @@ async function loadHistory() {
   const {data:{session},error:authError}=await supabase.auth.getSession();
   if(authError || !session?.user) { window.location.replace("login.html"); return; }
 
-  showLoading(gamesPanel,"Estamos buscando tus compras.");
-  showLoading(depositsPanel,"Estamos buscando tus depósitos.");
-
   const cacheKey="iw-history:"+session.user.id;
+  let hasFreshCache=false;
   try {
     const cached=JSON.parse(localStorage.getItem(cacheKey)||"null");
     if(cached && Date.now()-cached.savedAt<24*60*60*1000) {
       if(Array.isArray(cached.orders)) renderOrders(cached.orders);
       if(Array.isArray(cached.deposits)) renderDeposits(cached.deposits,cached.ledger||[]);
+      hasFreshCache=Array.isArray(cached.orders)||Array.isArray(cached.deposits);
     }
   } catch(cacheError) {
     console.warn("No se pudo leer el historial guardado:",cacheError);
+  }
+
+  // Si existe una copia reciente, se muestra de inmediato y la consulta a Supabase
+  // actualiza los datos en segundo plano sin reemplazar la pantalla por "Cargando...".
+  if(!hasFreshCache) {
+    showLoading(gamesPanel,"Estamos buscando tus compras.");
+    showLoading(depositsPanel,"Estamos buscando tus depósitos.");
   }
 
   const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
