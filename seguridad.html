@@ -170,6 +170,13 @@ document.querySelectorAll("[data-eye]").forEach(button => {
   });
 });
 
+async function sendSecurityNotification(eventType) {
+  const { error } = await supabase.rpc("log_account_security_notification", {
+    p_event_type: eventType
+  });
+  if (error) console.warn("No se pudo registrar la notificación de seguridad:", error);
+}
+
 function showPasswordMessage(message, isError = false) {
   passwordMessage.textContent = message;
   passwordMessage.classList.toggle("error", isError);
@@ -226,6 +233,7 @@ changeForm.addEventListener("submit", async event => {
 
   changeForm.reset();
   showPasswordMessage("¡Contraseña actualizada correctamente!");
+  await sendSecurityNotification("password_changed");
 });
 
 
@@ -433,6 +441,7 @@ confirmMfa.addEventListener("click", async () => {
   pendingFactorId = null;
   pendingChallengeId = null;
   showMfaMessage("¡App de códigos activada correctamente! Tu cuenta ya tiene verificación en dos pasos.");
+  await sendSecurityNotification("two_factor_enabled");
   await loadMfaState();
 });
 
@@ -443,6 +452,7 @@ disableMfa.addEventListener("click", async () => {
   setMfaBusy(disableMfa, false, "DESACTIVAR");
   if (error) { showMfaMessage("No se pudo desactivar. Verifica tu sesión e inténtalo de nuevo.", true); return; }
   showMfaMessage("La verificación en dos pasos se ha desactivado.");
+  await sendSecurityNotification("two_factor_disabled");
   await loadMfaState();
 });
 
