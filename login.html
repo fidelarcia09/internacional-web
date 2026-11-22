@@ -144,13 +144,16 @@ form.addEventListener("submit", async event => {
     else showNotice("No se pudo iniciar sesión. Comprueba tus datos e inténtalo otra vez.", true);
     return;
   }
+  const requestedPage = new URLSearchParams(window.location.search).get("next");
+  const returnPage = requestedPage === "resenas.html" ? "resenas.html" : "index.html";
   const { data: assurance, error: assuranceError } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if (!assuranceError && assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2") {
+    sessionStorage.setItem("mfa_return_to", returnPage);
     window.location.assign(SITE_URL + "verificar-2fa.html");
     return;
   }
   showNotice("¡Sesión iniciada! Entrando...");
-  window.location.assign(SITE_URL + "index.html");
+  window.location.assign(SITE_URL + returnPage);
 });
 
 document.getElementById("forgot").addEventListener("click", event => {
