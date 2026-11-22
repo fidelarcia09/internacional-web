@@ -686,7 +686,21 @@ if ("serviceWorker" in navigator) {
 }
 @media(prefers-reduced-motion:reduce){.topbar .brand-emblem,.topbar .top-cta,.topbar .entry-link,.topbar .notification-bell{transition:none!important}}
 </style>
-</head>
+<style id="hero-group-position">
+/* Ajuste conjunto: subir el hero completo sin alterar sus elementos internos */
+@media(max-width:620px){
+ .hero{
+  margin-top:-60px!important;
+  padding-top:110px!important;
+ }
+}
+@media(max-width:390px){
+ .hero{
+  margin-top:-60px!important;
+  padding-top:110px!important;
+ }
+}
+</style></head>
 <body>
 <header class="topbar"><button class="menu" aria-label="Abrir menú" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><a class="brand" href="#" aria-label="Gamers Gold Top-Up, inicio">
  <span class="brand-emblem" aria-hidden="true"><img src="fuentes/gamers-gold-escudo.svg?v=2" alt="" width="56" height="62"></span>
