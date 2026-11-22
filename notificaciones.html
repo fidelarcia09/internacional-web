@@ -296,6 +296,13 @@ function iconFor(type) {
   return '<svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>';
 }
 
+function formatDepositMessage(value) {
+  return String(value || "").replace(/(\\d+)[.,](\\d+)(?=\\s*(?:USDT|BSC-USD)\\b)/gi, (match, whole, fraction) => {
+    const cleanFraction = fraction.replace(/0+$/, "");
+    return cleanFraction ? whole + "." + cleanFraction : whole;
+  });
+}
+
 function renderNotifications(rows) {
   if (!rows.length) {
     list.replaceChildren(makeEmpty(
@@ -336,7 +343,7 @@ function renderNotifications(rows) {
       title.textContent = row.title || "Actualización de compra";
       const message = document.createElement("p");
       message.className = "notice-message";
-      message.textContent = row.message || "";
+      message.textContent = row.event_type?.startsWith("deposit_") ? formatDepositMessage(row.message) : (row.message || "");
       const time = document.createElement("time");
       time.className = "notice-time";
       time.dateTime = row.created_at;
