@@ -71,6 +71,14 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 .preview-note{display:flex;align-items:flex-start;gap:10px;margin-top:17px;padding:12px 13px;border:1px solid #68421b;border-radius:12px;background:#1b1309;color:#cdb48f;font-size:10px;line-height:1.65}
 .preview-note b{color:#ffb34e}
 
+.order-info{margin:12px 0;padding:13px;border:1px solid #287b5d;border-radius:13px;background:#0b1b14;color:#d9f7e6;font-size:11px;line-height:1.6}
+.order-info strong{color:#6ce5a5}
+.order-code{display:block;margin-top:4px;color:#fff;font:800 17px var(--display);letter-spacing:.7px;word-break:break-all}
+.payment-status{min-height:20px;margin:10px 2px 0;color:#c7b8a7;font-size:11px;line-height:1.6}
+.payment-status.success{color:#69e6a4}
+.payment-status.error{color:#ff9a83}
+.verify-button{width:100%;height:54px;margin-top:10px;border:1px solid #ffb000;border-radius:14px;background:linear-gradient(100deg,#ff8a00,#ffb000);color:#160d05;font:900 23px var(--display);cursor:pointer}
+.verify-button:disabled,.pay-button:disabled{opacity:.55;cursor:not-allowed}
 .mobile-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;height:65px;background:#101010f5;border-top:1px solid #ffffff15;display:flex;justify-content:space-around;align-items:center;backdrop-filter:blur(15px);padding-bottom:env(safe-area-inset-bottom)}
 .mobile-nav a{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:54px;height:60px;color:#777}
 .mobile-nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -128,9 +136,16 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 <div class="divider"></div>
 <h2 class="pay-title"><svg viewBox="0 0 36 36"><path d="M18 3 31 9v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><circle cx="18" cy="17" r="5"/><path d="M18 22v5"/></svg>Dirección de pago</h2>
 <div class="address"><span><strong style="display:block;color:#f4eee7;font-size:12px;word-break:break-all">0xd2364c69d339bbd96915BC80b4dbAc23c9209f9C</strong><small style="display:block;margin-top:5px;color:#65e6a6;font-size:10px;font-weight:800;letter-spacing:.5px">USDT · RED BEP20 (BNB SMART CHAIN)</small></span><button class="copy" id="copyAddress" type="button" aria-label="Copiar dirección" title="Copiar dirección" style="opacity:1;cursor:pointer"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
-<button class="pay-button" type="button" disabled><svg viewBox="0 0 48 36" aria-hidden="true"><rect x="3" y="4" width="42" height="28" rx="4" fill="currentColor" stroke="none"/><path d="M4 12h40M10 23h11M10 27h7" stroke="#ff9a00" stroke-width="2.5" stroke-linecap="round"/><rect x="30" y="22" width="8" height="5" rx="1" fill="#ff9a00" stroke="none"/></svg>Pagar</button>
+<button class="pay-button" id="createDeposit" type="button"><svg viewBox="0 0 48 36" aria-hidden="true"><rect x="3" y="4" width="42" height="28" rx="4" fill="currentColor" stroke="none"/><path d="M4 12h40M10 23h11M10 27h7" stroke="#ff9a00" stroke-width="2.5" stroke-linecap="round"/><rect x="30" y="22" width="8" height="5" rx="1" fill="#ff9a00" stroke="none"/></svg>Crear pedido</button>
+<div class="order-info" id="orderInfo" hidden>
+  Pedido creado. Envía exactamente <strong id="orderAmount">— USDT</strong> a la dirección indicada.
+  <span class="order-code" id="orderCode"></span>
+  <small>Red: BNB Smart Chain · BEP20</small>
+</div>
+<p class="payment-status" id="paymentStatus" role="status" aria-live="polite">Selecciona un importe y crea tu pedido. Después envía el importe exacto y verifica el TXID.</p>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
-<input class="txid" type="text" placeholder="Escribe aquí el TXID..." disabled>
+<input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
+<button class="verify-button" id="verifyTx" type="button" disabled>Verificar pago</button>
 
 </section>
 </main>
@@ -190,6 +205,177 @@ copyAddress.addEventListener('click',async()=>{
 });
 </script>
 
+<script type="module">
+import { supabase } from "./supabase-client.js";
+
+const amountInput = document.getElementById("usd");
+const packageButtons = [...document.querySelectorAll(".package")];
+const createButton = document.getElementById("createDeposit");
+const verifyButton = document.getElementById("verifyTx");
+const txInput = document.getElementById("txidInput");
+const orderInfo = document.getElementById("orderInfo");
+const orderAmount = document.getElementById("orderAmount");
+const orderCode = document.getElementById("orderCode");
+const statusText = document.getElementById("paymentStatus");
+let activeDeposit = null;
+let busy = false;
+
+function setStatus(message, kind = "") {
+  statusText.textContent = message;
+  statusText.className = "payment-status" + (kind ? " " + kind : "");
+}
+function lockAmount(locked) {
+  amountInput.disabled = locked;
+  packageButtons.forEach(button => button.disabled = locked);
+}
+function displayDeposit(deposit) {
+  activeDeposit = deposit;
+  orderInfo.hidden = false;
+  orderAmount.textContent = Number(deposit.amount_usdt).toFixed(2) + " USDT";
+  orderCode.textContent = deposit.deposit_code;
+  lockAmount(true);
+  txInput.disabled = false;
+  txInput.value = deposit.payment_reference || "";
+  verifyButton.disabled = !txInput.value.trim();
+  createButton.disabled = true;
+  createButton.textContent = "Pedido creado";
+}
+function errorMessage(code) {
+  const messages = {
+    transaction_not_found: "No encontramos ese TXID en BNB Smart Chain. Revísalo e inténtalo otra vez.",
+    wrong_network: "La transacción no pertenece a BNB Smart Chain.",
+    not_usdt_transfer: "El TXID no corresponde al token BEP20 aceptado.",
+    transaction_failed: "La transacción aparece como fallida en la red.",
+    amount_or_recipient_mismatch: "El importe o la dirección de destino no coincide con este pedido.",
+    txid_already_used: "Ese TXID ya fue utilizado en otro pedido.",
+    txid_already_used_or_linked: "Ese TXID ya está asociado a otro pedido.",
+    another_txid_already_linked: "Este pedido ya tiene otro TXID asociado.",
+    deposit_not_found: "No encontramos tu pedido. Actualiza la página e inicia sesión de nuevo.",
+    invalid_session: "Tu sesión ha caducado. Inicia sesión otra vez."
+  };
+  return messages[code] || "No se pudo verificar el pago. Inténtalo de nuevo más tarde.";
+}
+async function restorePendingDeposit() {
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (!sessionData.session) {
+    createButton.disabled = true;
+    setStatus("Inicia sesión en tu cuenta para crear un pedido de USDT.", "error");
+    return;
+  }
+  const { data, error } = await supabase
+    .from("usdt_deposits")
+    .select("id,deposit_code,amount_usdt,status,payment_method,payment_reference,created_at")
+    .eq("payment_method", "BEP20-USDT")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    setStatus("No pudimos cargar tus pedidos pendientes. Recarga la página.", "error");
+    return;
+  }
+  if (data) {
+    amountInput.value = String(data.amount_usdt);
+    updateEstimate();
+    packageButtons.forEach(button => {
+      const selected = Number(button.dataset.amount) === Number(data.amount_usdt);
+      button.classList.toggle("selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+    displayDeposit(data);
+    setStatus("Tienes un pedido pendiente. Envía el importe exacto y pega su TXID para verificarlo.");
+  }
+}
+createButton.addEventListener("click", async () => {
+  if (busy || activeDeposit) return;
+  const amount = amountInput.value.trim();
+  if (!amount || !Number.isFinite(Number(amount)) || Number(amount) < 1 || Number(amount) > 100000 || !/^\d+(?:\.\d{1,8})?$/.test(amount)) {
+    setStatus("Introduce un importe válido (mínimo 1 USDT y hasta 8 decimales).", "error");
+    return;
+  }
+  busy = true;
+  createButton.disabled = true;
+  createButton.textContent = "Creando pedido...";
+  setStatus("Estamos creando tu pedido seguro...");
+  try {
+    const { data, error } = await supabase.rpc("create_usdt_deposit_request", {
+      p_amount_usdt: amount,
+      p_payment_method: "BEP20-USDT",
+      p_payment_reference: null
+    });
+    if (error) throw error;
+    const row = Array.isArray(data) ? data[0] : data;
+    if (!row?.deposit_id || !row?.deposit_code) throw new Error("No se recibió el pedido creado.");
+    const deposit = {
+      id: row.deposit_id,
+      deposit_code: row.deposit_code,
+      amount_usdt: amount,
+      status: row.deposit_status || "pending",
+      payment_reference: null
+    };
+    displayDeposit(deposit);
+    setStatus("Pedido creado. Envía exactamente " + Number(amount).toFixed(2) + " USDT por BEP20 a la dirección indicada. Luego pega el TXID.", "success");
+  } catch (error) {
+    console.error("create USDT deposit", error);
+    createButton.disabled = false;
+    createButton.textContent = "Crear pedido";
+    setStatus("No se pudo crear el pedido. Comprueba que has iniciado sesión e inténtalo otra vez.", "error");
+  } finally {
+    busy = false;
+  }
+});
+txInput.addEventListener("input", () => {
+  verifyButton.disabled = !activeDeposit || !txInput.value.trim() || busy;
+});
+verifyButton.addEventListener("click", async () => {
+  if (!activeDeposit || busy) return;
+  const txHash = txInput.value.trim();
+  if (!/^0x[a-fA-F0-9]{64}$/.test(txHash)) {
+    setStatus("El TXID debe tener el formato completo de una transacción (0x + 64 caracteres).", "error");
+    return;
+  }
+  busy = true;
+  verifyButton.disabled = true;
+  verifyButton.textContent = "Verificando...";
+  setStatus("Consultando BNB Smart Chain y comprobando el pago...");
+  try {
+    const { data, error } = await supabase.functions.invoke("verify-usdt-deposit", {
+      body: { deposit_id: activeDeposit.id, tx_hash: txHash }
+    });
+    if (error) {
+      let detail = null;
+      try { detail = await error.context?.json(); } catch {}
+      throw new Error(detail?.error || "verification_failed");
+    }
+    if (data?.status === "pending") {
+      setStatus("La transacción ya aparece en la red. Confirmaciones: " + data.confirmations + "/" + data.required_confirmations + ". Vuelve a verificar en unos instantes.");
+      return;
+    }
+    if (data?.status === "confirmed") {
+      setStatus("¡Pago verificado! Se acreditaron " + Number(data.credited || activeDeposit.amount_usdt).toFixed(2) + " USDT en tu billetera.", "success");
+      txInput.disabled = true;
+      verifyButton.disabled = true;
+      verifyButton.textContent = "Pago confirmado";
+      createButton.textContent = "Pedido completado";
+      return;
+    }
+    throw new Error(data?.error || "verification_failed");
+  } catch (error) {
+    console.error("verify USDT deposit", error);
+    setStatus(errorMessage(error.message), "error");
+  } finally {
+    busy = false;
+    if (activeDeposit && !txInput.disabled) {
+      verifyButton.disabled = !txInput.value.trim();
+      verifyButton.textContent = "Verificar pago";
+    }
+  }
+});
+restorePendingDeposit().catch(error => {
+  console.error("restore USDT deposit", error);
+  setStatus("No pudimos recuperar el pedido pendiente.", "error");
+});
+</script>
 <script>
 // Guarda automáticamente el banner para que permanezca disponible al volver a abrir la página.
 if ("serviceWorker" in navigator) {
