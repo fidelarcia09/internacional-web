@@ -291,8 +291,24 @@ startMfa.addEventListener("click", async () => {
   try {
     const { data: factors, error: listError } = await supabase.auth.mfa.listFactors();
     if (listError) throw listError;
-    const unverified = (factors?.totp || []).filter(factor => factor.status !== "verified");
-    for (const factor of unverified) await supabase.auth.mfa.unenroll({ factorId: factor.id });
+    const unverified = (factors?.totp || []).filter(factor => factor.status === "unverified");
+    for (const factor of unverified) {
+      const { error: cleanupError } = await supabase.auth.mfa.unenroll({ factorId: factor.id });
+      if (cleanupError) {
+        throw new Error("Hay una configuración anterior sin terminar y no se pudo limpiar: " + cleanupError.message);
+      }
+    }
+
+    // Confirma que el factor pendiente ya no existe antes de crear uno nuevo.
+    const { data: refreshedFactors, error: refreshError } = await supabase.auth.mfa.listFactors();
+    if (refreshError) throw refreshError;
+    const remainingPending = (refreshedFactors?.totp || []).some(factor =>
+      factor.status === "unverified" && factor.friendly_name === "App de códigos"
+    );
+    if (remainingPending) {
+      throw new Error("Ya existe una configuración pendiente de App de códigos. Actualiza la página y vuelve a intentarlo.");
+    }
+
     const { data, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: "App de códigos" });
     if (error) throw error;
     pendingFactorId = data.id;
