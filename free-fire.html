@@ -48,10 +48,11 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 
  .catalog-state,.catalog-prompt{grid-column:1/-1;padding:16px;border:1px dashed #ff9a0066;border-radius:13px;color:#c5c5ca;font-size:12px;text-align:center;line-height:1.6}.catalog-prompt{margin-bottom:3px}.package{overflow-wrap:anywhere}.package strong{font-size:clamp(13px,2.5vw,18px);text-align:center;line-height:1.25}.package small{font-size:10px;color:#ffc400} .section[hidden]{display:none!important}
 
-.game-banner{width:min(1100px,calc(100% - 16px));height:clamp(175px,25vw,245px);margin:0 auto 14px;position:relative;overflow:hidden;border:1px solid #ff9b0088;border-radius:22px;background:#101115;box-shadow:0 12px 30px #0009,0 0 24px #ff79002b,inset 0 0 0 1px #ffc40022;isolation:isolate;transform:translateZ(0)}
-.game-banner img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 42%;filter:saturate(1.06) contrast(1.04);transform:scale(1.015)}
-.game-banner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#08090c35,transparent 32%,transparent 72%,#08090c25),linear-gradient(0deg,#08090c30,transparent 38%);box-shadow:inset 0 0 38px #0006}
-@media(max-width:560px){.game-banner{height:clamp(145px,48vw,190px);margin-bottom:10px;border-radius:17px}.game-banner img{object-position:center 42%}}
+.game-banner{width:100%;height:clamp(205px,30vw,290px);margin:18px auto 12px;position:relative;overflow:hidden;background:transparent;isolation:isolate;transform:translateZ(0)}
+.game-banner:before{content:"";position:absolute;inset:12% 8% 0;z-index:-1;background:radial-gradient(ellipse,#ff8a1838 0%,#ff8a180c 48%,transparent 72%);filter:blur(22px)}
+.game-banner img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 42%;filter:saturate(1.12) contrast(1.08) drop-shadow(0 18px 22px #0009);transform:scale(1.15);transform-origin:center;mask-image:linear-gradient(to right,transparent 0%,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,transparent 0%,#000 8%,#000 87%,transparent 100%);mask-composite:intersect;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,transparent 0%,#000 8%,#000 87%,transparent 100%);-webkit-mask-composite:source-in}
+.game-banner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#08090c28,transparent 32%,transparent 72%,#08090c20)}
+@media(max-width:560px){.game-banner{height:clamp(190px,58vw,245px);margin:10px auto 8px}.game-banner img{transform:scale(1.2);object-position:center 42%}}
 </style>
 <style id="mobile-nav-final-unified">
 @media(max-width:620px){
@@ -97,12 +98,12 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 <a class="back" href="tienda.html" aria-label="Atrás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Atrás</span></a>
 <div class="balance"><small>●</small>Free Fire</div>
 </header>
-<section class="game-banner" aria-label="Banner de Free Fire"><img src="fuentes/free_fire(1).webp" alt="Banner de Free Fire" fetchpriority="high"></section>
 <main>
 <section class="section" aria-labelledby="region-title">
 <h2 class="section-head" id="region-title"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span>Región del juego</h2>
 <div class="region-grid" id="regions"><div class="catalog-state">Cargando regiones disponibles…</div></div>
 </section>
+<section class="game-banner" aria-label="Banner de Free Fire"><img src="fuentes/free_fire(1).webp" alt="Banner de Free Fire" fetchpriority="high"></section>
 <section class="section" aria-labelledby="player-title">
 <h2 class="section-head" id="player-title"><span class="ico player-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg></span>Tu Player ID</h2>
 <div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Ingresa tu Player ID aquí..." maxlength="32" aria-label="Tu Player ID"></div><button class="help" id="help-button" type="button">¿Dónde encontrarlo?</button></div>
