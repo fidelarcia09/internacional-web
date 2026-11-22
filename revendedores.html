@@ -205,89 +205,96 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
  .vendor-shortcut-copy small{font-size:8px}
 }
 </style>
+<style id="reseller-dashboard-final">
+.reseller-dashboard{width:min(760px,92%);padding:12px 0 30px}
+.reseller-header{padding:10px 2px 18px}.reseller-kicker{display:flex;align-items:center;gap:8px;color:#ffbd19;font-size:10px;font-weight:850;letter-spacing:1.6px}.reseller-kicker i,.plan-status i,.api-heading small i{width:7px;height:7px;border-radius:50%;background:#ff6b24;box-shadow:0 0 9px #ff6b24}.reseller-header h1{margin:9px 0 5px;font:900 clamp(38px,7vw,56px)/.95 var(--display)}.reseller-header h1 em{color:#ff6b24;font-style:italic}.reseller-header p{margin:8px 0 0;color:#aaa;font-size:12px}
+.current-plan,.api-panel{padding:16px;border:1px solid #ff6b2455;border-radius:17px;background:linear-gradient(120deg,#21150f,#121419 70%);box-shadow:0 8px 22px #0004}.plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#c6c6c6;font-size:12px}.plan-status{display:flex;align-items:center;gap:6px;color:#ffbd19;font-size:10px}.plan-status i{background:#ffbd19;box-shadow:0 0 8px #ffbd19}.current-plan-name{display:flex;align-items:center;gap:12px;margin-top:15px}.plan-emblem{width:48px;height:48px;display:grid;place-items:center;border:1px solid #ffbd1977;border-radius:14px;background:#ffbd1914;color:#ffbd19;font:900 22px var(--display)}.current-plan-name strong,.current-plan-name small{display:block}.current-plan-name strong{font-size:17px}.current-plan-name small{margin-top:4px;color:#999;font-size:10px}
+.plan-section{margin:22px 0 15px}.section-title{display:flex;align-items:center;gap:9px;margin:0 0 12px}.section-title>span{width:4px;height:22px;border-radius:5px;background:#ff6b24}.section-title h2{margin:0;font:800 24px var(--display)}.plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.plan-tile{min-height:105px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:10px 4px;border:1px solid #ff8a354d;border-radius:13px;background:linear-gradient(155deg,#24180f,#121419 75%);text-align:center}.plan-symbol{width:34px;height:34px;display:grid;place-items:center;border:1px solid #ffbd1980;border-radius:50%;color:#ffbd19;font:800 17px var(--display)}.plan-tile strong{font-size:11px}.plan-tile small{color:#92949c;font-size:9px}.plan-tile.elite{border-color:#aab4c455}.plan-tile.elite .plan-symbol{border-color:#b8c2d0;color:#d5dce6}.plan-tile.reseller{border-color:#ffbd1977}.plan-tile.partner{border-color:#c45bdf77}.plan-tile.partner .plan-symbol{border-color:#c45bdf;color:#dc83ef}
+.reseller-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px 0}.reseller-stat{min-height:91px;display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #ffffff18;border-radius:14px;background:#14161c}.stat-icon{flex:0 0 37px;width:37px;height:37px;display:grid;place-items:center;border-radius:11px;background:#ff6b2418;color:#ff9a43;font-size:22px}.reseller-stat small,.reseller-stat strong,.reseller-stat em{display:block}.reseller-stat small{color:#aeb0b8;font-size:8px;font-weight:800;letter-spacing:.8px}.reseller-stat strong{margin-top:4px;font:900 29px var(--display)}.reseller-stat em{color:#777;font-size:8px;font-style:normal}
+.reseller-primary{height:56px;display:flex;align-items:center;gap:11px;padding:0 15px;border-radius:13px;background:linear-gradient(100deg,#ffbd19,#ff6b24);color:#17110b;font-size:14px;font-weight:900;box-shadow:0 7px 20px #ff6b2430}.reseller-primary>span{font-size:25px}.reseller-primary b{margin-left:auto;font-size:27px;font-weight:500}
+.business-section{margin:25px 0}.business-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.business-option{min-height:70px;display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #ffffff18;border-radius:13px;background:linear-gradient(110deg,#191b21,#111318);text-decoration:none}.business-icon{flex:0 0 37px;width:37px;height:37px;display:grid;place-items:center;border:1px solid #ff6b2455;border-radius:11px;background:#ff6b2412;color:#ff9340;font-size:20px}.business-option>span:nth-child(2){min-width:0}.business-option strong,.business-option small{display:block}.business-option strong{font-size:11px}.business-option small{margin-top:4px;color:#92949c;font-size:9px}.business-option>b{margin-left:auto;color:#ff8a35;font-size:18px}.business-option.coming-soon>b{font-size:8px;color:#ffbd19;white-space:nowrap}.business-option.coming-soon{opacity:.86;cursor:default}
+.api-panel{margin-top:24px}.api-heading{display:flex;align-items:center;gap:11px}.api-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#ff6b2418;color:#ff9a43;font-size:24px}.api-heading h2{margin:0;font:800 23px var(--display)}.api-heading small{display:flex;align-items:center;gap:6px;margin-top:3px;color:#ffbd19;font-size:9px}.api-heading small i{width:6px;height:6px}.api-panel p{margin:13px 0;color:#aaa;font-size:11px}.api-panel button{width:100%;height:43px;border:0;border-radius:10px;background:#343434;color:#858585;font:700 11px var(--font);cursor:not-allowed}.api-panel button span{float:right}.api-docs{display:block;margin-top:12px;color:#ffbd19;text-align:center;font-size:10px}.api-docs[aria-disabled=true]{opacity:.7;cursor:default}
+.nav-coming-soon{opacity:.55;cursor:default}
+@media(max-width:620px){.reseller-dashboard{width:92%;padding-top:7px;padding-bottom:22px}.reseller-header{padding:8px 1px 15px}.reseller-header h1{font-size:clamp(37px,10vw,49px)}.current-plan,.api-panel{padding:14px}.plan-grid{gap:6px}.plan-tile{min-height:96px}.plan-tile strong{font-size:10px}.reseller-stat{gap:8px;padding:10px}.stat-icon{flex-basis:32px;width:32px;height:32px;font-size:19px}.reseller-stat small{font-size:7px}.reseller-stat strong{font-size:27px}.business-grid{gap:8px}.business-option{min-height:68px;gap:8px;padding:9px 8px}.business-icon{flex-basis:33px;width:33px;height:33px}.business-option strong{font-size:10px}.business-option small{font-size:8px}}
+@media(max-width:360px){.plan-tile strong{font-size:9px}.business-option{gap:6px;padding:8px 6px}.business-option strong{font-size:9px}}
+</style>
 
 </head>
 <body>
-<main class="partner-page vendor-dashboard">
-  <section class="vendor-welcome" aria-label="Panel de revendedor">
-    <div class="vendor-welcome-copy">
-      <div class="vendor-kicker"><i></i> GAMERS GOLD TOP-UP</div>
-      <h1>Panel de <em>revendedor</em></h1>
-      <p>Tu espacio para gestionar las recargas y seguir tu actividad.</p>
-    </div>
-    <div class="vendor-welcome-mark" aria-hidden="true">
-      <svg viewBox="0 0 100 100" fill="none">
-        <path d="M50 8 82 20v26c0 22-13 37-32 47C31 83 18 68 18 46V20L50 8Z" stroke="currentColor" stroke-width="2.5"/>
-        <path d="m29 57 13-15 10 10 19-23M29 68h42" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <span class="vendor-welcome-glow" aria-hidden="true"></span>
+<main class="partner-page reseller-dashboard">
+  <header class="reseller-header">
+    <div class="reseller-kicker"><i></i> GAMERS GOLD TOP-UP</div>
+    <h1>Panel de <em>revendedor</em></h1>
+    <p>Administra tu negocio y consulta el progreso de tus recargas.</p>
+  </header>
+
+  <section class="current-plan">
+    <div class="plan-top"><span>Tu plan actual</span><b class="plan-status"><i></i> Por configurar</b></div>
+    <div class="current-plan-name"><span class="plan-emblem">GG</span><div><strong>Plan revendedor</strong><small>Tu espacio de negocio Gamers Gold</small></div></div>
   </section>
 
-  <section class="vendor-stat-card" aria-label="Resumen de recargas">
-    <div class="vendor-stat-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M4 19V10m5 9V5m5 14v-7m5 7V8"/></svg>
+  <section class="plan-section" aria-label="Niveles de revendedor">
+    <div class="section-title"><span></span><h2>Planes y niveles</h2></div>
+    <div class="plan-grid">
+      <article class="plan-tile"><span class="plan-symbol">I</span><strong>Revendedor</strong><small>Nivel inicial</small></article>
+      <article class="plan-tile elite"><span class="plan-symbol">II</span><strong>Elite</strong><small>Nivel avanzado</small></article>
+      <article class="plan-tile reseller"><span class="plan-symbol">III</span><strong>Reseller</strong><small>Nivel profesional</small></article>
+      <article class="plan-tile partner"><span class="plan-symbol">IV</span><strong>Partner</strong><small>Nivel premium</small></article>
     </div>
-    <div class="vendor-stat-copy">
-      <span>RECARGAS HECHAS</span>
-      <strong id="recargas-hechas-count">—</strong>
-      <small>Recargas completadas en tu cuenta</small>
-    </div>
-    <div class="vendor-stat-accent" aria-hidden="true"></div>
   </section>
 
-  <a class="vendor-recharge" href="tienda.html">
-    <span class="vendor-recharge-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-    </span>
-    <span>Hacer una recarga</span>
-    <svg class="vendor-recharge-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-  </a>
+  <section class="reseller-stats">
+    <article class="reseller-stat"><span class="stat-icon">↗</span><div><small>RECARGAS DEL MES</small><strong id="recargas-mes-count">—</strong></div></article>
+    <article class="reseller-stat"><span class="stat-icon">％</span><div><small>TU DESCUENTO</small><strong>—</strong><em>Se configurará más adelante</em></div></article>
+  </section>
 
-  <section class="vendor-business" aria-labelledby="vendor-business-title">
-    <div class="vendor-section-heading">
-      <span class="vendor-section-line"></span>
-      <h2 id="vendor-business-title">Tu negocio</h2>
+  <a class="reseller-primary" href="tienda.html"><span>＋</span> Hacer una recarga <b>›</b></a>
+
+  <section class="business-section">
+    <div class="section-title"><span></span><h2>Tu negocio</h2></div>
+    <div class="business-grid">
+      <a class="business-option" href="mis-compras.html"><span class="business-icon">↗</span><span><strong>Mis ventas</strong><small>Actividad e historial</small></span><b>›</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">▤</span><span><strong>Lista de precios</strong><small>Copiar y compartir</small></span><b>Pronto</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">♙</span><span><strong>Clientes frecuentes</strong><small>Tus IDs guardados</small></span><b>Pronto</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">◇</span><span><strong>Tu marca</strong><small>Logo y comprobantes</small></span><b>Pronto</b></a>
+      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon">♧</span><span><strong>Equipo de trabajo</strong><small>Miembros y permisos</small></span><b>Pronto</b></a>
     </div>
-    <div class="vendor-shortcuts">
-      <a class="vendor-shortcut" href="mis-compras.html">
-        <span class="vendor-shortcut-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M4 17 9 12l4 3 7-8M14 7h6v6"/></svg>
-        </span>
-        <span class="vendor-shortcut-copy"><strong>Mis compras</strong><small>Actividad e historial</small></span>
-        <svg class="vendor-shortcut-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-      </a>
-      <a class="vendor-shortcut" href="cuenta.html">
-        <span class="vendor-shortcut-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-3.5 3-5.3 7-5.3s6.3 1.8 7 5.3"/></svg>
-        </span>
-        <span class="vendor-shortcut-copy"><strong>Mi cuenta</strong><small>Datos y configuración</small></span>
-        <svg class="vendor-shortcut-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-      </a>
-    </div>
+  </section>
+
+  <section class="api-panel">
+    <div class="api-heading"><span class="api-icon">⌘</span><div><h2>Acceso API</h2><small><i></i> Preparando integración</small></div></div>
+    <p>Conecta tu tienda con la API de Gamers Gold cuando esté disponible.</p>
+    <button type="button" disabled>Gestionar API <span>›</span></button>
+    <a class="api-docs" href="#" aria-disabled="true">Ver documentación <span>↗</span></a>
   </section>
 </main>
 <nav class="mobile-nav" aria-label="Navegación inferior">
-<a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
-<a href="tienda.html" aria-label="Tienda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5M9 13v3m6-3v3"/></svg><small>Tienda</small></a>
-<a class="current" href="revendedores.html" aria-current="page" aria-label="Revendedores"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revendedores</small></a>
-<a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
-<a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
+<a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
+<a href="mis-compras.html" aria-label="Órdenes"><svg viewBox="0 0 24 24"><path d="M7 3h10l3 3v15H4V3h3Zm0 0v5h10V3M8 13h8m-8 4h8"/></svg><small>Órdenes</small></a>
+<a class="current" href="revendedores.html" aria-current="page" aria-label="Revender"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revender</small></a>
+<a href="#" class="nav-coming-soon" aria-disabled="true" aria-label="Wallet"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 9h18m-5 5h2"/></svg><small>Wallet</small></a>
+<a href="cuenta.html" aria-label="Perfil"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Perfil</small></a>
 </nav>
 
 
 <script type="module">
 import { supabase } from "./supabase-client.js";
 (async () => {
-  const counter = document.getElementById("recargas-hechas-count");
+  const counter = document.getElementById("recargas-mes-count");
   if (!counter) return;
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   if (sessionError || !session?.user) { counter.textContent = "0"; return; }
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
   const { count, error } = await supabase.from("usdt_orders")
     .select("id", { count: "exact", head: true })
-    .eq("user_id", session.user.id).eq("status", "completed");
+    .eq("user_id", session.user.id)
+    .eq("status", "completed")
+    .gte("created_at", monthStart)
+    .lt("created_at", nextMonth);
   counter.textContent = error ? "—" : String(count ?? 0);
-  if (error) console.warn("No se pudo cargar el total de recargas completadas:", error);
+  if (error) console.warn("No se pudo cargar el total de recargas del mes:", error);
 })();
 </script>
 
