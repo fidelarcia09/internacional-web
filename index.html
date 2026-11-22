@@ -467,16 +467,26 @@
 }
 
 
-/* Centrar el logotipo en el encabezado sin mover los demás controles */
-.topbar{position:relative!important}
+/* Logotipo integrado en el encabezado, sin sobresalir por debajo */
+.topbar{position:relative!important;overflow:visible!important}
 .topbar .brand{
  position:absolute!important;left:50%!important;top:50%!important;
  transform:translate(-50%,-50%)!important;margin:0!important;
  justify-self:center!important;
 }
-
-/* La imagen del logo se integra con efecto limpio, sin tocar el resto del encabezado */
-.topbar .brand img{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important}
+.topbar .brand img{
+ display:block!important;width:clamp(155px,21vw,220px)!important;
+ max-height:54px!important;height:auto!important;object-fit:contain!important;
+ transform:scale(1.08)!important;transform-origin:center!important;
+ border:0!important;outline:0!important;background:transparent!important;
+ box-shadow:none!important;
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 100%)!important;
+ mask-image:linear-gradient(to bottom,#000 0%,#000 72%,transparent 100%)!important;
+ filter:drop-shadow(0 2px 2px rgba(0,0,0,.8)) drop-shadow(0 0 7px rgba(255,112,0,.22)) drop-shadow(0 7px 10px rgba(0,0,0,.55)) saturate(1.12) contrast(1.06)!important;
+}
+@media(max-width:620px){
+ .topbar .brand img{max-height:50px!important;transform:scale(1.04)!important}
+}
 </style>
 <style id="mobile-nav-strong-travel">
 @media (max-width:620px){
