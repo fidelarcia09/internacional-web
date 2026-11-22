@@ -64,8 +64,8 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 <body>
 <main>
 <header class="page-head">
-<div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite">Activa los avisos para recibir novedades de tu cuenta directamente en el teléfono.</p></div>
-<button class="push-button" id="push-toggle" type="button">Activar notificaciones</button>
+<div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite">Comprobando si este dispositivo ya tiene las notificaciones activadas.</p></div>
+<button class="push-button" id="push-toggle" type="button" hidden>Activar notificaciones</button>
 </header>
 <section class="notice-list" id="notice-list" aria-live="polite">
 <div class="empty-state" id="empty-state">
@@ -129,12 +129,12 @@ async function saveBrowserSubscription(subscription) {
 async function refreshPushStatus() {
   if (!currentUserId) return;
   if (!("Notification" in window) || !("serviceWorker" in navigator) || !("PushManager" in window)) {
-    setPushStatus("Tu navegador no permite recibir notificaciones push web.", "No compatible", true);
+    setPushStatus("Tu navegador no permite recibir notificaciones push web.", "No compatible", true, false);
     return;
   }
 
   if (Notification.permission === "denied") {
-    setPushStatus("El permiso está bloqueado. Cámbialo en los ajustes del navegador para recibir avisos.", "Permiso bloqueado", true);
+    setPushStatus("El permiso está bloqueado. Cámbialo en los ajustes del navegador para recibir avisos.", "Permiso bloqueado", true, false);
     return;
   }
 
@@ -142,34 +142,24 @@ async function refreshPushStatus() {
     const registration = await getPushRegistration();
     if (!registration) return;
 
-    let permission = Notification.permission;
-    if (permission === "default") {
-      setPushStatus("Solicitando permiso para enviarte avisos de tus compras…", "Solicitando permiso", true);
-      permission = await Notification.requestPermission();
-    }
-
-    if (permission !== "granted") {
-      if (permission === "denied") {
-        setPushStatus("El permiso está bloqueado. Cámbialo en los ajustes del navegador para recibir avisos.", "Permiso bloqueado", true);
-      } else {
-        setPushStatus("No se concedió el permiso. Puedes intentarlo nuevamente desde aquí.", "Activar notificaciones");
-      }
+    // Solo ocultamos el botón si el navegador conserva la suscripción
+    // y Supabase confirma el registro de este dispositivo para la cuenta.
+    if (Notification.permission !== "granted") {
+      setPushStatus("Activa los avisos para recibir novedades de tu cuenta directamente en el teléfono.", "Activar notificaciones", false, false);
       return;
     }
 
-    let subscription = await registration.pushManager.getSubscription();
+    const subscription = await registration.pushManager.getSubscription();
     if (!subscription) {
-      subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64UrlToUint8Array(VAPID_PUBLIC_KEY)
-      });
+      setPushStatus("Este dispositivo todavía no tiene una suscripción push activa.", "Activar notificaciones", false, false);
+      return;
     }
 
     await saveBrowserSubscription(subscription);
     setPushStatus("Este dispositivo ya tiene las notificaciones activadas y registradas.", "Activar notificaciones", false, true);
   } catch (error) {
-    console.error("No se pudo activar la suscripción push al entrar:", error);
-    setPushStatus("No pudimos activar los avisos automáticamente. Puedes reintentarlo aquí.", "Reintentar");
+    console.error("No se pudo comprobar el registro push del dispositivo:", error);
+    setPushStatus("No pudimos confirmar el registro de este dispositivo en Supabase. Puedes reintentarlo.", "Reintentar", false, false);
   }
 }
 
