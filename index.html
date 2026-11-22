@@ -533,6 +533,16 @@
 .section-head .see-all{border:0!important;outline:0!important;background:#101217!important;box-shadow:0 0 12px rgba(255,135,0,.24),inset 0 0 10px rgba(255,135,0,.08)!important;border-radius:12px!important}
 @media(max-width:620px){.section-head .see-all{border:0!important;outline:0!important;box-shadow:0 0 10px rgba(255,135,0,.25),inset 0 0 8px rgba(255,135,0,.08)!important}}
 </style>
+
+<style id="home-side-drawer-hero">
+@media(max-width:620px){
+ .topbar nav.mobile-open{position:fixed!important;top:76px!important;bottom:76px!important;left:0!important;right:auto!important;width:62vw!important;max-width:340px!important;min-width:245px!important;height:auto!important;padding:30px 22px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;gap:22px!important;overflow:hidden!important;background:#08090df2!important;border:0!important;border-right:1px solid #ff6b2477!important;border-radius:0 18px 18px 0!important;box-shadow:18px 0 45px #000a!important;backdrop-filter:blur(14px)!important;isolation:isolate!important;z-index:30!important}
+ .topbar nav.mobile-open:before{content:"";position:absolute;z-index:-2;inset:0;background-image:linear-gradient(180deg,rgba(5,7,12,.70),rgba(5,7,12,.90) 58%,rgba(5,7,12,.96)),url("fuentes/personaje_gamer_cuadrado.webp");background-size:cover;background-position:center;background-repeat:no-repeat;opacity:1}
+ .topbar nav.mobile-open:after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:radial-gradient(ellipse at 78% 20%,rgba(255,112,0,.20),transparent 58%)}
+ .topbar nav.mobile-open a{position:relative;z-index:1;width:100%;padding:0 0 13px;border-bottom:1px solid rgba(255,255,255,.12);font-size:13px!important;font-weight:700;color:#f5f5f5!important;letter-spacing:.2px}
+ .topbar nav.mobile-open a:active{color:#ff8700!important}
+}
+</style>
 </head>
 <body>
 <header class="topbar"><button class="menu" aria-label="Abrir menú" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><a class="brand" href="#" aria-label="Inicio"></a><nav><a href="#catalogo">Juegos</a><a href="#ventajas">Ventajas</a><a href="#partners">Revendedores</a><a href="resenas.html">Reseñas</a></nav><a class="top-cta" href="#catalogo">Explorar tienda ↗</a><a class="entry-link" href="registro.html" aria-label="Entrar a tu cuenta" hidden>Entrar</a><a class="notification-bell" href="notificaciones.html" aria-label="Notificaciones" title="Notificaciones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-dot" aria-hidden="true" hidden></span></a></header>
@@ -595,11 +605,21 @@ mobileNavItems.forEach((item) => item.addEventListener("click", () => {
 const menu = document.querySelector(".menu");
 const desktopNav = document.querySelector(".topbar nav");
 if (menu && desktopNav) {
+  const closeMenu = () => {
+    desktopNav.classList.remove("mobile-open");
+    menu.setAttribute("aria-expanded", "false");
+  };
   menu.addEventListener("click", () => {
     const opened = desktopNav.classList.toggle("mobile-open");
     menu.setAttribute("aria-expanded", String(opened));
   });
-  desktopNav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => desktopNav.classList.remove("mobile-open")));
+  desktopNav.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+  document.addEventListener("click", (event) => {
+    if (desktopNav.classList.contains("mobile-open") && !desktopNav.contains(event.target) && !menu.contains(event.target)) closeMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
 }
 
 // Guarda automáticamente la imagen principal para que también aparezca sin conexión.
