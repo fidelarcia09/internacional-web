@@ -1,4 +1,4 @@
-const CACHE_NAME = "internacional-web-home-image-v10";
+const CACHE_NAME = "internacional-web-home-image-v11";
 const IMAGE_PATHS = [
   "fuentes/personaje_gamer_cuadrado.webp",
   "fuentes/novatopup_tienda_banner.webp",
@@ -16,11 +16,27 @@ const IMAGE_PATHS = [
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
+    // Cada imagen se guarda de forma independiente: un fallo temporal
+    // no debe cancelar la instalación ni impedir guardar las demás.
     await Promise.all(IMAGE_PATHS.map(async (path) => {
       const imageUrl = new URL(path, self.registration.scope).href;
-      const response = await fetch(imageUrl, { cache: "reload" });
-      if (!response.ok) throw new Error("No se pudo guardar la imagen: " + path);
-      await cache.put(imageUrl, response);
+      let lastError = null;
+
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const response = await fetch(imageUrl, { cache: "reload" });
+          if (!response.ok) throw new Error("HTTP " + response.status);
+          await cache.put(imageUrl, response);
+          lastError = null;
+          break;
+        } catch (error) {
+          lastError = error;
+        }
+      }
+
+      if (lastError) {
+        console.warn("No se pudo precargar la imagen; se intentará al solicitarla:", path, lastError);
+      }
     }));
     await self.skipWaiting();
   })());
