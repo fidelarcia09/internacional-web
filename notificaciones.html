@@ -99,8 +99,9 @@ function base64UrlToUint8Array(value) {
   return Uint8Array.from(raw, char => char.charCodeAt(0));
 }
 
-function setPushStatus(message, buttonText, disabled = false, hideButton = false) {
+function setPushStatus(message, buttonText, disabled = false, hideButton = false, hideStatus = false) {
   pushStatus.textContent = message;
+  pushStatus.hidden = hideStatus;
   pushToggle.textContent = buttonText;
   pushToggle.disabled = disabled;
   pushToggle.hidden = hideButton;
@@ -156,7 +157,7 @@ async function refreshPushStatus() {
     }
 
     await saveBrowserSubscription(subscription);
-    setPushStatus("Este dispositivo ya tiene las notificaciones activadas y registradas.", "Activar notificaciones", false, true);
+    setPushStatus("", "Activar notificaciones", false, true, true);
   } catch (error) {
     console.error("No se pudo comprobar el registro push del dispositivo:", error);
     setPushStatus("No pudimos confirmar el registro de este dispositivo en Supabase. Puedes reintentarlo.", "Reintentar", false, false);
