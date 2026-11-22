@@ -143,7 +143,6 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
   <span class="order-code" id="orderCode"></span>
   <small>Red: BNB Smart Chain · BEP20</small>
 </div>
-<div class="deposit-timer" id="depositTimer" hidden><span>TIEMPO RESTANTE DEL PEDIDO</span><strong id="depositCountdown">10:00</strong></div>
 <p class="payment-status" id="paymentStatus" role="status" aria-live="polite"></p>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
 <input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false">
@@ -221,12 +220,6 @@ const statusText = document.getElementById("paymentStatus");
 let activeDeposit = null;
 let busy = false;
 let signedIn = false;
-let countdownInterval = null;
-let countdownStartedAt = 0;
-let countdownRemainingMs = 0;
-let countdownReady = false;
-const timerBox = document.getElementById("depositTimer");
-const timerText = document.getElementById("depositCountdown");
 
 function setStatus(message, kind = "") {
   statusText.textContent = message;
@@ -246,50 +239,7 @@ function validTxid(value) {
   return /^0x[a-fA-F0-9]{64}$/.test(value.trim());
 }
 function updatePayButton() {
-  payButton.disabled = !signedIn || !validTxid(txInput.value) || busy || (!!activeDeposit && !countdownReady);
-}
-async function startServerCountdown(deposit) {
-  if (countdownInterval) clearInterval(countdownInterval);
-  timerBox.hidden = false;
-  payButton.disabled = true;
-  const { data: serverTime, error } = await supabase.rpc("get_usdt_server_time");
-  if (error || !serverTime || !deposit.created_at) {
-    setStatus("No pudimos sincronizar la hora oficial del servidor. Recarga la página para continuar.", "error");
-    payButton.disabled = true;
-    return;
-  }
-  const deadline = new Date(deposit.created_at).getTime() + 10 * 60 * 1000;
-  const serverNow = new Date(serverTime).getTime();
-  if (!Number.isFinite(deadline) || !Number.isFinite(serverNow)) {
-    setStatus("No pudimos validar la vigencia del pedido.", "error");
-    return;
-  }
-  countdownRemainingMs = deadline - serverNow;
-  countdownReady = true;
-  updatePayButton();
-  countdownStartedAt = performance.now();
-  const tick = async () => {
-    const remaining = Math.max(0, countdownRemainingMs - (performance.now() - countdownStartedAt));
-    const seconds = Math.ceil(remaining / 1000);
-    timerText.textContent = String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
-    timerBox.classList.toggle("urgent", seconds <= 60);
-    if (remaining <= 0) {
-      clearInterval(countdownInterval);
-      countdownInterval = null;
-      busy = true;
-      payButton.disabled = true;
-      txInput.disabled = true;
-      setStatus("El tiempo del pedido terminó. Volviendo al inicio…", "error");
-      try {
-        await supabase.rpc("expire_usdt_deposit", { p_deposit_id: deposit.id });
-      } catch (error) {
-        console.error("expire USDT deposit", error);
-      }
-      window.location.replace("index.html");
-    }
-  };
-  await tick();
-  if (countdownRemainingMs > 0) countdownInterval = setInterval(tick, 250);
+  payButton.disabled = !signedIn || !validTxid(txInput.value) || busy;
 }
 function displayDeposit(deposit) {
   activeDeposit = deposit;
@@ -297,7 +247,6 @@ function displayDeposit(deposit) {
   orderAmount.textContent = formatAmount(deposit.amount_usdt) + " USDT";
   orderCode.textContent = deposit.deposit_code;
   lockAmount(true);
-  startServerCountdown(deposit);
 }
 function errorMessage(code) {
   const messages = {
@@ -310,7 +259,6 @@ function errorMessage(code) {
     txid_already_used_or_linked: "Ese TXID ya está asociado a otro pedido.",
     another_txid_already_linked: "Este pedido ya tiene otro TXID asociado.",
     deposit_not_found: "No encontramos tu pedido. Actualiza la página e inicia sesión de nuevo.",
-    deposit_expired: "El tiempo de este pedido terminó. Crea uno nuevo.",
     invalid_session: "Tu sesión ha caducado. Inicia sesión otra vez."
   };
   return messages[code] || "No se pudo verificar el pago. Inténtalo de nuevo más tarde.";
