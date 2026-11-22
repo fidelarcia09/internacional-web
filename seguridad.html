@@ -38,6 +38,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;letter-sp
 .toggle-pass svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .password-help{margin:11px 2px 14px;color:#aeb0b8;font-size:10px;line-height:1.5}
 .password-submit{width:100%;min-height:49px;border:1px solid #ffc05c;border-radius:13px;background:linear-gradient(100deg,#ffb52e,#ff8121 55%,#ff9d25);color:#17100a;font:800 13px var(--font);cursor:pointer;box-shadow:0 0 14px #ff79282b}
+.password-submit[hidden]{display:none!important}
 .password-submit:disabled{opacity:.65;cursor:wait}
 .password-message{display:none;margin:12px 0 0;padding:10px 12px;border:1px solid #ff9a2b70;border-radius:11px;background:#ff8b2c12;color:#ffd29d;font-size:11px;line-height:1.5}
 .password-message.show{display:block}
@@ -292,23 +293,19 @@ function setMfaBusy(button, busy, text) {
 }
 async function loadMfaState() {
   mfaStatus.textContent = "Comprobando estado...";
-  try {
-    // Al volver a Seguridad, elimina cualquier alta que quedó abandonada.
-    await cleanupUnverifiedMfaFactors(pendingFactorId);
-  } catch (error) {
-    mfaStatus.textContent = "No se pudo limpiar la configuración pendiente";
-    showMfaMessage("No pudimos eliminar una configuración anterior: " + (error?.message || "error desconocido"), true);
-    return;
-  }
   const { data, error } = await supabase.auth.mfa.listFactors();
   if (error) {
     mfaStatus.textContent = "No se pudo consultar el estado";
     showMfaMessage("No pudimos consultar la configuración de seguridad. Actualiza la página e inténtalo de nuevo.", true);
     return;
   }
+
+  // Primero mostramos el estado real de la cuenta. Una limpieza pendiente
+  // no debe impedir que aparezca el botón para administrar un factor activo.
   const totp = data?.totp || [];
   const verified = totp.find(factor => factor.status === "verified");
   verifiedFactorId = verified?.id || null;
+
   if (verifiedFactorId) {
     mfaStatus.textContent = "Estado: Activada";
     mfaSummary.textContent = "Protección adicional activada";
@@ -320,6 +317,14 @@ async function loadMfaState() {
     mfaSummary.textContent = "Protege tu cuenta con una app de códigos";
     startMfa.hidden = false;
     disableMfa.hidden = true;
+  }
+
+  // La limpieza se ejecuta después de representar el estado, sin ocultar
+  // las acciones de un factor verificado si una limpieza anterior falla.
+  try {
+    await cleanupUnverifiedMfaFactors(pendingFactorId);
+  } catch (cleanupError) {
+    showMfaMessage("No se pudo eliminar una configuración pendiente: " + (cleanupError?.message || "error desconocido"), true);
   }
 }
 
@@ -413,7 +418,7 @@ disableMfa.addEventListener("click", async () => {
   if (!verifiedFactorId) return;
   setMfaBusy(disableMfa, true, "DESACTIVANDO...");
   const { error } = await supabase.auth.mfa.unenroll({ factorId: verifiedFactorId });
-  setMfaBusy(disableMfa, false, "DESACTIVAR VERIFICACIÓN");
+  setMfaBusy(disableMfa, false, "DESACTIVAR");
   if (error) { showMfaMessage("No se pudo desactivar. Verifica tu sesión e inténtalo de nuevo.", true); return; }
   showMfaMessage("La verificación en dos pasos se ha desactivado.");
   await loadMfaState();
