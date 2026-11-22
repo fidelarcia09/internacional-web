@@ -127,7 +127,7 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 </div>
 <div class="divider"></div>
 <h2 class="pay-title"><svg viewBox="0 0 36 36"><path d="M18 3 31 9v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><circle cx="18" cy="17" r="5"/><path d="M18 22v5"/></svg>Dirección de pago</h2>
-<div class="address"><span>La dirección estará disponible cuando se habiliten los pagos.</span><button class="copy" type="button" disabled aria-label="Copiar dirección"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
+<div class="address"><span><strong style="display:block;color:#f4eee7;font-size:12px;word-break:break-all">0xd2364c69d339bbd96915BC80b4dbAc23c9209f9C</strong><small style="display:block;margin-top:5px;color:#65e6a6;font-size:10px;font-weight:800;letter-spacing:.5px">USDT · RED BEP20 (BNB SMART CHAIN)</small></span><button class="copy" id="copyAddress" type="button" aria-label="Copiar dirección" title="Copiar dirección" style="opacity:1;cursor:pointer"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
 <button class="pay-button" type="button" disabled><svg viewBox="0 0 48 36" aria-hidden="true"><rect x="3" y="4" width="42" height="28" rx="4" fill="currentColor" stroke="none"/><path d="M4 12h40M10 23h11M10 27h7" stroke="#ff9a00" stroke-width="2.5" stroke-linecap="round"/><rect x="30" y="22" width="8" height="5" rx="1" fill="#ff9a00" stroke="none"/></svg>Pagar</button>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
 <input class="txid" type="text" placeholder="Escribe aquí el TXID..." disabled>
@@ -170,6 +170,24 @@ usd.addEventListener('input',()=>{
  });
 });
 updateEstimate();
+
+const copyAddress=document.getElementById('copyAddress');
+copyAddress.addEventListener('click',async()=>{
+ const address='0xd2364c69d339bbd96915BC80b4dbAc23c9209f9C';
+ try{
+  await navigator.clipboard.writeText(address);
+  copyAddress.setAttribute('aria-label','Dirección copiada');
+  copyAddress.title='Dirección copiada';
+  copyAddress.style.borderColor='#65e6a6';
+ }catch(error){
+  const helper=document.createElement('textarea');
+  helper.value=address;helper.setAttribute('readonly','');
+  helper.style.position='fixed';helper.style.opacity='0';
+  document.body.appendChild(helper);helper.select();
+  const copied=document.execCommand('copy');helper.remove();
+  if(copied){copyAddress.setAttribute('aria-label','Dirección copiada');copyAddress.title='Dirección copiada';}
+ }
+});
 </script>
 
 <script>
