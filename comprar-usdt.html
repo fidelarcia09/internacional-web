@@ -135,8 +135,8 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 </div>
 <div class="divider"></div>
 <h2 class="pay-title"><svg viewBox="0 0 36 36"><path d="M18 3 31 9v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><circle cx="18" cy="17" r="5"/><path d="M18 22v5"/></svg>Dirección de pago</h2>
-<div class="address"><span><strong style="display:block;color:#f4eee7;font-size:12px;word-break:break-all">0xd2364c69d339bbd96915BC80b4dbAc23c9209f9C</strong><small style="display:block;margin-top:5px;color:#65e6a6;font-size:10px;font-weight:800;letter-spacing:.5px">BINANCE-PEG BSC-USD · BEP20 (BNB SMART CHAIN)</small><small style="display:block;margin-top:4px;color:#d1a77a;font-size:9px">Activo vinculado al dólar; no es USD₮ oficial emitido por Tether.</small><small style="display:block;margin-top:5px;color:#b6a89b;font-size:9px;word-break:break-all">Contrato: 0x55d398326f99059fF775485246999027B3197955 · <a href="https://bscscan.com/token/0x55d398326f99059fF775485246999027B3197955" target="_blank" rel="noopener noreferrer" style="color:#ffb34e;text-decoration:underline">verificar</a></small></span><button class="copy" id="copyAddress" type="button" aria-label="Copiar dirección" title="Copiar dirección" style="opacity:1;cursor:pointer"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
-<button class="pay-button" id="createDeposit" type="button"><svg viewBox="0 0 48 36" aria-hidden="true"><rect x="3" y="4" width="42" height="28" rx="4" fill="currentColor" stroke="none"/><path d="M4 12h40M10 23h11M10 27h7" stroke="#ff9a00" stroke-width="2.5" stroke-linecap="round"/><rect x="30" y="22" width="8" height="5" rx="1" fill="#ff9a00" stroke="none"/></svg>Crear pedido</button>
+<div class="address"><span><strong style="display:block;color:#f4eee7;font-size:12px;word-break:break-all">0xd2364c69d339bbd96915BC80b4dbAc23c9209f9C</strong><small style="display:block;margin-top:5px;color:#65e6a6;font-size:10px;font-weight:800;letter-spacing:.5px">BINANCE-PEG BSC-USD · BEP20 (BNB SMART CHAIN)</small></span><button class="copy" id="copyAddress" type="button" aria-label="Copiar dirección" title="Copiar dirección" style="opacity:1;cursor:pointer"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg></button></div>
+
 <div class="order-info" id="orderInfo" hidden>
   Pedido creado. Envía exactamente <strong id="orderAmount">— USDT</strong> a la dirección indicada.
   <span class="order-code" id="orderCode"></span>
@@ -145,7 +145,7 @@ h1 em{color:var(--orange);font-style:normal;text-shadow:0 0 22px #ff710052}
 <p class="payment-status" id="paymentStatus" role="status" aria-live="polite">Selecciona un importe y crea tu pedido. Después envía exactamente ese importe de BSC-USD y verifica el TXID.</p>
 <h2 class="txid-label"><svg viewBox="0 0 36 36"><path d="m18 3 13 6v10c0 8-5.5 12-13 15C10.5 31 5 27 5 19V9l13-6Z"/><path d="m11 18 5 5 10-11"/></svg>Ingresa el Hash de la transacción (TXID)</h2>
 <input class="txid" id="txidInput" type="text" placeholder="Pega aquí el TXID de BNB Smart Chain..." autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
-<button class="verify-button" id="verifyTx" type="button" disabled>Verificar pago</button>
+<button class="verify-button" id="payButton" type="button" disabled>Pagar</button>
 
 </section>
 </main>
@@ -210,8 +210,7 @@ import { supabase } from "./supabase-client.js";
 
 const amountInput = document.getElementById("usd");
 const packageButtons = [...document.querySelectorAll(".package")];
-const createButton = document.getElementById("createDeposit");
-const verifyButton = document.getElementById("verifyTx");
+const payButton = document.getElementById("payButton");
 const txInput = document.getElementById("txidInput");
 const orderInfo = document.getElementById("orderInfo");
 const orderAmount = document.getElementById("orderAmount");
@@ -219,6 +218,7 @@ const orderCode = document.getElementById("orderCode");
 const statusText = document.getElementById("paymentStatus");
 let activeDeposit = null;
 let busy = false;
+let signedIn = false;
 
 function setStatus(message, kind = "") {
   statusText.textContent = message;
@@ -234,18 +234,18 @@ function lockAmount(locked) {
   amountInput.disabled = locked;
   packageButtons.forEach(button => button.disabled = locked);
 }
+function validTxid(value) {
+  return /^0x[a-fA-F0-9]{64}$/.test(value.trim());
+}
+function updatePayButton() {
+  payButton.disabled = !signedIn || !validTxid(txInput.value) || busy;
+}
 function displayDeposit(deposit) {
   activeDeposit = deposit;
   orderInfo.hidden = false;
   orderAmount.textContent = formatAmount(deposit.amount_usdt) + " BSC-USD";
   orderCode.textContent = deposit.deposit_code;
   lockAmount(true);
-  txInput.disabled = false;
-  txInput.value = deposit.payment_reference || "";
-  verifyButton.disabled = !txInput.value.trim();
-  verifyButton.textContent = "Verificar pago";
-  createButton.disabled = true;
-  createButton.textContent = "Pedido creado";
 }
 function errorMessage(code) {
   const messages = {
@@ -264,9 +264,10 @@ function errorMessage(code) {
 }
 async function restorePendingDeposit() {
   const { data: sessionData } = await supabase.auth.getSession();
-  if (!sessionData.session) {
-    createButton.disabled = true;
-    setStatus("Inicia sesión en tu cuenta para crear un pedido de BSC-USD.", "error");
+  signedIn = !!sessionData.session;
+  if (!signedIn) {
+    setStatus("Inicia sesión en tu cuenta para realizar el pago.", "error");
+    updatePayButton();
     return;
   }
   const { data, error } = await supabase
@@ -279,6 +280,7 @@ async function restorePendingDeposit() {
     .maybeSingle();
   if (error) {
     setStatus("No pudimos cargar tus pedidos pendientes. Recarga la página.", "error");
+    updatePayButton();
     return;
   }
   if (data) {
@@ -290,64 +292,60 @@ async function restorePendingDeposit() {
       button.setAttribute("aria-pressed", String(selected));
     });
     displayDeposit(data);
-    setStatus("Tienes un pedido pendiente. Envía el importe exacto y pega su TXID para verificarlo.");
+    setStatus("Tienes un pedido pendiente. Pega el TXID del pago para continuar.");
+  } else {
+    setStatus("Selecciona el importe, realiza la transferencia y pega el TXID para pagar.");
   }
+  updatePayButton();
 }
-createButton.addEventListener("click", async () => {
-  if (busy || activeDeposit) return;
-  const amount = amountInput.value.trim();
-  if (!amount || !Number.isFinite(Number(amount)) || Number(amount) < 1 || Number(amount) > 100000 || !/^\d+(?:\.\d{1,8})?$/.test(amount)) {
-    setStatus("Introduce un importe válido (mínimo 1 USDT y hasta 8 decimales).", "error");
-    return;
-  }
-  busy = true;
-  createButton.disabled = true;
-  createButton.textContent = "Creando pedido...";
-  setStatus("Estamos creando tu pedido seguro...");
-  try {
-    const { data, error } = await supabase.rpc("create_usdt_deposit_request", {
-      p_amount_usdt: amount,
-      p_payment_method: "BEP20-USDT",
-      p_payment_reference: null
-    });
-    if (error) throw error;
-    const row = Array.isArray(data) ? data[0] : data;
-    if (!row?.deposit_id || !row?.deposit_code) throw new Error("No se recibió el pedido creado.");
-    const deposit = {
-      id: row.deposit_id,
-      deposit_code: row.deposit_code,
-      amount_usdt: amount,
-      status: row.deposit_status || "pending",
-      payment_reference: null
-    };
-    displayDeposit(deposit);
-    setStatus("Pedido creado. Envía exactamente " + formatAmount(amount) + " BSC-USD por BEP20 a la dirección indicada. Luego pega el TXID.", "success");
-  } catch (error) {
-    console.error("create USDT deposit", error);
-    createButton.disabled = false;
-    createButton.textContent = "Crear pedido";
-    setStatus("No se pudo crear el pedido. Comprueba que has iniciado sesión e inténtalo otra vez.", "error");
-  } finally {
-    busy = false;
-  }
-});
-txInput.addEventListener("input", () => {
-  verifyButton.disabled = !activeDeposit || !txInput.value.trim() || busy;
-});
-verifyButton.addEventListener("click", async () => {
-  if (!activeDeposit || busy) return;
+txInput.addEventListener("input", updatePayButton);
+
+payButton.addEventListener("click", async () => {
+  if (busy || !signedIn) return;
   const txHash = txInput.value.trim();
-  if (!/^0x[a-fA-F0-9]{64}$/.test(txHash)) {
-    setStatus("El TXID debe tener el formato completo de una transacción (0x + 64 caracteres).", "error");
+  if (!validTxid(txHash)) {
+    setStatus("Introduce un TXID válido (0x + 64 caracteres).", "error");
+    updatePayButton();
     return;
   }
+  if (!activeDeposit) {
+    const amount = amountInput.value.trim();
+    if (!amount || !Number.isFinite(Number(amount)) || Number(amount) < 1 || Number(amount) > 100000 || !/^\d+(?:\.\d{1,8})?$/.test(amount)) {
+      setStatus("Introduce un importe válido (mínimo 1 y hasta 8 decimales).", "error");
+      return;
+    }
+  }
+
   busy = true;
-  verifyButton.disabled = true;
-  verifyButton.textContent = "Verificando...";
-  setStatus("Consultando BNB Smart Chain y comprobando el pago...");
+  updatePayButton();
+  payButton.textContent = "Procesando...";
+  setStatus("Enviando los datos del pedido y el TXID para verificar el pago...");
+
   try {
+    if (!activeDeposit) {
+      const amount = amountInput.value.trim();
+      const { data, error } = await supabase.rpc("create_usdt_deposit_request", {
+        p_amount_usdt: amount,
+        p_payment_method: "BEP20-USDT",
+        p_payment_reference: null
+      });
+      if (error) throw error;
+      const row = Array.isArray(data) ? data[0] : data;
+      if (!row?.deposit_id || !row?.deposit_code) throw new Error("No se recibió el pedido creado.");
+      displayDeposit({
+        id: row.deposit_id,
+        deposit_code: row.deposit_code,
+        amount_usdt: amount,
+        status: row.deposit_status || "pending",
+        payment_reference: null
+      });
+    }
+
     const { data, error } = await supabase.functions.invoke("verify-usdt-deposit", {
-      body: { deposit_id: activeDeposit.id, tx_hash: txHash }
+      body: {
+        deposit_id: activeDeposit.id,
+        tx_hash: txHash
+      }
     });
     if (error) {
       let detail = null;
@@ -355,35 +353,33 @@ verifyButton.addEventListener("click", async () => {
       throw new Error(detail?.error || "verification_failed");
     }
     if (data?.status === "pending") {
-      setStatus("La transacción ya aparece en la red. Confirmaciones: " + data.confirmations + "/" + data.required_confirmations + ". Vuelve a verificar en unos instantes.");
+      setStatus("La transacción está en la red. Confirmaciones: " + data.confirmations + "/" + data.required_confirmations + ". Pulsa Pagar de nuevo más tarde para comprobarla.");
       return;
     }
     if (data?.status === "confirmed") {
       setStatus("¡Pago verificado! Se acreditaron " + formatAmount(data.credited || activeDeposit.amount_usdt) + " BSC-USD en tu billetera.", "success");
       txInput.disabled = true;
-      verifyButton.disabled = true;
-      verifyButton.textContent = "Pago confirmado";
-      createButton.textContent = "Crear otro pedido";
-      createButton.disabled = false;
+      payButton.disabled = true;
+      payButton.textContent = "Pago confirmado";
       activeDeposit = null;
-      lockAmount(false);
       return;
     }
     throw new Error(data?.error || "verification_failed");
   } catch (error) {
-    console.error("verify USDT deposit", error);
+    console.error("USDT payment", error);
     setStatus(errorMessage(error.message), "error");
   } finally {
     busy = false;
-    if (activeDeposit && !txInput.disabled) {
-      verifyButton.disabled = !txInput.value.trim();
-      verifyButton.textContent = "Verificar pago";
+    if (!txInput.disabled) {
+      payButton.textContent = "Pagar";
+      updatePayButton();
     }
   }
 });
+
 restorePendingDeposit().catch(error => {
   console.error("restore USDT deposit", error);
-  setStatus("No pudimos recuperar el pedido pendiente.", "error");
+  setStatus("No pudimos recuperar tu pedido pendiente.", "error");
 });
 </script>
 <script>
