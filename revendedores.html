@@ -514,13 +514,21 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
  .reseller-dashboard .business-grid button.business-option{min-height:68px!important}
  .reseller-dashboard .business-grid .business-option.coming-soon>b{font-size:8px!important;padding:4px 6px!important}
 }
+.api-panel[hidden]{display:none!important}
+.reseller-dashboard.api-only .reseller-header,
+.reseller-dashboard.api-only .current-plan,
+.reseller-dashboard.api-only .plan-section,
+.reseller-dashboard.api-only .reseller-stats,
+.reseller-dashboard.api-only .reseller-primary,
+.reseller-dashboard.api-only .business-section,
+.reseller-dashboard.api-only .business-panel{display:none!important}
 </style>
 </head>
 <body>
 <section id="reseller-access-denied" role="status" hidden>
   <span class="access-denied-icon" aria-hidden="true">♛</span>
   <h1>Acceso <em>exclusivo</em></h1>
-  <p>Esta sección está disponible únicamente para usuarios con el rol de revendedor. Si ya tienes ese rol asignado, vuelve a iniciar sesión e inténtalo otra vez.</p>
+  <p>Esta sección está disponible únicamente para cuentas autorizadas.</p>
   <a class="access-denied-link" href="cuenta.html">Volver a mi cuenta</a>
 </section>
 <main class="partner-page reseller-dashboard" hidden>
@@ -577,8 +585,8 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
     <div id="reseller-price-list" class="price-list"><p class="panel-loading">Cargando catálogo...</p></div>
   </section>
 
-  <section class="api-panel">
-    <div class="api-heading"><span class="api-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-2-11-4 14"/></svg></span><div><h2>Acceso API</h2><small><i></i> Preparando integración</small></div></div>
+  <section class="api-panel" id="developer-api-access" hidden>
+    <div class="api-heading"><span class="api-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-2-11-4 14"/></svg></span><div><h2>Acceso API</h2></div></div>
     <p>Conecta tu tienda con la API de Gamers Gold cuando esté disponible.</p>
     <button type="button" disabled>Gestionar API <span>›</span></button>
     <a class="api-docs" href="#" aria-disabled="true">Ver documentación <span>↗</span></a>
@@ -612,18 +620,29 @@ import { supabase } from "./supabase-client.js";
     if (accessNotice) accessNotice.hidden = false;
     return;
   }
-  const { data: resellerRole, error: roleError } = await supabase.from("user_roles")
-    .select("assigned_at,manual_reseller_level")
+  const { data: assignedRoles, error: roleError } = await supabase.from("user_roles")
+    .select("role_id,assigned_at,manual_reseller_level")
     .eq("user_id", session.user.id)
-    .eq("role_id", "revendedor")
-    .maybeSingle();
-  if (roleError || !resellerRole?.assigned_at) {
-    console.warn("Acceso denegado: no se pudo confirmar el rol revendedor:", roleError);
+    .in("role_id", ["revendedor","desarrollador_api"]);
+  if (roleError) {
+    console.warn("No se pudieron cargar los permisos de la cuenta:", roleError);
+    if (accessNotice) accessNotice.hidden = false;
+    return;
+  }
+  const resellerRole = assignedRoles?.find(role => role.role_id === "revendedor" && role.assigned_at) || null;
+  const hasApiRole = assignedRoles?.some(role => role.role_id === "desarrollador_api") || false;
+  if (!resellerRole && !hasApiRole) {
     if (accessNotice) accessNotice.hidden = false;
     return;
   }
   if (accessNotice) accessNotice.hidden = true;
   if (resellerPanel) resellerPanel.hidden = false;
+  const apiAccess = document.getElementById("developer-api-access");
+  if (apiAccess) apiAccess.hidden = !hasApiRole;
+  if (!resellerRole) {
+    if (resellerPanel) resellerPanel.classList.add("api-only");
+    return;
+  }
   const { count, error } = await supabase.from("usdt_orders")
     .select("id", { count: "exact", head: true })
     .eq("user_id", session.user.id)
