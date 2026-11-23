@@ -351,6 +351,7 @@ const avatar = document.getElementById("accountAvatar");
 const avatarActions = document.getElementById("avatarActions");
 const changeAvatarAction = document.getElementById("changeAvatarAction");
 const removeAvatarAction = document.getElementById("removeAvatarAction");
+let avatarUploadInProgress = false;
 
 avatarButton?.addEventListener("click", () => avatarInput?.click());
 avatar?.addEventListener("click", event => {
@@ -402,7 +403,8 @@ removeAvatarAction?.addEventListener("click", async () => {
 
 avatarInput?.addEventListener("change", async () => {
   const file = avatarInput.files?.[0];
-  if (!file) return;
+  if (!file || avatarUploadInProgress) return;
+  avatarUploadInProgress = true;
 
   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
@@ -449,13 +451,14 @@ avatarInput?.addEventListener("change", async () => {
       const cached = JSON.parse(localStorage.getItem(cacheKey) || "{}");
       localStorage.setItem(cacheKey, JSON.stringify({ ...cached, avatar_url: publicUrl }));
     } catch (cacheError) {}
-    showAvatar(publicUrl);\n    if (avatarFeedback) avatarFeedback.textContent = "Foto guardada correctamente";
+    if (avatarFeedback) avatarFeedback.textContent = "Foto guardada correctamente";
   } catch (error) {
     console.error("No se pudo guardar la foto de perfil:", error);
     if (avatarFeedback) avatarFeedback.textContent = error?.message || "No se pudo guardar la foto.";
   } finally {
     avatarButton.disabled = false;
     avatarInput.value = "";
+    avatarUploadInProgress = false;
   }
 });
 
