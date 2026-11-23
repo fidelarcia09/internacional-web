@@ -302,10 +302,21 @@ import { supabase } from "./supabase-client.js";
     counter.textContent = "0";
     return;
   }
+  const { data: resellerRole, error: roleError } = await supabase.from("user_roles")
+    .select("assigned_at")
+    .eq("user_id", session.user.id)
+    .eq("role_id", "revendedor")
+    .maybeSingle();
+  if (roleError || !resellerRole?.assigned_at) {
+    counter.textContent = "0";
+    console.warn("No se pudo confirmar la fecha de asignación del rol revendedor:", roleError);
+    return;
+  }
   const { count, error } = await supabase.from("usdt_orders")
     .select("id", { count: "exact", head: true })
     .eq("user_id", session.user.id)
-    .eq("status", "completed");
+    .eq("status", "completed")
+    .gte("created_at", resellerRole.assigned_at);
   if (error) {
     counter.textContent = "—";
     console.warn("No se pudo cargar el total de recargas completadas:", error);
