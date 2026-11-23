@@ -18,6 +18,8 @@ a{color:inherit;text-decoration:none}
 .mark{width:36px;height:36px;border:1px solid var(--orange);display:grid;place-items:center;font:800 20px var(--display);letter-spacing:-2px;transform:skew(-7deg)}.mark span{color:var(--orange)}
 .back{font-size:10px;color:#bbb;border:1px solid #34363d;border-radius:22px;padding:10px 15px}.back b{color:var(--orange);margin-right:7px}
 main{width:min(90%,510px);margin:22px auto 35px}
+.account-heading{font:800 23px/1.1 var(--display);letter-spacing:.3px;color:var(--white);text-align:left;margin:0 0 16px;padding-left:2px}
+.account-heading:before{content:"";display:inline-block;width:4px;height:19px;margin-right:10px;vertical-align:-3px;border-radius:3px;background:var(--orange);box-shadow:0 0 10px #ff790066}
 .page-kicker{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--orange);text-align:center;margin:0 0 9px}
 h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 0 25px;letter-spacing:.5px}
 .account-panel{position:relative;isolation:isolate;overflow:hidden;padding:20px;border:1px solid #ff6b24;border-radius:24px;background:linear-gradient(145deg,#17191e 0%,#101115 58%,#17110e 100%);box-shadow:0 14px 34px #0008,0 0 22px #ff6b2418,inset 0 1px 0 #ffffff0c}
@@ -59,7 +61,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 .mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse, #ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}
 .mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}
 .mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
-@media(max-width:620px){body{padding-top:9px;padding-bottom:75px}main{margin:16px auto 28px;width:94%}.account-panel{padding:16px;border-radius:20px}.profile{gap:13px;padding-bottom:15px}.avatar{width:70px;height:70px;flex-basis:70px}.avatar svg{width:45px;height:45px}.balance{min-height:82px;padding:14px 1px 0;gap:12px}.profile-meta{gap:6px}.account-links{gap:9px;margin-top:15px}.account-links a{min-height:60px;padding:8px 12px;border-radius:14px}.account-links a>span:nth-child(2){font-size:13px}.link-icon{width:35px;height:35px}.link-icon svg{width:28px;height:28px}}
+@media(max-width:620px){body{padding-top:9px;padding-bottom:75px}main{margin:16px auto 28px;width:94%}.account-heading{font-size:22px;margin-bottom:14px}.account-panel{padding:16px;border-radius:20px}.profile{gap:13px;padding-bottom:15px}.avatar{width:70px;height:70px;flex-basis:70px}.avatar svg{width:45px;height:45px}.balance{min-height:82px;padding:14px 1px 0;gap:12px}.profile-meta{gap:6px}.account-links{gap:9px;margin-top:15px}.account-links a{min-height:60px;padding:8px 12px;border-radius:14px}.account-links a>span:nth-child(2){font-size:13px}.link-icon{width:35px;height:35px}.link-icon svg{width:28px;height:28px}}
 @media(min-width:800px){main{margin-top:28px}.account-panel{padding:22px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 
@@ -148,6 +150,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 </head>
 <body>
 <main>
+<h1 class="account-heading">Mi Cuenta</h1>
 <section class="account-panel" aria-label="Panel de cuenta">
 <div class="profile">
 <div class="avatar" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="21" r="13"/><path d="M7 57c1.5-13 10-20 25-20s23.5 7 25 20H7Z"/></svg></div>
