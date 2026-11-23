@@ -330,6 +330,71 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 }
 </style>
 
+
+<style id="reseller-business-render-fix">
+/* Renderizado simple para evitar artefactos gráficos en las tarjetas de Tu negocio */
+.business-section,
+.business-grid{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:stretch;
+  gap:9px;
+  transform:none!important;
+  filter:none!important;
+  animation:none!important;
+}
+.business-section{display:block;margin:25px 0}
+.business-option,
+.business-option:link,
+.business-option:visited{
+  position:relative!important;
+  display:flex!important;
+  min-width:0!important;
+  min-height:70px!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:10px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,121,40,.48)!important;
+  border-radius:15px!important;
+  background:#111318!important;
+  box-shadow:none!important;
+  opacity:1!important;
+  isolation:auto!important;
+  contain:layout paint;
+  transform:none!important;
+  filter:none!important;
+  animation:none!important;
+  transition:border-color .18s ease!important;
+  backface-visibility:visible!important;
+}
+.business-option::before,
+.business-option::after{content:none!important;display:none!important}
+.business-option.coming-soon{opacity:1!important}
+.business-option .business-icon{
+  flex:0 0 37px!important;
+  width:37px!important;height:37px!important;
+}
+.business-option>span:nth-child(2){flex:1 1 auto!important;min-width:0!important}
+.business-option>b{flex:0 0 auto!important;margin-left:auto!important;white-space:nowrap!important}
+@media(max-width:620px){
+ .business-section{margin:24px 0}
+ .business-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .business-option,
+ .business-option:link,
+ .business-option:visited{min-height:68px!important;padding:9px 8px!important;gap:8px!important;border-radius:14px!important}
+ .business-option .business-icon{flex-basis:35px!important;width:35px!important;height:35px!important}
+ .business-option strong{font-size:10px!important}
+ .business-option small{font-size:8px!important}
+}
+@media(max-width:360px){
+ .business-option,
+ .business-option:link,
+ .business-option:visited{padding:8px 6px!important;gap:6px!important}
+ .business-option strong{font-size:9px!important}
+}
+</style>
 </head>
 <body>
 <section id="reseller-access-denied" role="status" hidden>
