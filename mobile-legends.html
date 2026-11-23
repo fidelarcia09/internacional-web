@@ -228,7 +228,7 @@ function renderProducts(){
    button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");
    button.dataset.productId=product.productId;
    const icon=product.type==="GIFT_CARD"?"🎁":"💎";
-   button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?priceForProduct(product).toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">+(resellerDiscountPercent>0?resellerDiscountPercent+"% descuento · ":"")+safeText(product.region)+'</small>';
+   button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?priceForProduct(product).toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+(resellerDiscountPercent>0?resellerDiscountPercent+"% descuento · ":"")+safeText(product.region)+'</small>';
    button.addEventListener("click",()=>{
      selectedProduct=product;
      clearValidation();
