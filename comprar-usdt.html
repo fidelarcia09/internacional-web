@@ -163,7 +163,7 @@ const packages=[...document.querySelectorAll('.package')];
 function updateEstimate(){
  const amount=Number(usd.value);
  result.textContent=Number.isFinite(amount)&&amount>=0
-  ?amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:8})+' USDT'
+  ?amount.toLocaleString('en-US',{maximumFractionDigits:2})+' USDT'
   :'— USDT';
 }
 function selectPackage(button){
@@ -225,10 +225,8 @@ function setStatus(message, kind = "") {
   statusText.className = "payment-status" + (kind ? " " + kind : "");
 }
 function formatAmount(value) {
-  const parts = String(value).split(".");
-  const whole = parts[0] || "0";
-  const fraction = (parts[1] || "").replace(/0+$/, "");
-  return whole + (fraction ? "." + fraction : ".00");
+  const amount = Number(value);
+  return Number.isFinite(amount) ? amount.toLocaleString("en-US", { maximumFractionDigits: 2 }) : "0";
 }
 function lockAmount(locked) {
   amountInput.disabled = locked;
