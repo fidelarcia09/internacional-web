@@ -167,6 +167,34 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 }
 @media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
 </style>
+
+<style id="avatar-photo-circle-frame">
+/* La fotografía queda recortada al círculo y conserva un marco exterior */
+.avatar{isolation:isolate}
+.avatar-image{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  border-radius:50%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  z-index:0!important;
+}
+.avatar:has(.avatar-image:not([hidden]))::before{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border:1.5px solid #ffbd19;
+  border-radius:50%;
+  box-shadow:0 0 0 2px #ff6b2426,0 0 15px #ffbd1940;
+  pointer-events:none;
+  z-index:1;
+}
+.avatar-upload{z-index:3}
+</style>
+
 </head>
 <body>
 <main>
