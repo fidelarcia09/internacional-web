@@ -395,6 +395,41 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
  .business-option strong{font-size:9px!important}
 }
 </style>
+<style id="reseller-business-tools">
+.business-action{width:100%;font-family:inherit;text-align:left;cursor:pointer;color:inherit}
+.business-action:hover{border-color:#ff9b43!important}
+.business-panel{margin:15px 0 22px;padding:16px;border:1px solid #ff792878;border-radius:17px;background:linear-gradient(120deg,#1b130e,#111318 75%);box-shadow:0 9px 25px #0005}
+.business-panel[hidden]{display:none!important}
+.business-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:15px}
+.panel-kicker{color:#ffbd19;font-size:9px;font-weight:900;letter-spacing:1.5px}
+.business-panel-head h2{margin:5px 0;font:800 27px/1.05 var(--display)}
+.business-panel-head p{margin:0;color:#aeb0b8;font-size:11px;line-height:1.5}
+.panel-close{flex:0 0 34px;width:34px;height:34px;border:1px solid #ffffff22;border-radius:10px;background:#ffffff0a;color:#fff;font-size:24px;line-height:1;cursor:pointer}
+.customer-list,.price-list{display:grid;gap:8px}
+.customer-row{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px;border:1px solid #ffffff16;border-radius:12px;background:#0d0f13}
+.customer-rank{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#ff8b2419;color:#ffbd19;font:800 15px var(--display)}
+.customer-main{min-width:0}.customer-main strong,.customer-main small{display:block;overflow-wrap:anywhere}
+.customer-main strong{font-size:12px}.customer-main small{margin-top:3px;color:#999;font-size:9px}
+.customer-count{color:#ffbd19;font-size:10px;font-weight:800;text-align:right;white-space:nowrap}
+.panel-loading,.panel-empty{margin:0;padding:15px;color:#aeb0b8;text-align:center;font-size:12px;line-height:1.5}
+.profit-control{padding:13px;border:1px solid #ff792844;border-radius:13px;background:#0d0f13}
+.profit-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.profit-top label{font-size:12px;font-weight:800}.profit-top strong{color:#ffbd19;font:900 25px var(--display)}
+#reseller-profit-range{display:block;width:100%;margin:14px 0 4px;accent-color:#ff8a24;cursor:pointer}
+.profit-range-labels{display:flex;justify-content:space-between;color:#888;font-size:9px}
+.profit-control p{margin:9px 0 0;color:#9698a0;font-size:10px;line-height:1.45}
+.price-toolbar{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center;margin:13px 0}
+.price-toolbar label{color:#bfc0c5;font-size:10px;font-weight:800}
+.price-toolbar select{min-width:0;width:100%;padding:9px;border:1px solid #ffffff24;border-radius:9px;background:#111318;color:#fff;font:11px var(--font)}
+.price-toolbar button{grid-column:1/-1;min-height:39px;border:1px solid #ff7928;border-radius:10px;background:linear-gradient(100deg,#321b0e,#171318);color:#ffbd19;font:800 11px var(--font);cursor:pointer}
+.price-game-group{overflow:hidden;border:1px solid #ffffff18;border-radius:12px;background:#0d0f13}
+.price-game-title{padding:10px 12px;border-bottom:1px solid #ffffff15;color:#ffbd19;font-size:11px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}
+.price-product-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid #ffffff0d}
+.price-product-row:last-child{border-bottom:0}
+.price-product-row span{min-width:0;color:#e5e5e7;font-size:10px;line-height:1.35}
+.price-product-row strong{flex:0 0 auto;color:#ffbd19;font-size:11px;white-space:nowrap}
+@media(max-width:620px){.business-panel{padding:13px}.business-panel-head h2{font-size:24px}.price-toolbar{grid-template-columns:1fr}.price-toolbar button{grid-column:auto}}
+</style>
 </head>
 <body>
 <section id="reseller-access-denied" role="status" hidden>
@@ -434,11 +469,27 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
     <div class="section-title"><span></span><h2>Tu negocio</h2></div>
     <div class="business-grid">
       <a class="business-option" href="mis-compras.html"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17 9 12l4 3 7-8"/><path d="M14 7h6v6"/></svg></span><span><strong>Mis ventas</strong><small>Actividad e historial</small></span><b>›</b></a>
-      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span><span><strong>Lista de precios</strong><small>Copiar y compartir</small></span><b>Pronto</b></a>
-      <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 2.4-5 6-5s6 1.5 6 5m2-11a3 3 0 0 1 0 6m1 2c2 .5 3 1.5 3 3"/></svg></span><span><strong>Clientes frecuentes</strong><small>Tus IDs guardados</small></span><b>Pronto</b></a>
+      <button class="business-option business-action" type="button" data-open-panel="price-list-panel"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span><span><strong>Lista de precios</strong><small>Ganancia y compartir</small></span><b>›</b></button>
+      <button class="business-option business-action" type="button" data-open-panel="frequent-customers-panel"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 2.4-5 6-5s6 1.5 6 5m2-11a3 3 0 0 1 0 6m1 2c2 .5 3 1.5 3 3"/></svg></span><span><strong>Clientes frecuentes</strong><small>Top 10 por recargas</small></span><b>›</b></button>
       <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 8v8l-9 5-9-5V8l9-5Z"/><path d="m8 12 2.5 2.5L16 9"/></svg></span><span><strong>Tu marca</strong><small>Logo y comprobantes</small></span><b>Pronto</b></a>
       <a class="business-option coming-soon" href="#" aria-disabled="true"><span class="business-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="8" r="2.5"/><circle cx="12" cy="5" r="2.5"/><path d="M2.5 19c0-2.5 1.8-4 4.5-4m14.5 4c0-2.5-1.8-4-4.5-4M6 21c0-3.5 2.2-5 6-5s6 1.5 6 5"/></svg></span><span><strong>Equipo de trabajo</strong><small>Miembros y permisos</small></span><b>Pronto</b></a>
     </div>
+  </section>
+
+  <section class="business-panel" id="frequent-customers-panel" hidden>
+    <div class="business-panel-head"><div><span class="panel-kicker">TU NEGOCIO</span><h2>Clientes frecuentes</h2><p>Los 10 ID con más recargas completadas.</p></div><button type="button" class="panel-close" data-close-panel aria-label="Cerrar">×</button></div>
+    <div id="frequent-customers-list" class="customer-list"><p class="panel-loading">Cargando clientes...</p></div>
+  </section>
+  <section class="business-panel" id="price-list-panel" hidden>
+    <div class="business-panel-head"><div><span class="panel-kicker">TU NEGOCIO</span><h2>Lista de precios</h2><p>Precios de catálogo con tu descuento de revendedor aplicado.</p></div><button type="button" class="panel-close" data-close-panel aria-label="Cerrar">×</button></div>
+    <div class="profit-control">
+      <div class="profit-top"><label for="reseller-profit-range">Tu ganancia</label><strong id="reseller-profit-value">0%</strong></div>
+      <input id="reseller-profit-range" type="range" min="0" max="100" step="1" value="0">
+      <div class="profit-range-labels"><span>0%</span><span>100%</span></div>
+      <p>El porcentaje se suma al precio que pagas después de tu descuento por nivel.</p>
+    </div>
+    <div class="price-toolbar"><label for="price-game-filter">Juego</label><select id="price-game-filter"><option value="all">Todos los juegos</option></select><button type="button" id="copy-price-list">Copiar lista completa</button></div>
+    <div id="reseller-price-list" class="price-list"><p class="panel-loading">Cargando catálogo...</p></div>
   </section>
 
   <section class="api-panel">
@@ -544,6 +595,79 @@ import { supabase } from "./supabase-client.js";
    const delay=window.matchMedia&&window.matchMedia("(max-width:620px)").matches?650:0;
    window.setTimeout(()=>{window.location.href=a.href},delay);
  }));
+})();
+</script>
+<script type="module">
+import { supabase } from "./supabase-client.js";
+const gameNames = {
+ "free-fire":"Free Fire","mobile-legends":"Mobile Legends","pubg-mobile":"PUBG Mobile",
+ "roblox":"Roblox","genshin-impact":"Genshin Impact","honor-of-kings":"Honor of Kings",
+ "arena-breakout":"Arena Breakout","blood-strike":"Blood Strike","call-of-duty-mobile":"Call of Duty Mobile"
+};
+const money = value => Number(value).toFixed(2) + " USDT";
+const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let products = [];
+let customers = [];
+let profitPercent = 0;
+let resellerDiscount = 0;
+function renderCustomers(){
+ const host=document.getElementById("frequent-customers-list");
+ if(!customers.length){host.innerHTML='<p class="panel-empty">Todavía no hay recargas completadas para crear tu ranking. Aquí aparecerán tus 10 clientes principales.</p>';return;}
+ host.innerHTML=customers.map((c,i)=>'<article class="customer-row"><span class="customer-rank">'+(i+1)+'</span><span class="customer-main"><strong>'+escapeHtml(c.nickname || "Nickname pendiente")+'</strong><small>'+escapeHtml(gameNames[c.game] || c.game)+' · ID: '+escapeHtml(c.playerId)+'</small></span><span class="customer-count">'+c.completedTopups+' recargas</span></article>').join("");
+}
+function renderPrices(){
+ const host=document.getElementById("reseller-price-list");
+ const selected=document.getElementById("price-game-filter").value;
+ const visible=products.filter(p=>selected==="all"||p.game===selected);
+ if(!visible.length){host.innerHTML='<p class="panel-empty">No hay productos disponibles para este juego.</p>';return;}
+ const groups=new Map();
+ visible.forEach(p=>{if(!groups.has(p.game))groups.set(p.game,[]);groups.get(p.game).push(p);});
+ host.innerHTML=[...groups.entries()].map(([game,items])=>'<section class="price-game-group"><div class="price-game-title">'+escapeHtml(gameNames[game]||game)+'</div>'+items.map(p=>{
+  const price=Math.round(p.resellerPrice*(1+profitPercent/100)*100)/100;
+  return '<div class="price-product-row"><span>'+escapeHtml(p.name)+(p.region&&p.region!=="Global"?' · '+escapeHtml(p.region):'')+'</span><strong>'+money(price)+'</strong></div>';
+ }).join("")+'</section>').join("");
+}
+function buildPriceText(game="all"){
+ const rows=products.filter(p=>game==="all"||p.game===game);
+ const groups=new Map();
+ rows.forEach(p=>{if(!groups.has(p.game))groups.set(p.game,[]);groups.get(p.game).push(p);});
+ return [...groups.entries()].map(([key,items])=>[gameNames[key]||key,...items.map(p=>{
+  const price=Math.round(p.resellerPrice*(1+profitPercent/100)*100)/100;
+  return p.name+(p.region&&p.region!=="Global"?" ("+p.region+")":"")+" — "+money(price);
+ })].join("\n")).join("\n\n");
+}
+(async()=>{
+ document.querySelectorAll("[data-open-panel]").forEach(button=>button.addEventListener("click",()=>{
+  document.querySelectorAll(".business-panel").forEach(panel=>panel.hidden=true);
+  const panel=document.getElementById(button.dataset.openPanel);if(panel){panel.hidden=false;panel.scrollIntoView({behavior:"smooth",block:"start"});}
+ }));
+ document.querySelectorAll("[data-close-panel]").forEach(button=>button.addEventListener("click",()=>{button.closest(".business-panel").hidden=true;}));
+ const {data:{session}}=await supabase.auth.getSession();
+ if(!session?.access_token)return;
+ const response=await supabase.functions.invoke("reseller-business-data");
+ if(response.error||!response.data?.ok){
+  const msg="No se pudieron cargar los datos. Inténtalo de nuevo.";
+  document.getElementById("frequent-customers-list").innerHTML='<p class="panel-empty">'+msg+'</p>';
+  document.getElementById("reseller-price-list").innerHTML='<p class="panel-empty">'+msg+'</p>';
+  return;
+ }
+ customers=response.data.customers||[];
+ products=response.data.products||[];
+ resellerDiscount=Number(response.data.reseller?.discountPercent)||0;
+ renderCustomers();
+ const filter=document.getElementById("price-game-filter");
+ [...new Set(products.map(p=>p.game))].forEach(game=>{
+  const option=document.createElement("option");option.value=game;option.textContent=gameNames[game]||game;filter.append(option);
+ });
+ filter.addEventListener("change",renderPrices);
+ const range=document.getElementById("reseller-profit-range");
+ range.addEventListener("input",()=>{profitPercent=Number(range.value)||0;document.getElementById("reseller-profit-value").textContent=profitPercent+"%";renderPrices();});
+ document.getElementById("copy-price-list").addEventListener("click",async()=>{
+  const text=buildPriceText(filter.value);
+  try{await navigator.clipboard.writeText(text);document.getElementById("copy-price-list").textContent="¡Lista copiada!";setTimeout(()=>document.getElementById("copy-price-list").textContent="Copiar lista completa",1800);}
+  catch{const area=document.createElement("textarea");area.value=text;document.body.append(area);area.select();document.execCommand("copy");area.remove();document.getElementById("copy-price-list").textContent="¡Lista copiada!";}
+ });
+ renderPrices();
 })();
 </script>
 </body></html>
