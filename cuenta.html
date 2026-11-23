@@ -353,15 +353,27 @@ const changeAvatarAction = document.getElementById("changeAvatarAction");
 const removeAvatarAction = document.getElementById("removeAvatarAction");
 let avatarUploadInProgress = false;
 
-avatarButton?.addEventListener("click", () => avatarInput?.click());
+function openAvatarPicker(event) {
+  event?.preventDefault();
+  event?.stopPropagation();
+  if (!avatarInput || avatarButton?.disabled) return;
+  avatarInput.value = "";
+  try {
+    if (typeof avatarInput.showPicker === "function") avatarInput.showPicker();
+    else avatarInput.click();
+  } catch (pickerError) {
+    avatarInput.click();
+  }
+}
+avatarButton?.addEventListener("click", openAvatarPicker);
 avatar?.addEventListener("click", event => {
   if (!avatarImage.hidden && !event.target.closest(".avatar-actions")) {
     avatarActions.hidden = !avatarActions.hidden;
   }
 });
-changeAvatarAction?.addEventListener("click", () => {
+changeAvatarAction?.addEventListener("click", event => {
   avatarActions.hidden = true;
-  avatarInput?.click();
+  openAvatarPicker(event);
 });
 document.addEventListener("click", event => {
   if (avatarActions && !avatar.contains(event.target)) avatarActions.hidden = true;
@@ -404,7 +416,6 @@ removeAvatarAction?.addEventListener("click", async () => {
 avatarInput?.addEventListener("change", async () => {
   const file = avatarInput.files?.[0];
   if (!file || avatarUploadInProgress) return;
-  avatarUploadInProgress = true;
 
   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
@@ -418,6 +429,7 @@ avatarInput?.addEventListener("change", async () => {
     return;
   }
 
+  avatarUploadInProgress = true;
   avatarButton.disabled = true;
   if (avatarFeedback) avatarFeedback.textContent = "Guardando foto...";
   try {
