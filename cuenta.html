@@ -187,9 +187,9 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
     if (cached) {
       const identity = JSON.parse(cached);
       const name = document.querySelector(".username");
-      const id = document.querySelector(".user-id");
+      const id = document.getElementById("account-user-code");
       if (name) name.textContent = identity.username || "Usuario";
-      if (id) id.textContent = "ID: " + (identity.user_code || "No disponible");
+      if (id) id.textContent = identity.user_code || "No disponible";
     }
     const cachedBalance = localStorage.getItem("iw-account-balance:" + userId);
     if (cachedBalance !== null) {
