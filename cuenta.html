@@ -221,6 +221,12 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
   z-index:1;
 }
 #accountAvatarUpload{z-index:3}
+/* Marco dorado visible alrededor de la foto de perfil. */
+#accountAvatar.has-photo{
+  outline:2px solid #ffbd19;
+  outline-offset:4px;
+  box-shadow:0 0 0 2px #ff6b2426,0 0 18px #ffbd1955,inset 0 0 12px #ffbd1918;
+}
 </style>
 
 <style id="account-nav-photo-style">
@@ -238,7 +244,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 <h1 class="account-heading">Mi Cuenta</h1>
 <section class="account-panel" aria-label="Panel de cuenta">
 <div class="profile">
-<div class="avatar" id="accountAvatar" aria-label="Foto de perfil"><svg id="accountAvatarFallback" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="21" r="13"/><path d="M7 57c1.5-13 10-20 25-20s23.5 7 25 20H7Z"/></svg><img id="accountAvatarImage" class="avatar-image" alt="Foto de perfil" hidden><input id="accountAvatarInput" type="file" accept="image/jpeg,image/png,image/webp" hidden><button class="avatar-upload" id="accountAvatarUpload" type="button" aria-label="Añadir foto de perfil" title="Añadir foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h3l1.4-2h7.2l1.4 2h3A1.5 1.5 0 0 1 21.5 9v9a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.5"/></svg></button><div class="avatar-actions" id="avatarActions" role="menu" hidden><button type="button" id="changeAvatarAction" role="menuitem"><svg viewBox="0 0 24 24"><path d="M4 7.5h3l1.4-2h7.2l1.4 2h3A1.5 1.5 0 0 1 21.5 9v9a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.5"/></svg>Cambiar foto</button><button type="button" id="removeAvatarAction" class="remove-avatar" role="menuitem"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m3 0-.8 13H6.8L6 7m4 3v6m4-6v6"/></svg>Quitar foto</button></div></div>
+<div class="avatar" id="accountAvatar" aria-label="Foto de perfil"><svg id="accountAvatarFallback" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="21" r="13"/><path d="M7 57c1.5-13 10-20 25-20s23.5 7 25 20H7Z"/></svg><img id="accountAvatarImage" class="avatar-image" alt="Foto de perfil" loading="eager" fetchpriority="high" decoding="sync" hidden><input id="accountAvatarInput" type="file" accept="image/jpeg,image/png,image/webp" hidden><button class="avatar-upload" id="accountAvatarUpload" type="button" aria-label="Añadir foto de perfil" title="Añadir foto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h3l1.4-2h7.2l1.4 2h3A1.5 1.5 0 0 1 21.5 9v9a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.5"/></svg></button><div class="avatar-actions" id="avatarActions" role="menu" hidden><button type="button" id="changeAvatarAction" role="menuitem"><svg viewBox="0 0 24 24"><path d="M4 7.5h3l1.4-2h7.2l1.4 2h3A1.5 1.5 0 0 1 21.5 9v9a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18V9A1.5 1.5 0 0 1 4 7.5Z"/><circle cx="12" cy="13.5" r="3.5"/></svg>Cambiar foto</button><button type="button" id="removeAvatarAction" class="remove-avatar" role="menuitem"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m3 0-.8 13H6.8L6 7m4 3v6m4-6v6"/></svg>Quitar foto</button></div></div>
 <div class="profile-info"><h2 class="username">Mi cuenta</h2><div class="profile-meta"><p class="user-id">ID: <span id="account-user-code">—</span></p><button class="copy-id" id="copyAccountId" type="button" aria-label="Copiar ID" title="Copiar ID"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button><span class="account-status" id="accountStatus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-2.8 8-7 10-4.2-2-7-5.3-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><span id="accountStatusLabel">Activo</span></span></div><div class="copy-feedback" id="copyFeedback" aria-live="polite"></div></div>
 </div>
 <div class="balance">
@@ -329,13 +335,13 @@ function syncAccountNavPhoto(url) {
   }
 }
 
-function showAvatar(url) {
+function showAvatar(url, refreshImage = false) {
   syncAccountNavPhoto(url);
   const avatar = document.getElementById("accountAvatar");
   const uploadButton = document.getElementById("accountAvatarUpload");
   const actions = document.getElementById("avatarActions");
   if (url) {
-    avatarImage.src = url + (url.includes("?") ? "&" : "?") + "v=" + Date.now();
+    avatarImage.src = refreshImage ? url + (url.includes("?") ? "&" : "?") + "v=" + Date.now() : url;
     avatarImage.hidden = false;
     avatarFallback.hidden = true;
     avatar?.classList.add("has-photo");
@@ -555,7 +561,7 @@ avatarInput?.addEventListener("change", async () => {
       .eq("id", user.id);
     if (profileError) throw profileError;
 
-    showAvatar(publicUrl);
+    showAvatar(publicUrl, true);
     const cacheKey = "iw-account-identity:" + user.id;
     try {
       const cached = JSON.parse(localStorage.getItem(cacheKey) || "{}");
