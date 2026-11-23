@@ -189,7 +189,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
     if (cachedBalance !== null) {
       const balance = Number(cachedBalance);
       const value = document.getElementById("usdt-balance-value");
-      if (value && Number.isFinite(balance)) value.textContent = balance.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:8});
+      if (value && Number.isFinite(balance)) value.textContent = balance.toLocaleString("en-US", {maximumFractionDigits:2});
     }
   } catch (error) { console.warn("No se pudo precargar la identidad:", error); }
 })();
@@ -227,8 +227,7 @@ async function loadAccountIdentity() {
     const balance = Number(wallet.balance);
     if (Number.isFinite(balance)) {
       const formatted = balance.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 8
+        maximumFractionDigits: 2
       });
       balanceElement.textContent = formatted;
       try { localStorage.setItem("iw-account-balance:" + user.id, String(balance)); } catch (cacheError) {}
