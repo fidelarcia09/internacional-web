@@ -240,11 +240,10 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 </style>
 
 <style id="reseller-account-button-design">
-/* Mismo acabado visual de los botones de Cuenta, conservando las dimensiones de Revender */
+/* Acabado de Cuenta, sin alterar la estructura ni apilar elementos en móvil */
 .reseller-primary,
 .business-option{
-  display:grid;
-  grid-template-columns:44px minmax(0,1fr) 22px;
+  display:flex;
   align-items:center;
   gap:14px;
   border:1px solid #ff790078;
@@ -253,19 +252,21 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
   box-shadow:inset 0 0 13px #ff79000b;
   color:#f5f5f5;
   text-decoration:none;
-  transition:transform .18s,border-color .18s,box-shadow .18s;
+  transition:border-color .18s,box-shadow .18s;
+  transform:none;
+  isolation:isolate;
 }
-.reseller-primary{height:56px;min-height:56px;padding:0 15px;font-size:14px;font-weight:700;box-shadow:inset 0 0 13px #ff79000b}
+.reseller-primary{height:56px;min-height:56px;padding:0 15px;font-size:14px;font-weight:700}
 .business-option{min-height:70px;padding:10px}
 .reseller-primary:hover,
 .business-option:not(.coming-soon):hover{
-  transform:translateY(-2px);
   border-color:#ff9a22;
   box-shadow:0 0 14px #ff790020;
 }
 .reseller-primary .primary-icon,
 .business-option .business-icon{
-  width:39px;height:39px;flex-basis:39px;
+  flex:0 0 39px;
+  width:39px;height:39px;
   display:grid;place-items:center;
   border:0;border-radius:0;
   background:transparent;color:#c8cbd2;
@@ -279,28 +280,53 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 .reseller-primary .primary-icon svg{stroke:#ff922e}
 .reseller-primary b,
 .business-option>b{
-  width:auto;height:auto;display:block;margin:0;
+  flex:0 0 auto;
+  width:auto;height:auto;display:block;margin-left:auto;
   color:#ff8a00;font-size:31px;line-height:1;
   font-weight:400;text-align:right;
 }
 .reseller-primary b svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.business-option>span:nth-child(2){min-width:0}
+.business-option>span:nth-child(2){min-width:0;flex:1}
 .business-option strong,.business-option small{display:block}
-.business-option strong{font-size:11px;font-weight:600}
-.business-option small{margin-top:4px;color:#92949c;font-size:9px}
+.business-option strong{font-size:11px;font-weight:600;line-height:1.3}
+.business-option small{margin-top:4px;color:#92949c;font-size:9px;line-height:1.35}
 .business-option.coming-soon{opacity:.86;cursor:default}
 .business-option.coming-soon>b{font-size:8px;color:#ffbd19;white-space:nowrap}
+
+/* Tarjetas de estadísticas y negocio: una sola capa, sin desbordamientos */
+.reseller-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.reseller-stat{
+  min-width:0;min-height:91px;display:flex;align-items:center;gap:11px;
+  padding:13px;overflow:hidden;position:relative;
+  border:1px solid #ffffff18;border-radius:14px;
+  background:#14161c;box-shadow:none;transform:none;
+}
+.reseller-stat::before,.reseller-stat::after,
+.business-option::before,.business-option::after{content:none!important;display:none!important}
+.reseller-stat>div{min-width:0;flex:1;overflow:hidden}
+.reseller-stat small{font-size:8px;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+.reseller-stat strong{font-size:29px;line-height:1.1}
+.reseller-stat em{font-size:8px;line-height:1.35;white-space:normal;overflow-wrap:anywhere}
+.business-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.business-option{min-width:0;overflow:hidden}
 @media(max-width:620px){
- .business-option{min-height:68px;padding:9px 8px;border-radius:14px;gap:9px}
- .business-option .business-icon{width:35px;height:35px;flex-basis:35px}
- .business-option strong{font-size:10px}
- .business-option small{font-size:8px}
- .reseller-primary{height:56px;min-height:56px;padding:0 15px;border-radius:14px;gap:11px}
- .reseller-primary .primary-icon{width:35px;height:35px;flex-basis:35px}
+  .reseller-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .reseller-stat{min-height:108px;gap:8px;padding:10px}
+  .reseller-stat small{font-size:7px;letter-spacing:.55px}
+  .reseller-stat strong{font-size:27px}
+  .stat-icon{flex:0 0 32px;width:32px;height:32px}
+  .business-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .business-option{min-height:68px;padding:9px 8px;border-radius:14px;gap:9px}
+  .business-option .business-icon{flex-basis:35px;width:35px;height:35px}
+  .business-option strong{font-size:10px}
+  .business-option small{font-size:8px}
+  .reseller-primary{height:56px;min-height:56px;padding:0 15px;border-radius:14px;gap:11px}
+  .reseller-primary .primary-icon{flex-basis:35px;width:35px;height:35px}
 }
 @media(max-width:360px){
- .business-option{gap:6px;padding:8px 6px}
- .business-option strong{font-size:9px}
+  .business-option{gap:6px;padding:8px 6px}
+  .business-option strong{font-size:9px}
+  .reseller-stat{padding:8px}
 }
 </style>
 
