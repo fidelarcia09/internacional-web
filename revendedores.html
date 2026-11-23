@@ -386,7 +386,7 @@ import { supabase } from "./supabase-client.js";
     return;
   }
   const { data: resellerRole, error: roleError } = await supabase.from("user_roles")
-    .select("assigned_at")
+    .select("assigned_at,manual_reseller_level")
     .eq("user_id", session.user.id)
     .eq("role_id", "revendedor")
     .maybeSingle();
@@ -414,15 +414,18 @@ import { supabase } from "./supabase-client.js";
     { number: 3, min: 50, rate: 3 },
     { number: 4, min: 90, rate: 5 }
   ];
-  const current = [...levels].reverse().find(level => total >= level.min) || levels[0];
-  const next = levels.find(level => level.min > total);
+  const automatic = [...levels].reverse().find(level => total >= level.min) || levels[0];
+  const manualLevel = Number(resellerRole.manual_reseller_level);
+  const current = levels.find(level => level.number === manualLevel) || automatic;
+  const isManual = levels.some(level => level.number === manualLevel);
+  const next = isManual ? null : levels.find(level => level.min > total);
   counter.textContent = String(total);
   if (levelStatus) levelStatus.innerHTML = '<i></i> Nivel ' + current.number;
   if (levelNumber) levelNumber.textContent = String(current.number);
   if (levelName) levelName.textContent = 'Nivel ' + current.number;
   if (levelProgress) levelProgress.textContent = total + ' recargas completadas';
   if (discount) discount.textContent = current.rate + '%';
-  if (nextHint) nextHint.textContent = next ? (next.min - total) + ' recargas para Nivel ' + next.number : '¡Nivel máximo alcanzado!';
+  if (nextHint) nextHint.textContent = isManual ? 'Nivel asignado manualmente' : (next ? (next.min - total) + ' recargas para Nivel ' + next.number : '¡Nivel máximo alcanzado!');
   document.querySelectorAll('[data-level-card]').forEach(card => {
     card.classList.toggle('is-current', Number(card.dataset.levelCard) === current.number);
   });
