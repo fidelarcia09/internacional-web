@@ -161,6 +161,8 @@ playerInput?.addEventListener("input",schedulePlayerValidation);
 document.addEventListener("input",event=>{if(event.target?.id==="provider-zone-id")schedulePlayerValidation();});
 
 let products=[];
+let resellerDiscountPercent=0;
+let resellerPricingLoaded=false;
 let selectedProduct=null;
      buyButton.disabled=true;
 let selectedRegion="";
@@ -202,6 +204,11 @@ function isCurrencyPack(product){
  const name=String(product?.name||"").toLowerCase();
  return /diamantes?|diamonds?|bonds?|\bbc\b|\bcp\b|tokens?|cristales\s+g[eé]nesis|\buc\b|robux/i.test(name);
 }
+function priceForProduct(product){
+ const base=Number(product?.priceUSDT);
+ if(!Number.isFinite(base)||base<=0)return 0;
+ return resellerDiscountPercent>0?Math.ceil((base*(1-resellerDiscountPercent/100)*100)-1e-8)/100:base;
+}
 function renderProducts(){
  packages.innerHTML="";
  const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion);
@@ -219,7 +226,7 @@ function renderProducts(){
    button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");
    button.dataset.productId=product.productId;
    const icon=product.type==="GIFT_CARD"?"🎁":"🪙";
-   button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?product.priceUSDT.toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
+   button.innerHTML='<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?priceForProduct(product).toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">+(resellerDiscountPercent>0?resellerDiscountPercent+"% descuento · ":"")+safeText(product.region)+'</small>';
    button.addEventListener("click",()=>{
      selectedProduct=product;
      clearValidation();
@@ -275,10 +282,12 @@ async function loadCatalog(){
  if(cachedProducts) applyCatalogProducts(cachedProducts);
  else { packages.replaceChildren(); buyButton.disabled=true; }
  try{
-   const response=await fetch(CATALOG_URL+"?game="+encodeURIComponent(GAME),{method:"GET",headers:{Accept:"application/json"}});
+   const response=await fetch(CATALOG_URL+"?game="+encodeURIComponent(GAME),{method:"GET",headers:{Accept:"application/json",Authorization:"Bearer "+(activeSession?.access_token||"")}});
    const data=await response.json();
    if(!response.ok||!data.ok) throw new Error(data.error||"catalog_unavailable");
-   const freshProducts=Array.isArray(data.products)?data.products:[];
+   resellerDiscountPercent=Number(data.reseller?.discountPercent)||0;
+    resellerPricingLoaded=true;
+    const freshProducts=Array.isArray(data.products)?data.products:[];
    const cacheEntry=JSON.stringify({products:freshProducts,savedAt:Date.now()});try{localStorage.setItem("iw_catalog_"+GAME,cacheEntry);}catch(error){}try{sessionStorage.setItem("iw_catalog_"+GAME,cacheEntry);}catch(error){}
    applyCatalogProducts(freshProducts);
  }catch(error){
@@ -297,7 +306,8 @@ buyButton.addEventListener("click",async()=>{
  const zoneId=document.getElementById("provider-zone-id")?.value.trim()||"";
  if(selectedProduct.requiresPlayerId&&!playerId){notify("Ingresa tu Player ID antes de continuar.");playerInput?.focus();return;}
  if(selectedProduct.requiresZoneId&&!zoneId){notify("Ingresa tu Zone ID antes de continuar.");document.getElementById("provider-zone-id")?.focus();return;}
- const price=Number(selectedProduct.priceUSDT);
+ if(!resellerPricingLoaded){notify("No se pudo comprobar tu nivel de revendedor. Actualiza el catálogo antes de comprar.");return;}
+  const price=priceForProduct(selectedProduct);
  if(!Number.isFinite(price)||price<=0){notify("No se pudo comprobar el precio. Actualiza el catálogo.");return;}
  const accepted=window.confirm("¿Confirmas "+selectedProduct.name+" por "+price.toFixed(2)+" USDT? Se descontará de tu saldo.");
  if(!accepted) return;
