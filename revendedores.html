@@ -240,7 +240,7 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 </style>
 </head>
 <body>
-<section id="reseller-access-denied" role="status">
+<section id="reseller-access-denied" role="status" hidden>
   <span class="access-denied-icon" aria-hidden="true">♛</span>
   <h1>Acceso <em>exclusivo</em></h1>
   <p>Esta sección está disponible únicamente para usuarios con el rol de revendedor. Si ya tienes ese rol asignado, vuelve a iniciar sesión e inténtalo otra vez.</p>
@@ -316,6 +316,7 @@ import { supabase } from "./supabase-client.js";
   const resellerPanel = document.querySelector(".reseller-dashboard");
   if (sessionError || !session?.user) {
     console.warn("No se pudo confirmar la sesión para acceder al panel de revendedor:", sessionError);
+    if (accessNotice) accessNotice.hidden = false;
     return;
   }
   const { data: resellerRole, error: roleError } = await supabase.from("user_roles")
@@ -325,6 +326,7 @@ import { supabase } from "./supabase-client.js";
     .maybeSingle();
   if (roleError || !resellerRole?.assigned_at) {
     console.warn("Acceso denegado: no se pudo confirmar el rol revendedor:", roleError);
+    if (accessNotice) accessNotice.hidden = false;
     return;
   }
   if (accessNotice) accessNotice.hidden = true;
