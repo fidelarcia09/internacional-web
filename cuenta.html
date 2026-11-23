@@ -195,6 +195,34 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 .avatar-upload{z-index:3}
 </style>
 
+<style id="avatar-instant-cache">
+#accountAvatar{overflow:hidden}
+#accountAvatarImage{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  border-radius:50%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  z-index:0!important;
+}
+#accountAvatarImage[hidden]{display:none!important}
+#accountAvatarFallback{position:relative;z-index:0}
+#accountAvatar:has(#accountAvatarImage:not([hidden]))::before{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border:1.5px solid #ffbd19;
+  border-radius:50%;
+  box-shadow:0 0 0 2px #ff6b2426,0 0 15px #ffbd1940;
+  pointer-events:none;
+  z-index:1;
+}
+#accountAvatarUpload{z-index:3}
+</style>
+
 </head>
 <body>
 <main>
@@ -242,6 +270,22 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
       const id = document.getElementById("account-user-code");
       if (name) name.textContent = identity.username || "Usuario";
       if (id) id.textContent = identity.user_code || "No disponible";
+
+      // Mostrar la foto guardada en caché inmediatamente, sin esperar a Supabase.
+      const avatar = document.getElementById("accountAvatar");
+      const avatarImage = document.getElementById("accountAvatarImage");
+      const avatarFallback = document.getElementById("accountAvatarFallback");
+      const avatarUpload = document.getElementById("accountAvatarUpload");
+      if (identity.avatar_url && avatarImage) {
+        avatarImage.src = identity.avatar_url;
+        avatarImage.hidden = false;
+        if (avatarFallback) avatarFallback.hidden = true;
+        if (avatarUpload) avatarUpload.hidden = true;
+        if (avatar) {
+          avatar.classList.add("has-photo");
+          avatar.setAttribute("aria-label", "Foto de perfil. Toca para cambiarla o quitarla.");
+        }
+      }
     }
     const cachedBalance = localStorage.getItem("iw-account-balance:" + userId);
     if (cachedBalance !== null) {
