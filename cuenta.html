@@ -18,8 +18,7 @@ a{color:inherit;text-decoration:none}
 .mark{width:36px;height:36px;border:1px solid var(--orange);display:grid;place-items:center;font:800 20px var(--display);letter-spacing:-2px;transform:skew(-7deg)}.mark span{color:var(--orange)}
 .back{font-size:10px;color:#bbb;border:1px solid #34363d;border-radius:22px;padding:10px 15px}.back b{color:var(--orange);margin-right:7px}
 main{width:min(90%,510px);margin:22px auto 35px}
-.account-heading{font:800 23px/1.1 var(--display);letter-spacing:.3px;color:var(--white);text-align:left;margin:0 0 16px;padding-left:2px}
-.account-heading:before{content:"";display:inline-block;width:4px;height:19px;margin-right:10px;vertical-align:-3px;border-radius:3px;background:var(--orange);box-shadow:0 0 10px #ff790066}
+.account-heading{display:table;width:auto;font:900 clamp(39px,10vw,56px)/.95 var(--display);letter-spacing:.4px;color:var(--white);text-align:left;text-transform:uppercase;margin:0 0 16px;padding:0}
 .page-kicker{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--orange);text-align:center;margin:0 0 9px}
 h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 0 25px;letter-spacing:.5px}
 .account-panel{position:relative;isolation:isolate;overflow:hidden;padding:20px;border:1px solid #ff6b24;border-radius:24px;background:linear-gradient(145deg,#17191e 0%,#101115 58%,#17110e 100%);box-shadow:0 14px 34px #0008,0 0 22px #ff6b2418,inset 0 1px 0 #ffffff0c}
@@ -34,12 +33,13 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 .copy-id{width:27px;height:27px;display:inline-grid;place-items:center;border:1px solid #ffffff20;border-radius:8px;background:#ffffff08;color:#ff8a45;cursor:pointer}
 .copy-id svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .account-status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 10px;border:1px solid #26a17b55;border-radius:20px;background:#26a17b15;color:#63d5a9;font-size:10px;font-weight:700;letter-spacing:.35px}
-.account-status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 7px currentColor}
+.account-status:before{display:none}.account-status svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .account-status.pending{border-color:#e4a33b55;background:#e4a33b12;color:#efbd68}
 .balance{min-height:94px;display:flex;align-items:center;gap:15px;padding:17px 2px 1px;border:0;border-top:1px solid #ffffff19;border-radius:0;background:transparent;box-shadow:none}
 .balance small{display:block;color:#bfc0c5;font-size:12px;margin-bottom:5px}
 .balance strong{display:block;font-size:clamp(23px,6vw,31px);letter-spacing:.2px;white-space:nowrap}
 .balance strong span{color:#ff8a45}
+.add-usdt{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:43px;margin-top:12px;border:1px solid #ff9a42;border-radius:12px;background:linear-gradient(100deg,#ffb52e,#ff8121 60%,#ff9d25);color:#17100a;font-size:12px;font-weight:800;box-shadow:0 0 14px #ff790020}.add-usdt svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .copy-feedback{font-size:10px;color:#63d5a9;min-height:12px;margin-top:4px}
 .account-links{display:grid;gap:11px;margin-top:20px}
 .account-links a{min-height:66px;display:grid;grid-template-columns:44px 1fr 22px;align-items:center;gap:14px;padding:10px 16px;border:1px solid #ff790078;border-radius:16px;background:linear-gradient(100deg,#17110c,#0d0e11 60%);box-shadow:inset 0 0 13px #ff79000b;transition:transform .18s,border-color .18s,box-shadow .18s}
@@ -61,7 +61,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 .mobile-nav a.current:before{content:"";position:absolute;z-index:-1;top:3px;left:50%;width:66px;height:44px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse, #ff700059 0%,#ff700026 42%,transparent 75%);filter:blur(5px)}
 .mobile-nav a.current svg{filter:drop-shadow(0 0 4px #ff7d00) drop-shadow(0 0 9px #ff690073)}
 .mobile-nav a.current small{text-shadow:0 0 8px #ff780059}
-@media(max-width:620px){body{padding-top:9px;padding-bottom:75px}main{margin:16px auto 28px;width:94%}.account-heading{font-size:22px;margin-bottom:14px}.account-panel{padding:16px;border-radius:20px}.profile{gap:13px;padding-bottom:15px}.avatar{width:70px;height:70px;flex-basis:70px}.avatar svg{width:45px;height:45px}.balance{min-height:82px;padding:14px 1px 0;gap:12px}.profile-meta{gap:6px}.account-links{gap:9px;margin-top:15px}.account-links a{min-height:60px;padding:8px 12px;border-radius:14px}.account-links a>span:nth-child(2){font-size:13px}.link-icon{width:35px;height:35px}.link-icon svg{width:28px;height:28px}}
+@media(max-width:620px){body{padding-top:9px;padding-bottom:75px}main{margin:16px auto 28px;width:94%}.account-heading{font-size:clamp(39px,10vw,56px);margin-bottom:14px}.account-panel{padding:16px;border-radius:20px}.profile{gap:13px;padding-bottom:15px}.avatar{width:70px;height:70px;flex-basis:70px}.avatar svg{width:45px;height:45px}.balance{min-height:82px;padding:14px 1px 0;gap:12px}.profile-meta{gap:6px}.account-links{gap:9px;margin-top:15px}.account-links a{min-height:60px;padding:8px 12px;border-radius:14px}.account-links a>span:nth-child(2){font-size:13px}.link-icon{width:35px;height:35px}.link-icon svg{width:28px;height:28px}}
 @media(min-width:800px){main{margin-top:28px}.account-panel{padding:22px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 
@@ -154,11 +154,12 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 <section class="account-panel" aria-label="Panel de cuenta">
 <div class="profile">
 <div class="avatar" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="21" r="13"/><path d="M7 57c1.5-13 10-20 25-20s23.5 7 25 20H7Z"/></svg></div>
-<div class="profile-info"><h2 class="username">Mi cuenta</h2><div class="profile-meta"><p class="user-id">ID: <span id="account-user-code">—</span></p><button class="copy-id" id="copyAccountId" type="button" aria-label="Copiar ID" title="Copiar ID"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div><span class="account-status" id="accountStatus">Verificando correo</span><div class="copy-feedback" id="copyFeedback" aria-live="polite"></div></div>
+<div class="profile-info"><h2 class="username">Mi cuenta</h2><div class="profile-meta"><p class="user-id">ID: <span id="account-user-code">—</span></p><button class="copy-id" id="copyAccountId" type="button" aria-label="Copiar ID" title="Copiar ID"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div><span class="account-status" id="accountStatus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-2.8 8-7 10-4.2-2-7-5.3-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><span>Activo</span></span><div class="copy-feedback" id="copyFeedback" aria-live="polite"></div></div>
 </div>
 <div class="balance">
 <div><small>Saldo disponible</small><strong><span id="usdt-balance-value" style="color:var(--white)">—</span> <span>USDT</span></strong></div>
 </div>
+<a class="add-usdt" href="comprar-usdt.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Añadir USDT</a>
 </section>
 <div class="account-links">
 <a href="datos-personales.html"><span class="link-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="10" r="5.2"/><path d="M5.5 27c.8-5.1 4.7-8.2 10.5-8.2s9.7 3.1 10.5 8.2"/><path class="accent" d="M22.5 6.5a5.2 5.2 0 0 1 0 7"/></svg></span><span>Datos personales</span><span class="arrow">›</span></a>
