@@ -871,6 +871,21 @@ const { data: { user }, error: userError } = await supabase.auth.getUser();
 const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 const verifiedSession = !userError && !sessionError && Boolean(user && session?.access_token && session.user?.id === user.id);
 
+const pendingReferralCode = (new URLSearchParams(window.location.search).get("ref") || "")
+  .replace(/[^a-z0-9]/gi, "").slice(0, 32).toUpperCase();
+if (verifiedSession && pendingReferralCode) {
+  const { error: referralError } = await supabase.rpc("claim_referral", {
+    p_referral_code: pendingReferralCode
+  });
+  if (referralError) {
+    console.warn("No se pudo asociar el referido:", referralError);
+  } else {
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete("ref");
+    window.history.replaceState({}, "", cleanUrl);
+  }
+}
+
 if (entryLink) {
   entryLink.hidden = verifiedSession;
   if (userError || sessionError) {
