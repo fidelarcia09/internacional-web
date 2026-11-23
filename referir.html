@@ -15,8 +15,8 @@
 body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 12%,#ff790018,transparent 42%),var(--bg);color:var(--white);font-family:var(--font);padding-bottom:80px}
 a{color:inherit;text-decoration:none}
 main{width:min(92%,540px);margin:22px auto 35px}
-.back{display:inline-flex;align-items:center;gap:7px;color:#b6b7bd;font-size:11px;margin:0 0 20px}
-.back b{font-size:22px;line-height:12px;color:var(--orange);font-weight:400}
+.back{height:42px;display:inline-flex;align-items:center;gap:8px;padding:0 13px;border:1px solid #34363d;border-radius:13px;color:#bbb;font-size:12px;font-weight:800;white-space:nowrap;margin:0 0 20px}
+.back svg{width:18px;height:18px;fill:none;stroke:var(--orange);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .kicker{text-align:center;color:var(--orange);font-size:9px;font-weight:800;letter-spacing:2px;margin:0 0 8px}
 h1{font:900 clamp(39px,10vw,56px)/.95 var(--display);text-align:center;letter-spacing:.5px;margin:0 0 9px}
 .intro{text-align:center;color:#a0a2aa;font-size:11px;line-height:1.65;margin:0 auto 20px;max-width:360px}
@@ -80,10 +80,8 @@ h1{font:900 clamp(39px,10vw,56px)/.95 var(--display);text-align:center;letter-sp
 </head>
 <body>
 <main>
-<a class="back" href="mis-recompensas.html"><b>‹</b> Mis recompensas</a>
-<p class="kicker">PROGRAMA DE REFERIDOS</p>
+<a class="back" href="mis-recompensas.html" aria-label="Atrás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Atrás</span></a>
 <h1>INVITA Y GANA</h1>
-<p class="intro">Comparte tu enlace personal y recibe una recompensa cada vez que un amigo invitado complete su primera compra.</p>
 
 <section class="hero" aria-label="Recompensa por referido">
 <div class="percent">5%</div>
@@ -111,7 +109,6 @@ h1{font:900 clamp(39px,10vw,56px)/.95 var(--display);text-align:center;letter-sp
 
 <h2 class="section-title">MIS INVITADOS</h2>
 <section class="referrals" id="referralsList" aria-live="polite"><div class="empty">Cargando tus referidos...</div></section>
-<p class="notice">La recompensa se entrega una sola vez por cada amigo y únicamente después de que su primera compra se complete correctamente.</p>
 </main>
 
 <nav class="mobile-nav" aria-label="Navegación inferior" style="--active-index:4">
