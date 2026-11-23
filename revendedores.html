@@ -673,7 +673,7 @@ let profitPercent = 0;
 let resellerDiscount = 0;
 function renderCustomers(){
  const host=document.getElementById("frequent-customers-list");
- if(!customers.length){host.innerHTML='<p class="panel-empty">Todavía no hay recargas completadas para crear tu ranking. Aquí aparecerán tus 10 clientes principales.</p>';return;}
+ if(!customers.length){host.innerHTML='<p class="panel-empty">Aún no has hecho recargas. Aquí aparecerán tus 10 clientes frecuentes cuando completes la primera.</p>';return;}
  host.innerHTML=customers.map((c,i)=>'<article class="customer-row"><span class="customer-rank">'+(i+1)+'</span><span class="customer-main"><strong>'+escapeHtml(c.nickname || "Nickname pendiente")+'</strong><small>'+escapeHtml(gameNames[c.game] || c.game)+' · ID: '+escapeHtml(c.playerId)+'</small></span><span class="customer-count">'+c.completedTopups+' recargas</span></article>').join("");
 }
 function renderPrices(){
