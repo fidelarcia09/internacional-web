@@ -229,10 +229,18 @@ h1 em{display:block;margin-top:12px;color:var(--orange);font-style:italic;font-s
 .reseller-primary .primary-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
 .reseller-primary b{width:25px;height:25px;display:grid;place-items:center;font-size:0}
 .reseller-primary b svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+#reseller-access-denied{width:min(520px,90%);min-height:58vh;margin:7vh auto 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;border:1px solid #ff6b2455;border-radius:20px;background:linear-gradient(145deg,#21150f,#121419 72%);box-shadow:0 12px 30px #0006}
+#reseller-access-denied[hidden]{display:none!important}
+.access-denied-icon{width:66px;height:66px;display:grid;place-items:center;margin-bottom:17px;border:1px solid #ffbd1966;border-radius:20px;background:#ffbd1914;color:#ffbd19;font-size:30px}
+#reseller-access-denied h1{margin:0;font:900 clamp(30px,7vw,42px)/1 var(--display)}
+#reseller-access-denied h1 em{color:#ff6b24;font-style:italic}
+#reseller-access-denied p{max-width:360px;margin:13px 0 20px;color:#b9bbc2;font-size:13px;line-height:1.6}
+.access-denied-link{min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:0 22px;border-radius:12px;background:linear-gradient(100deg,#ffbd19,#ff6b24);color:#17110b;font-size:13px;font-weight:900}
 </style>
 </head>
 <body>
-<main class="partner-page reseller-dashboard">
+<section id="reseller-access-denied" role="status">\n  <span class="access-denied-icon" aria-hidden="true">♛</span>\n  <h1>Acceso <em>exclusivo</em></h1>\n  <p>Esta sección está disponible únicamente para usuarios con el rol de revendedor. Si ya tienes ese rol asignado, vuelve a iniciar sesión e inténtalo otra vez.</p>\n  <a class="access-denied-link" href="cuenta.html">Volver a mi cuenta</a>\n</section>\n<main class="partner-page reseller-dashboard" hidden>
   <header class="reseller-header">
     <h1>Panel de <em>revendedor</em></h1>
     </header>
@@ -298,8 +306,10 @@ import { supabase } from "./supabase-client.js";
   const levelProgress = document.getElementById("current-level-progress");
   const discount = document.getElementById("reseller-discount");
   const nextHint = document.getElementById("next-level-hint");
+  const accessNotice = document.getElementById("reseller-access-denied");
+  const resellerPanel = document.querySelector(".reseller-dashboard");
   if (sessionError || !session?.user) {
-    counter.textContent = "0";
+    console.warn("No se pudo confirmar la sesión para acceder al panel de revendedor:", sessionError);
     return;
   }
   const { data: resellerRole, error: roleError } = await supabase.from("user_roles")
@@ -308,10 +318,11 @@ import { supabase } from "./supabase-client.js";
     .eq("role_id", "revendedor")
     .maybeSingle();
   if (roleError || !resellerRole?.assigned_at) {
-    counter.textContent = "0";
-    console.warn("No se pudo confirmar la fecha de asignación del rol revendedor:", roleError);
+    console.warn("Acceso denegado: no se pudo confirmar el rol revendedor:", roleError);
     return;
   }
+  if (accessNotice) accessNotice.hidden = true;
+  if (resellerPanel) resellerPanel.hidden = false;
   const { count, error } = await supabase.from("usdt_orders")
     .select("id", { count: "exact", head: true })
     .eq("user_id", session.user.id)
