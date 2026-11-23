@@ -32,7 +32,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 .user-id{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#b5b7bf;margin:0;letter-spacing:.35px}
 .copy-id{width:27px;height:27px;display:inline-grid;place-items:center;border:1px solid #ffffff20;border-radius:8px;background:#ffffff08;color:#ff8a45;cursor:pointer}
 .copy-id svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.account-status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 10px;border:1px solid #26a17b55;border-radius:20px;background:#26a17b15;color:#63d5a9;font-size:10px;font-weight:700;letter-spacing:.35px}
+.account-status{display:inline-flex;align-items:center;gap:6px;margin-top:0;padding:6px 10px;border:1px solid #26a17b55;border-radius:20px;background:#26a17b15;color:#63d5a9;font-size:10px;font-weight:700;letter-spacing:.35px}
 .account-status:before{display:none}.account-status svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .account-status.pending{border-color:#e4a33b55;background:#e4a33b12;color:#efbd68}
 .balance{min-height:94px;display:flex;align-items:center;gap:15px;padding:17px 2px 1px;border:0;border-top:1px solid #ffffff19;border-radius:0;background:transparent;box-shadow:none}
@@ -154,7 +154,7 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 <section class="account-panel" aria-label="Panel de cuenta">
 <div class="profile">
 <div class="avatar" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="21" r="13"/><path d="M7 57c1.5-13 10-20 25-20s23.5 7 25 20H7Z"/></svg></div>
-<div class="profile-info"><h2 class="username">Mi cuenta</h2><div class="profile-meta"><p class="user-id">ID: <span id="account-user-code">—</span></p><button class="copy-id" id="copyAccountId" type="button" aria-label="Copiar ID" title="Copiar ID"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button></div><span class="account-status" id="accountStatus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-2.8 8-7 10-4.2-2-7-5.3-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><span>Activo</span></span><div class="copy-feedback" id="copyFeedback" aria-live="polite"></div></div>
+<div class="profile-info"><h2 class="username">Mi cuenta</h2><div class="profile-meta"><p class="user-id">ID: <span id="account-user-code">—</span></p><button class="copy-id" id="copyAccountId" type="button" aria-label="Copiar ID" title="Copiar ID"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg></button><span class="account-status" id="accountStatus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-2.8 8-7 10-4.2-2-7-5.3-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><span id="accountStatusLabel">Activo</span></span></div><div class="copy-feedback" id="copyFeedback" aria-live="polite"></div></div>
 </div>
 <div class="balance">
 <div><small>Saldo disponible</small><strong><span id="usdt-balance-value" style="color:var(--white)">—</span> <span>USDT</span></strong></div>
@@ -229,7 +229,8 @@ async function loadAccountIdentity() {
   const statusElement = document.getElementById("accountStatus");
   const emailVerified = Boolean(user.email_confirmed_at || user.confirmed_at);
   if (statusElement) {
-    statusElement.textContent = emailVerified ? "Estado activo" : "Correo sin verificar";
+    const statusLabel = document.getElementById("accountStatusLabel");
+    if (statusLabel) statusLabel.textContent = emailVerified ? "Activo" : "Pendiente";
     statusElement.classList.toggle("pending", !emailVerified);
   }
 
