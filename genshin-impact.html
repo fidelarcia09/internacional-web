@@ -227,6 +227,10 @@ function productAmount(product){
  const match=String(product.name||"").replace(/,/g,"").match(/\d+(?:\.\d+)?/);
  return match?Number(match[0]):0;
 }
+function isCurrencyPack(product){
+ const name=String(product?.name||"").toLowerCase();
+ return /diamantes?|diamonds?|bonds?|\\bbc\\b|\\bcp\\b|tokens?|cristales\\s+g[eé]nesis|\\buc\\b|robux/i.test(name);
+}
 function renderProducts(){
  packages.innerHTML="";
  const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion);
@@ -238,7 +242,7 @@ function renderProducts(){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles para esta región.</div>';
    return;
  }
- [...visible].sort((a,b)=>Number(/oferta|special|offer/i.test(a.name||""))-Number(/oferta|special|offer/i.test(b.name||""))||productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0)).forEach(product=>{
+ [...visible].sort((a,b)=>Number(!isCurrencyPack(a))-Number(!isCurrencyPack(b))||productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0)).forEach(product=>{
    const button=document.createElement("button");
    button.type="button";
    button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");
