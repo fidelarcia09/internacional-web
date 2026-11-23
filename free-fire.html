@@ -88,7 +88,7 @@ body{overflow-x:hidden}
 }
 @media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}}
 </style>
-</head>
+<style id="account-nav-photo-style">.mobile-nav .account-nav-photo{display:block;width:21px;height:21px;flex:0 0 21px;border-radius:50%;object-fit:cover;border:1.5px solid #ffbd19;box-shadow:0 0 7px #ffbd1945}.mobile-nav .account-nav-photo[hidden]{display:none!important}.mobile-nav a:has(.account-nav-photo:not([hidden])) .account-nav-fallback{display:none}</style></head>
 <body>
 <header class="topbar">
 <a class="back" href="tienda.html" aria-label="Atrás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Atrás</span></a>
@@ -117,7 +117,7 @@ body{overflow-x:hidden}
 <a class="current" href="tienda.html"><svg viewBox="0 0 24 24"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5"/></svg><small>Tienda</small></a>
 <a href="revendedores.html"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5"/></svg><small>Revendedores</small></a>
 <a href="soporte.html"><svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2Z"/></svg><small>Soporte</small></a>
-<a href="cuenta.html"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
+<a href="cuenta.html"><svg class="account-nav-fallback" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><img class="account-nav-photo" id="accountNavPhoto" alt="" hidden><small>Cuenta</small></a>
 </nav>
 <script type="module">
 import { supabase, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-client.js";
@@ -434,5 +434,5 @@ helpButton?.addEventListener("click",()=>{
 });
 loadCatalog();
 </script>
-</body>
+<script>(()=>{const i=document.getElementById("accountNavPhoto");try{const a=JSON.parse(localStorage.getItem("sb-fyyebxjysrhcxgmgperf-auth-token")||"null"),u=a?.user?.id||a?.currentSession?.user?.id,p=u&&JSON.parse(localStorage.getItem("iw-account-identity:"+u)||"null");if(i&&p?.avatar_url){i.src=p.avatar_url;i.hidden=false}}catch(e){}})();</script></body>
 </html>
