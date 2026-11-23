@@ -248,7 +248,7 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
     const fields=[
       ["Producto",title||"No disponible"],
       ["ID del jugador",playerId||"No indicado"],
-      ["Precio",amount===null||amount===undefined?"No disponible":Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT"],
+      ["Precio",amount===null||amount===undefined?"No disponible":Number(amount).toLocaleString("en-US",{maximumFractionDigits:2})+" USDT"],
       ["Pedido",code||"No disponible"],
       ["Fecha y hora",parts.date+" · "+parts.hour]
     ];
@@ -275,7 +275,7 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
   const right=document.createElement("div"); right.className="history-right";
   const value=document.createElement("div"); value.className="history-amount";
   const sign=isDeposit?(status==="confirmed"?"+":""):(status==="failed"?"+":"−");
-  value.textContent=amount===null || amount===undefined ? "PRUEBA" : sign+Number(amount).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8})+" USDT";
+  value.textContent=amount===null || amount===undefined ? "PRUEBA" : sign+Number(amount).toLocaleString("en-US",{maximumFractionDigits:2})+" USDT";
   const badge=document.createElement("span"); badge.className="history-status "+status; badge.textContent=statusLabel(status);
   right.append(value,badge); item.append(main,right);
   return item;
