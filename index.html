@@ -971,7 +971,5 @@ supabase.auth.onAuthStateChange((_event, nextSession) => {
  }));
 })();
 </script>
-<script>
-(()=>{const img=document.getElementById("accountNavPhoto");if(!img)return;try{const auth=JSON.parse(localStorage.getItem("sb-fyyebxjysrhcxgmgperf-auth-token")||"null");const uid=auth?.user?.id||auth?.currentSession?.user?.id;if(!uid)return;const raw=localStorage.getItem("iw-account-identity:"+uid);if(!raw)return;const profile=JSON.parse(raw);if(profile?.avatar_url){img.src=profile.avatar_url;img.hidden=false;}}catch(e){console.warn("No se pudo cargar la foto de navegación",e);}})();
-</script>
+
 </body></html>
