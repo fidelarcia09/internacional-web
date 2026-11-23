@@ -912,10 +912,15 @@ async function prefetchAccountData(userId) {
     supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id", userId)
   ]);
   if (!profileResult.error && profileResult.data) {
-    try { localStorage.setItem("iw-account-identity:" + userId, JSON.stringify({
-      username: profileResult.data.username || "Usuario",
-      user_code: profileResult.data.user_code || "No disponible"
-    })); } catch (error) {}
+    try {
+      const identityKey = "iw-account-identity:" + userId;
+      const cachedIdentity = JSON.parse(localStorage.getItem(identityKey) || "{}");
+      localStorage.setItem(identityKey, JSON.stringify({
+        ...cachedIdentity,
+        username: profileResult.data.username || "Usuario",
+        user_code: profileResult.data.user_code || "No disponible"
+      }));
+    } catch (error) {}
   }
   if (!walletResult.error && walletResult.data) {
     try { localStorage.setItem("iw-account-balance:" + userId, String(walletResult.data.balance)); } catch (error) {}
