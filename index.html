@@ -874,10 +874,11 @@ const verifiedSession = !userError && !sessionError && Boolean(user && session?.
 const pendingReferralCode = (new URLSearchParams(window.location.search).get("ref") || "")
   .replace(/[^a-z0-9]/gi, "").slice(0, 32).toUpperCase();
 if (verifiedSession && pendingReferralCode) {
-  const { error: referralError } = await supabase.rpc("claim_referral", {
-    p_referral_code: pendingReferralCode
+  const { error: referralError } = await supabase.from("referrals").insert({
+    referred_user_id: user.id,
+    referral_code: pendingReferralCode
   });
-  if (referralError) {
+  if (referralError && referralError.code !== "23505") {
     console.warn("No se pudo asociar el referido:", referralError);
   } else {
     const cleanUrl = new URL(window.location.href);
