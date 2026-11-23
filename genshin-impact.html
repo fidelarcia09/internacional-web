@@ -236,7 +236,7 @@ function isCurrencyPack(product){
 function priceForProduct(product){
  const base=Number(product?.priceUSDT);
  if(!Number.isFinite(base)||base<=0)return 0;
- return resellerDiscountPercent>0?Math.ceil((base*(1-resellerDiscountPercent/100)*100)-1e-8)/100:base;
+ return resellerDiscountPercent>0?Math.round((base*(1-resellerDiscountPercent/100))*1e8)/1e8:base;
 }
 function renderProducts(){
  packages.innerHTML="";
