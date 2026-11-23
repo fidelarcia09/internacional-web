@@ -229,7 +229,7 @@ function productAmount(product){
 }
 function isCurrencyPack(product){
  const name=String(product?.name||"").toLowerCase();
- return /diamantes?|diamonds?|bonds?|\\bbc\\b|\\bcp\\b|tokens?|cristales\\s+g[eé]nesis|\\buc\\b|robux/i.test(name);
+ return /diamantes?|diamonds?|bonds?|\bbc\b|\bcp\b|tokens?|cristales\s+g[eé]nesis|\buc\b|robux/i.test(name);
 }
 function renderProducts(){
  packages.innerHTML="";
