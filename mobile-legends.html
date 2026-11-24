@@ -66,7 +66,7 @@ body{overflow-x:hidden}
 </section>
 <section class="section" aria-labelledby="player-title">
 <h2 class="section-head" id="player-title"><span class="ico player-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg></span>Tu ID de jugador y Zone ID</h2>
-<div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Ingresa tu ID de jugador..." maxlength="32" aria-label="Tu Player ID"></div><button class="help" id="help-button" type="button">¿Dónde encontrarlo?</button></div>
+<div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Ingresa tu ID de jugador..." maxlength="32" aria-label="Tu Player ID"></div></div>
 <p class="hint"><b>ⓘ</b>En Mobile Legends se utiliza el ID de jugador junto con el Zone ID.</p>
 </section>
 <section class="section" aria-labelledby="packages-title">
@@ -109,7 +109,7 @@ const regions=document.getElementById("regions");
 const buyButton=document.getElementById("buy-button");
 const playerSection=document.getElementById("player-title").closest(".section");
 const playerInput=document.getElementById("player-id");
-const helpButton=document.getElementById("help-button");
+
 const validationResult=document.createElement("div");
 validationResult.className="validation-result";
 validationResult.setAttribute("role","status");
