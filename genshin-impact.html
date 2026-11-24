@@ -379,10 +379,6 @@ buyButton.addEventListener("click",async()=>{
  }
 });
 playerInput?.addEventListener("input",()=>message.classList.remove("show"));
-helpButton?.addEventListener("click",()=>{
- const gameNames={"free-fire":"Free Fire","mobile-legends":"Mobile Legends","pubg-mobile":"PUBG Mobile","roblox":"Roblox","genshin-impact":"Genshin Impact","honor-of-kings":"Honor of Kings","arena-breakout":"Arena Breakout","blood-strike":"Blood Strike","call-of-duty-mobile":"Call of Duty Mobile"};
- notify("Abre "+(gameNames[GAME]||"el juego")+", entra en tu perfil y copia el ID de jugador.");
-});
 loadCatalog();
 </script>
 </body>
