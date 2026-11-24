@@ -701,7 +701,21 @@ if ("serviceWorker" in navigator) {
  }
 }
 </style>
-</head>
+<style id="community-social-buttons">
+.topbar nav.mobile-open .community-heading{top:50%;padding:18px 0 0}
+.topbar nav.mobile-open .community-heading>span{margin-bottom:18px}
+.topbar nav.mobile-open .community-buttons{display:grid;gap:11px;width:100%;max-width:310px;margin:0 auto}
+.topbar nav.mobile-open .community-buttons a.community-button{box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:0 15px;border:1px solid rgba(255,255,255,.13);border-radius:13px;background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.035));color:#fff!important;text-decoration:none;font:700 13px/1.2 var(--body);letter-spacing:.1px;box-shadow:0 8px 22px rgba(0,0,0,.2);transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.topbar nav.mobile-open .community-buttons a.community-button:active{transform:scale(.98)}
+.topbar nav.mobile-open .community-buttons a.community-button svg{display:block;flex:0 0 23px;width:23px;height:23px;fill:currentColor}
+.topbar nav.mobile-open .community-buttons a.community-button span{flex:1;text-align:left}
+.topbar nav.mobile-open .community-buttons a.community-button b{font-size:17px;color:rgba(255,255,255,.72)}
+.topbar nav.mobile-open .community-buttons a.community-whatsapp{border-color:rgba(37,211,102,.45);background:linear-gradient(110deg,rgba(37,211,102,.2),rgba(12,22,19,.65))}
+.topbar nav.mobile-open .community-buttons a.community-whatsapp svg{color:#35d477}
+.topbar nav.mobile-open .community-buttons a.community-telegram{border-color:rgba(39,165,229,.48);background:linear-gradient(110deg,rgba(39,165,229,.2),rgba(11,20,29,.68))}
+.topbar nav.mobile-open .community-buttons a.community-telegram svg{color:#35b8f2}
+@media(max-height:650px){.topbar nav.mobile-open .community-heading{top:48%;padding-top:12px}.topbar nav.mobile-open .community-heading>span{font-size:16px;margin-bottom:12px}.topbar nav.mobile-open .community-buttons{gap:8px}.topbar nav.mobile-open .community-buttons a.community-button{min-height:46px}}
+</style></head>
 <body>
 <header class="topbar"><button class="menu" aria-label="Abrir menú" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><a class="brand" href="#" aria-label="Gamers Gold Top-Up, inicio">
  <span class="brand-emblem" aria-hidden="true"><img src="fuentes/gamers-gold-escudo.svg?v=2" alt="" width="56" height="62"></span>
@@ -709,7 +723,19 @@ if ("serviceWorker" in navigator) {
   <span class="brand-name"><span class="brand-gamers">GAMERS</span> <span class="brand-gold">GOLD TOP UP</span></span>
   <span class="brand-line" aria-hidden="true"></span>
  </span>
-</a><nav><button class="drawer-close" type="button" aria-label="Cerrar menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><a href="resenas.html">Reseñas</a><div class="community-heading" aria-label="Comunidad"><span>ÚNETE A NUESTRA COMUNIDAD</span></div></nav><a class="top-cta" href="#catalogo">Explorar tienda ↗</a><a class="entry-link" href="registro.html" aria-label="Entrar a tu cuenta" hidden>Entrar</a><a class="notification-bell" href="notificaciones.html" aria-label="Notificaciones" title="Notificaciones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-dot" aria-hidden="true" hidden></span></a></header>
+</a><nav><button class="drawer-close" type="button" aria-label="Cerrar menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><a href="resenas.html">Reseñas</a><div class="community-heading" aria-label="Comunidad">
+  <span>ÚNETE A NUESTRA COMUNIDAD</span>
+  <div class="community-buttons">
+    <a class="community-button community-whatsapp" href="https://whatsapp.com/channel/0029Vb9Ts5E0wajmawAiVo0K" target="_blank" rel="noopener noreferrer" aria-label="Unirse al canal de WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.1 3.9A11.3 11.3 0 0 0 2.3 17.5L1 23l5.7-1.5A11.3 11.3 0 0 0 20.1 3.9ZM12 20.6a9.2 9.2 0 0 1-4.7-1.3l-.3-.2-3.4.9.9-3.3-.2-.3A9.2 9.2 0 1 1 12 20.6Zm5-6.9c-.3-.2-1.7-.9-2-.9s-.5-.2-.7.2-.8.9-1 1.1-.4.2-.7.1a7.5 7.5 0 0 1-2.2-1.4 8.3 8.3 0 0 1-1.5-1.9c-.2-.3 0-.5.1-.6l.5-.6.2-.5c.1-.2 0-.4 0-.6s-.7-1.7-1-2.3c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.8 1.2 3.2 1.4 3.4a12.7 12.7 0 0 0 4.9 4.3c.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4s-.2-.2-.5-.4Z"/></svg>
+      <span>Canal de WhatsApp</span><b>↗</b>
+    </a>
+    <a class="community-button community-telegram" href="https://t.me/gamersgoldtopup" target="_blank" rel="noopener noreferrer" aria-label="Unirse al canal de Telegram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 3.2 18.5 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6 13.6l-4.9-1.5c-1.1-.3-1.1-1 .2-1.5L20 2.8c.9-.3 2 .2 1.8.4Z"/></svg>
+      <span>Canal de Telegram</span><b>↗</b>
+    </a>
+  </div>
+</div></nav><a class="top-cta" href="#catalogo">Explorar tienda ↗</a><a class="entry-link" href="registro.html" aria-label="Entrar a tu cuenta" hidden>Entrar</a><a class="notification-bell" href="notificaciones.html" aria-label="Notificaciones" title="Notificaciones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-dot" aria-hidden="true" hidden></span></a></header>
 <main>
 <section class="hero"><div class="hero-copy"><h1 class="mobile-title">RECARGA,<br>JUEGA<br><em>SIN LÍMITES</em></h1><h1 class="desktop-title">RECARGA,<br>JUEGA<br><em>SIN LÍMITES</em></h1><p>Tu plataforma global de recargas gaming.</p><div class="actions"><a class="primary" href="tienda.html"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 5h4l3.2 16.1a2 2 0 0 0 2 1.6h13.2a2 2 0 0 0 1.9-1.4L31 10H9" /><circle cx="13" cy="27" r="2.2"/><circle cx="25" cy="27" r="2.2"/></svg><span>Explorar Tienda</span><b>→</b></a><a class="secondary" href="#ventajas">Conoce la plataforma →</a></div><div class="proof"><span>G</span><span>⚡</span><span>+</span><div><b>HECHO PARA GAMERS</b><small>Tu próxima partida empieza aquí</small></div></div></div>
 <div class="hero-art"><div class="grid-bg"></div><div class="ring ring1"></div><div class="ring ring2"></div><img class="hero-character" src="fuentes/personaje_gamer_cuadrado.webp" alt="Personaje gamer futurista" loading="eager" fetchpriority="high" decoding="sync"><span class="float f1">⚡ FAST ACCESS</span><span class="float f2">NEXT GEN STORE</span><span class="art-label">POWER UP <b>01 / 04</b></span></div><div class="scroll">— DESLIZA PARA EXPLORAR</div></section>
