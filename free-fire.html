@@ -39,10 +39,17 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 .validate-row{display:flex;margin-top:11px}
 .validate-btn{min-height:43px;width:100%;border:1px solid #ffc400;border-radius:12px;background:linear-gradient(145deg,#1c1609,#0b0c0f);color:#ffd000;font:800 12px var(--font);cursor:pointer;box-shadow:0 0 12px #ffb00020}
 .validate-btn:disabled{opacity:.6;cursor:wait}
-.validation-result{display:none;margin-top:10px;padding:11px 13px;border:1px solid #ffffff22;border-radius:11px;background:#0a0c0f;color:#c7c9ce;font-size:12px;line-height:1.5}
-.validation-result.show{display:block}
-.validation-result.success{border-color:#35c97877;background:#0b1a12;color:#a9f0c5}
+.validation-result{display:none;margin-top:10px;padding:12px 14px;border:1px solid rgba(255,189,25,.2);border-radius:13px;background:linear-gradient(120deg,rgba(24,22,17,.98),rgba(10,13,19,.98));color:#d6d8dd;font-size:12px;line-height:1.45;box-shadow:0 7px 20px rgba(0,0,0,.2);overflow:hidden}
+.validation-result.show{display:flex;align-items:center;gap:11px;min-height:54px;box-sizing:border-box}
+.validation-result.loading{border-color:rgba(255,189,25,.48);background:linear-gradient(110deg,rgba(38,29,10,.96),rgba(12,15,22,.98));color:#ffe2a0}
+.validation-result.loading:before{content:"";width:19px;height:19px;min-width:19px;border:2px solid rgba(255,189,25,.2);border-top-color:#ffbd19;border-right-color:#ffbd19;border-radius:50%;animation:nicknameSpin .75s linear infinite}
+.validation-result.success{border-color:rgba(53,201,120,.48);background:linear-gradient(110deg,rgba(10,39,25,.97),rgba(10,19,18,.98));color:#c7f6d9}
 .validation-result.error{border-color:#ff686877;background:#1b0d0d;color:#ffb3b3}
+.validation-result .nickname-content{display:flex;flex-direction:column;gap:3px;min-width:0}
+.validation-result .nickname-label{font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;opacity:.7}
+.validation-result .nickname-value{font-size:15px;font-weight:850;line-height:1.2;color:#eafff1;overflow-wrap:anywhere}
+.validation-result.success:before{content:"✓";display:grid;place-items:center;width:25px;height:25px;min-width:25px;border-radius:50%;background:rgba(53,201,120,.16);color:#65e69b;font-size:15px;font-weight:900}
+@keyframes nicknameSpin{to{transform:rotate(360deg)}}
 
 @media(max-width:560px){.region-grid{gap:7px}.choice{min-height:82px}.region-svg{width:40px;height:40px}.player-field>svg{left:11px;width:21px;height:21px}.player-input{padding-left:40px}.help{padding:0 10px}}
 
@@ -151,8 +158,14 @@ let validatedPlayerId="";
 let validationTimer=null;
 let validationRequest=0;
 function showValidation(text,state=""){
- validationResult.textContent=text;
  validationResult.className="validation-result show"+(state?" "+state:"");
+ if(state==="loading"){
+  validationResult.textContent="Verificando nickname...";
+ }else if(state==="success"){
+  validationResult.innerHTML='<span class="nickname-content"><span class="nickname-label">Nickname verificado</span><strong class="nickname-value">'+safeText(text)+'</strong></span>';
+ }else{
+  validationResult.textContent=text;
+ }
 }
 function clearValidation(){
  validatedPlayerId="";
@@ -374,6 +387,7 @@ async function verifyNicknameAutomatically(){
    showValidation("Ingresa también tu Zone ID para verificar esta cuenta.","error");
    return;
  }
+ showValidation("Verificando nickname...","loading");
  try{
    const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
    if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
