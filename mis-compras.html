@@ -531,53 +531,72 @@ function renderDeposits(rows, ledgerRows) {
   })));
   depositsPanel.replaceChildren(list);
 }
+function showHistoryError(panel,message) {
+  const target=panel===gamesPanel?document.getElementById("orders-content"):panel;
+  if(!target) return;
+  const box=makeEmpty("No se pudo cargar",message||"Comprueba tu conexión e inténtalo de nuevo.");
+  const retry=document.createElement("button");
+  retry.type="button";
+  retry.className="tab";
+  retry.textContent="Reintentar";
+  retry.addEventListener("click",()=>loadHistory());
+  box.append(retry);
+  target.replaceChildren(box);
+}
 async function loadHistory() {
-  const {data:{session},error:authError}=await supabase.auth.getSession();
-  if(authError || !session?.user) { window.location.replace("login.html"); return; }
-
-  const cacheKey="iw-history:"+session.user.id;
-  let hasFreshCache=false;
   try {
-    const cached=JSON.parse(localStorage.getItem(cacheKey)||"null");
-    if(cached && Date.now()-cached.savedAt<24*60*60*1000) {
-      if(Array.isArray(cached.orders)) renderOrders(cached.orders);
-      if(Array.isArray(cached.deposits)) renderDeposits(cached.deposits,cached.ledger||[]);
-      hasFreshCache=Array.isArray(cached.orders)||Array.isArray(cached.deposits);
-    }
-  } catch(cacheError) {
-    console.warn("No se pudo leer el historial guardado:",cacheError);
-  }
+    const {data:{session},error:authError}=await supabase.auth.getSession();
+    if(authError) throw authError;
+    if(!session?.user) { window.location.replace("login.html"); return; }
 
-  // Si existe una copia reciente, se muestra de inmediato y la consulta a Supabase
-  // actualiza los datos en segundo plano sin reemplazar la pantalla por "Cargando...".
-  if(!hasFreshCache) {
-    showLoading(gamesPanel,"Estamos buscando tus compras.");
-    showLoading(depositsPanel,"Estamos buscando tus depósitos.");
-  }
-
-  const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
-    supabase.from("usdt_orders").select("id,order_code,description,player_id,amount_usdt,status,created_at,game").eq("user_id",session.user.id).order("created_at",{ascending:false}),
-    supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).eq("status","confirmed").order("created_at",{ascending:false}),
-    supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
-  ]);
-
-  if(!ordersResult.error) renderOrders(ordersResult.data||[]);
-  else if(document.getElementById("orders-content")) document.getElementById("orders-content").replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
-
-  if(!depositsResult.error) renderDeposits(depositsResult.data||[],ledgerResult.data||[]);
-  else if(depositsPanel.querySelector(".history-list")===null) depositsPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
-
-  if(!ordersResult.error&&!depositsResult.error&&!ledgerResult.error) {
+    const cacheKey="iw-history:"+session.user.id;
+    let hasFreshCache=false;
     try {
-      localStorage.setItem(cacheKey,JSON.stringify({
-        savedAt:Date.now(),
-        orders:ordersResult.data||[],
-        deposits:depositsResult.data||[],
-        ledger:ledgerResult.data||[]
-      }));
+      const cached=JSON.parse(localStorage.getItem(cacheKey)||"null");
+      if(cached && Date.now()-cached.savedAt<24*60*60*1000) {
+        if(Array.isArray(cached.orders)) renderOrders(cached.orders);
+        if(Array.isArray(cached.deposits)) renderDeposits(cached.deposits,cached.ledger||[]);
+        hasFreshCache=Array.isArray(cached.orders)||Array.isArray(cached.deposits);
+      }
     } catch(cacheError) {
-      console.warn("No se pudo guardar el historial:",cacheError);
+      console.warn("No se pudo leer el historial guardado:",cacheError);
     }
+
+    if(!hasFreshCache) {
+      showLoading(gamesPanel,"Estamos buscando tus compras.");
+      showLoading(depositsPanel,"Estamos buscando tus depósitos.");
+    }
+
+    const [ordersResult,depositsResult,ledgerResult]=await Promise.all([
+      supabase.from("usdt_orders").select("id,order_code,description,player_id,amount_usdt,status,created_at,game").eq("user_id",session.user.id).order("created_at",{ascending:false}),
+      supabase.from("usdt_deposits").select("id,deposit_code,amount_usdt,payment_method,status,created_at").eq("user_id",session.user.id).eq("status","confirmed").order("created_at",{ascending:false}),
+      supabase.from("usdt_transactions").select("transaction_code,order_id,deposit_id,kind").eq("user_id",session.user.id)
+    ]);
+
+    if(!ordersResult.error) renderOrders(ordersResult.data||[]);
+    else showHistoryError(gamesPanel,ordersResult.error.message);
+
+    if(!depositsResult.error) renderDeposits(depositsResult.data||[],ledgerResult.error?[]:(ledgerResult.data||[]));
+    else showHistoryError(depositsPanel,depositsResult.error.message);
+
+    if(!ordersResult.error&&!depositsResult.error&&!ledgerResult.error) {
+      try {
+        localStorage.setItem(cacheKey,JSON.stringify({
+          savedAt:Date.now(),
+          orders:ordersResult.data||[],
+          deposits:depositsResult.data||[],
+          ledger:ledgerResult.data||[]
+        }));
+      } catch(cacheError) {
+        console.warn("No se pudo guardar el historial:",cacheError);
+      }
+    } else if(ledgerResult.error) {
+      console.warn("No se pudo cargar el registro de transacciones:",ledgerResult.error);
+    }
+  } catch(loadError) {
+    console.error("Error al cargar Mis compras:",loadError);
+    showHistoryError(gamesPanel,loadError?.message);
+    showHistoryError(depositsPanel,loadError?.message);
   }
 }
 loadHistory();
