@@ -1,6 +1,7 @@
-const CACHE_NAME = "internacional-web-home-image-v15";
+const CACHE_NAME = "internacional-web-home-image-v16";
 const IMAGE_PATHS = [
   "fuentes/personaje_gamer_cuadrado.webp",
+  "fuentes/grok_1795571351069.webp",
   "fuentes/roblox_tienda_banner.webp",
   "fuentes/novatopup_tienda_banner.webp",
   "fuentes/novatopup_tienda_banner(1).webp",
