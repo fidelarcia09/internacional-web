@@ -174,6 +174,41 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
  .order-summary{min-height:49px!important}
 }
 </style>
+
+<style id="GG_ORDERS_HORIZONTAL_CAROUSEL">
+/* Resumen y filtros en carrusel: el contenido que no cabe se desliza lateralmente */
+html,body{max-width:100%;overflow-x:clip}
+main{min-width:0;max-width:100%;overflow-x:clip}
+#games-panel{min-width:0;width:100%;max-width:100%}
+.orders-summary{
+ display:flex!important;align-items:stretch!important;justify-content:flex-start!important;
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ gap:10px!important;padding:10px!important;overflow-x:auto!important;overflow-y:hidden!important;
+ scroll-snap-type:x mandatory;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
+ scrollbar-width:none
+}
+.orders-summary::-webkit-scrollbar,.orders-filters::-webkit-scrollbar{display:none}
+.orders-stat{
+ flex:0 0 150px!important;min-width:150px!important;min-height:112px;
+ padding:12px 10px!important;border:1px solid #00c6ff45;border-radius:15px;
+ background:linear-gradient(145deg,#102b4d,#081a35 75%);scroll-snap-align:start
+}
+.orders-stat+.orders-stat{border-left:1px solid #00c6ff45!important}
+.orders-stat-number{font-size:29px!important}
+.orders-stat-label{white-space:nowrap}
+.orders-filters{
+ display:flex!important;flex-wrap:nowrap!important;width:100%!important;max-width:100%!important;min-width:0!important;
+ overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain;
+ -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 1px 10px!important
+}
+.orders-filter{flex:0 0 auto!important;white-space:nowrap!important}
+@media(max-width:520px){
+ .orders-summary{gap:9px!important;padding:9px!important;margin-bottom:16px!important}
+ .orders-stat{flex-basis:145px!important;min-width:145px!important;min-height:108px}
+ .orders-stat-number{font-size:27px!important}
+ .orders-filters{gap:8px!important}
+}
+</style>
 </head>
 <body>
 <main>
