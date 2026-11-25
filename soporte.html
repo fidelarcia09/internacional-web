@@ -310,6 +310,39 @@ body{
 .ticket-primary:disabled{opacity:.55!important}
 </style>
 
+
+<style id="gamers-gold-support-colors-final">
+/* Paleta tomada de Inicio: ningún acento amarillo/dorado */
+:root{--orange:#24efff!important;--gold:#24efff!important}
+body{
+ background:
+ radial-gradient(ellipse at 50% 0%,rgba(0,198,255,.13),transparent 42%),
+ #050b18!important;
+}
+.hero h1:before{background:linear-gradient(90deg,#00b5ff,#24efff)!important}
+.hero h2 em,.ticket-kicker,.ticket-list-head button,.ticket-empty-state>span,
+.ticket-message-head,.ticket-close,.priority em,.priority svg,
+.faq summary:after{color:#24efff!important;stroke:#24efff!important}
+.ticket-kicker{color:#24efff!important}
+.ticket-primary,.ticket-login a,.ticket-reply button{
+ background:linear-gradient(100deg,#00b5ff,#00c6ff)!important;
+ color:#06131d!important;
+ border:0!important;
+ box-shadow:0 0 20px #00c6ff44!important;
+}
+.ticket-primary:hover,.ticket-login a:hover,.ticket-reply button:hover{
+ background:linear-gradient(100deg,#00b5ff,#00c6ff)!important;
+ filter:brightness(1.07)!important;
+}
+.ticket-primary:disabled{opacity:.55!important}
+.ticket-create{border-color:rgba(0,198,255,.28)!important}
+.priority{border-color:rgba(36,239,255,.32)!important;box-shadow:0 0 24px rgba(0,190,255,.08),inset 0 0 22px rgba(0,198,255,.035)!important}
+.priority svg{filter:drop-shadow(0 0 8px rgba(0,198,255,.3))!important}
+.ticket-status.cerrado{background:rgba(148,163,184,.12)!important;color:#cbd5e1!important}
+.ticket-status.cerrado{border-color:rgba(148,163,184,.2)!important}
+.ticket-list-head button,.ticket-close{color:#24efff!important}
+</style>
+
 </head>
 <body>
 <main class="support-page">
