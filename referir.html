@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050b18">
 <meta name="description" content="Invita amigos a Internacional Web y recibe el 5% de su primera compra completada.">
 <title>Programa de referidos — INTERNACIONAL WEB</title>
@@ -81,8 +81,8 @@ h1{font:900 clamp(39px,10vw,56px)/.95 var(--display);text-align:center;letter-sp
 <style id="GG_BOTTOM_GLOW_BLUE">.mobile-nav:before{background:radial-gradient(ellipse at center,rgba(0,184,255,.34) 0%,rgba(0,184,255,.15) 42%,rgba(0,184,255,0) 76%)!important}</style>
 
 <style id="gg-bottom-nav-edge-fix">
-/* Barra pegada al borde inferior sin extender el fondo hacia la zona segura */
-.mobile-nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;inset-block-end:0!important;margin:0!important;box-sizing:border-box!important;height:64px!important;padding:3px 1%!important;padding-bottom:3px!important;}
+/* Extiende la barra hasta el borde físico inferior, incluida la zona segura */
+.mobile-nav{position:fixed!important;left:0!important;right:0!important;bottom:calc(-1 * env(safe-area-inset-bottom,0px))!important;inset-block-end:calc(-1 * env(safe-area-inset-bottom,0px))!important;margin:0!important;box-sizing:border-box!important;height:64px!important;padding:3px 1%!important;padding-bottom:3px!important;}
 </style>
 </head>
 <body>
