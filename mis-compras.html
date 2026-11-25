@@ -535,12 +535,6 @@ function showHistoryError(panel,message) {
   const target=panel===gamesPanel?document.getElementById("orders-content"):panel;
   if(!target) return;
   const box=makeEmpty("No se pudo cargar",message||"Comprueba tu conexión e inténtalo de nuevo.");
-  const retry=document.createElement("button");
-  retry.type="button";
-  retry.className="tab";
-  retry.textContent="Reintentar";
-  retry.addEventListener("click",()=>loadHistory());
-  box.append(retry);
   target.replaceChildren(box);
 }
 async function loadHistory() {
