@@ -335,12 +335,34 @@ function renderThread(){
   const owner=state.ownerInfo;
   const ownerHtml=state.isSupport?'<div class="ticket-owner"><b>Información del usuario</b><br>Nombre: '+esc(owner?.full_name||"No indicado")+'<br>Usuario: '+esc(owner?.username||"No indicado")+'<br>Correo: '+esc(owner?.email||"No disponible")+'<br>ID de cuenta: '+esc(owner?.user_code||t.user_id)+'<br>Teléfono: '+esc(owner?.phone||"No indicado")+'</div>':"";
   const messages=state.messages.map(m=>'<article class="ticket-message '+(m.author_id===state.user.id?"mine":"")+'"><div class="ticket-message-head">'+(m.author_role==="soporte"?"Soporte":"Usuario")+'<time>'+dateText(m.created_at)+'</time></div><p>'+esc(m.message)+'</p></article>').join("");
-  const actions=state.isSupport?'<div class="ticket-status-actions"><button type="button" data-status="abierto">Marcar abierto</button><button type="button" data-status="respondido">Marcar respondido</button><button type="button" data-status="cerrado">Cerrar ticket</button></div>':"";
+  const actions=state.isSupport?'<div class="ticket-status-actions"><button type="button" data-status="abierto">Marcar abierto</button><button type="button" data-status="respondido">Marcar respondido</button><button type="button" data-close-ticket="true">Cerrar ticket</button></div>':"";
   const reply=t.status==="cerrado"?'<div class="ticket-empty">Este ticket está cerrado. Si necesitas más ayuda, crea uno nuevo.</div>':'<form class="ticket-reply" id="ticketReplyForm"><textarea id="ticketReplyText" maxlength="5000" required placeholder="Escribe tu respuesta…"></textarea><button type="submit">Enviar</button></form>';
   $("ticketDetail").innerHTML='<div class="ticket-thread"><header class="ticket-thread-head"><div class="ticket-thread-meta"><span class="ticket-code">'+esc(t.ticket_code)+'</span><span>·</span><span>'+esc(t.category)+'</span><span class="ticket-status '+esc(t.status)+'">'+statusLabel(t.status)+'</span></div><h3>'+esc(t.subject)+'</h3>'+ownerHtml+actions+'</header><div class="ticket-messages" id="ticketMessages">'+(messages||'<p class="ticket-empty">Todavía no hay mensajes.</p>')+'</div>'+reply+'</div>';
   const box=$("ticketMessages");if(box)box.scrollTop=box.scrollHeight;
   $("ticketReplyForm")?.addEventListener("submit",sendReply);
   $("ticketDetail").querySelectorAll("[data-status]").forEach(btn=>btn.addEventListener("click",()=>changeStatus(btn.dataset.status)));
+  $("ticketDetail").querySelector("[data-close-ticket]")?.addEventListener("click",closeSelectedTicket);
+}
+async function closeSelectedTicket(){
+  const ticket=state.activeTicket;
+  if(!ticket || !state.isSupport) return;
+  const confirmed=window.confirm("¿Cerrar y eliminar definitivamente el ticket "+ticket.ticket_code+"? También se eliminarán todos sus mensajes. Esta acción no se puede deshacer.");
+  if(!confirmed) return;
+  const button=$("ticketDetail").querySelector("[data-close-ticket]");
+  if(button) button.disabled=true;
+  const {error}=await supabase.rpc("close_and_delete_support_ticket",{p_ticket_id:ticket.id});
+  if(error){
+    if(button) button.disabled=false;
+    alertBox("No se pudo cerrar y eliminar el ticket: "+error.message);
+    return;
+  }
+  state.tickets=state.tickets.filter(item=>item.id!==ticket.id);
+  state.activeTicket=null;
+  state.messages=[];
+  state.ownerInfo=null;
+  renderTickets();
+  renderEmptyDetail();
+  alertBox("Ticket "+ticket.ticket_code+" cerrado y eliminado correctamente.",true);
 }
 async function sendReply(event){
   event.preventDefault();
