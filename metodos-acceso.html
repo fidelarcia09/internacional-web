@@ -27,6 +27,7 @@ h1{font:900 clamp(39px,10vw,56px)/.95 var(--display);text-align:center;letter-sp
 .method-copy small{display:block;color:#9699a2;font-size:10px;line-height:1.4}
 .method-status{justify-self:end;display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;padding:8px 11px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.1px;border:1px solid #ffffff20;background:#ffffff08;color:#aeb0b8;text-align:center;min-height:34px}
 .method-status svg{width:16px;height:16px;flex:0 0 16px;display:block}
+.method-status{font-family:var(--font);cursor:pointer}.method-status:disabled{cursor:default}.method-status.is-unverified:hover{border-color:#8afaff;background:#5bf9ff20;box-shadow:0 0 12px #5bf9ff20}
 .method-status.is-verified{color:#55e69a;border-color:#35c98270;background:#35c98218;box-shadow:0 0 12px #35c98212}
 .method-status.is-unverified{color:#86f6ff;border-color:#5bf9ff55;background:#5bf9ff12}
 .method-status.is-loading{color:#aeb0b8;border-color:#ffffff20;background:#ffffff08}
@@ -69,17 +70,17 @@ h1{font:900 clamp(39px,10vw,56px)/.95 var(--display);text-align:center;letter-sp
 <svg class="google-icon" viewBox="0 0 48 48"><path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.7c3.9-3.6 6-8.8 6-15Z"/><path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.9l-6.7-5.1c-1.9 1.3-4.1 2-6.8 2-5.2 0-9.6-3.5-11.2-8.2H5.9v5.2A20 20 0 0 0 24 44Z"/><path fill="#0582fb" d="M12.8 27.8a12 12 0 0 1 0-7.6V15H5.9a20 20 0 0 0 0 18Z"/><path fill="#EA4335" d="M24 12.1c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 6.1 29.5 4 24 4A20 20 0 0 0 5.9 15l6.9 5.2c1.6-4.7 6-8.1 11.2-8.1Z"/></svg>
 </span>
 <span class="method-copy"><strong>Google</strong><small>Acceso con tu cuenta de Google</small></span>
-<span class="method-status is-loading" data-method-status="google">Comprobando...</span>
+<button class="method-status is-loading" type="button" data-method-status="google" disabled>Comprobando...</button>
 </div>
 <div class="method">
 <span class="method-icon" aria-hidden="true"><svg class="mail-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 25V8.5a2 2 0 0 1 3.2-1.6L16 13.5" fill="none" stroke="#EA4335" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 13.5 24.8 6.9A2 2 0 0 1 28 8.5V25" fill="none" stroke="#4285F4" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 25V15" fill="none" stroke="#0481fb" stroke-width="3.4" stroke-linecap="round"/><path d="M28 15v10" fill="none" stroke="#34A853" stroke-width="3.4" stroke-linecap="round"/></svg></span>
 <span class="method-copy"><strong>Correo electrónico</strong><small>Acceso con tu dirección de correo</small></span>
-<span class="method-status is-loading" data-method-status="email">Comprobando...</span>
+<button class="method-status is-loading" type="button" data-method-status="email" disabled>Comprobando...</button>
 </div>
 <div class="method">
 <span class="method-icon" aria-hidden="true"><svg class="telegram-icon" viewBox="0 0 32 32"><path d="m28 5-4.2 22-8.1-6.2-4.5 4.3.6-7.3L25 8.2 9.2 18.1 4 16.3 28 5Z"/><path d="m11.8 17.8 4 3"/></svg></span>
 <span class="method-copy"><strong>Telegram</strong><small>Acceso mediante tu cuenta de Telegram</small></span>
-<span class="method-status is-loading" data-method-status="telegram">Comprobando...</span>
+<button class="method-status is-loading" type="button" data-method-status="telegram" disabled>Comprobando...</button>
 </div>
 </section>
 </main>
@@ -91,7 +92,7 @@ h1{font:900 clamp(39px,10vw,56px)/.95 var(--display);text-align:center;letter-sp
 <a class="current" href="cuenta.html" aria-label="Cuenta" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
 <script type="module">
-import { supabase } from "./supabase-client.js";
+import { supabase, SITE_URL } from "./supabase-client.js";
 
 const statusElements = {
   google: document.querySelector('[data-method-status="google"]'),
@@ -99,14 +100,26 @@ const statusElements = {
   telegram: document.querySelector('[data-method-status="telegram"]')
 };
 
+let currentUser = null;
+
 function setStatus(method, verified) {
   const element = statusElements[method];
   if (!element) return;
+  element.disabled = Boolean(verified);
   element.innerHTML = verified
     ? '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8.25" stroke="currentColor" stroke-width="1.7"/><path d="m6.1 10.1 2.5 2.5 5.3-5.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Verificado</span>'
-    : '<span>No verificado</span>';
-  element.classList.remove("is-loading");
+    : '<span>Verificar</span>';
+  element.classList.remove("is-loading", "is-verified", "is-unverified");
   element.classList.add(verified ? "is-verified" : "is-unverified");
+}
+
+function setBusy(method, message) {
+  const element = statusElements[method];
+  if (!element) return;
+  element.disabled = true;
+  element.textContent = message;
+  element.classList.remove("is-unverified");
+  element.classList.add("is-loading");
 }
 
 async function loadAccessMethods() {
@@ -115,24 +128,88 @@ async function loadAccessMethods() {
   if (error || !user) {
     Object.values(statusElements).forEach(element => {
       if (!element) return;
-      element.textContent = "No disponible";
+      element.textContent = "Inicia sesión";
+      element.disabled = true;
       element.classList.remove("is-loading");
     });
     return;
   }
 
+  currentUser = user;
   const identities = Array.isArray(user.identities) ? user.identities : [];
   const providers = Array.isArray(user.app_metadata?.providers)
     ? user.app_metadata.providers
     : [];
-  const hasProvider = provider =>
-    identities.some(identity => identity.provider === provider) ||
-    providers.includes(provider);
+  const hasProvider = (...names) =>
+    identities.some(identity => names.includes(identity.provider)) ||
+    providers.some(provider => names.includes(provider));
 
   setStatus("google", hasProvider("google"));
   setStatus("email", Boolean(user.email_confirmed_at));
-  setStatus("telegram", hasProvider("telegram"));
+  setStatus("telegram", hasProvider("telegram", "custom:telegram"));
 }
+
+async function verifyMethod(method) {
+  if (!currentUser) return;
+
+  const element = statusElements[method];
+  const redirectTo = SITE_URL + "metodos-acceso.html";
+
+  try {
+    if (method === "email") {
+      let email = currentUser.email || "";
+      if (!email) {
+        email = (window.prompt("Escribe el correo electrónico que quieres vincular a tu cuenta:") || "").trim().toLowerCase();
+        if (!email) return;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          window.alert("Escribe una dirección de correo válida.");
+          return;
+        }
+        setBusy(method, "Enviando...");
+        const { error } = await supabase.auth.updateUser(
+          { email },
+          { emailRedirectTo: redirectTo }
+        );
+        if (error) throw error;
+        window.alert("Te enviamos un enlace de verificación al nuevo correo. Ábrelo para confirmar la dirección.");
+        return;
+      }
+
+      setBusy(method, "Enviando...");
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email,
+        options: { emailRedirectTo: redirectTo }
+      });
+      if (error) throw error;
+      window.alert("Te enviamos nuevamente el correo de verificación. Revisa tu bandeja de entrada y spam.");
+      return;
+    }
+
+    const provider = method === "google" ? "google" : "custom:telegram";
+    setBusy(method, "Abriendo...");
+    const { error } = await supabase.auth.linkIdentity({
+      provider,
+      options: { redirectTo }
+    });
+    if (error) throw error;
+  } catch (error) {
+    console.error("Error al verificar método de acceso:", error);
+    window.alert(error.message || "No se pudo iniciar la verificación. Inténtalo nuevamente.");
+    await loadAccessMethods();
+  } finally {
+    if (element && element.classList.contains("is-loading")) {
+      element.disabled = false;
+      element.textContent = "Verificar";
+      element.classList.remove("is-loading");
+      element.classList.add("is-unverified");
+    }
+  }
+}
+
+Object.entries(statusElements).forEach(([method, element]) => {
+  element.addEventListener("click", () => verifyMethod(method));
+});
 
 loadAccessMethods();
 </script>
