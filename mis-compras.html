@@ -237,7 +237,21 @@ main{min-width:0;max-width:100%;overflow-x:clip}
  #games-panel .orders-stat-number{font-size:22px!important}
  #games-panel .orders-stat-label{font-size:9px!important}
 }
-</style></head>
+</style><style id="GG_ORDERS_DAY_LABEL_PREFIX">
+/* Fechas de pedidos: mismo encabezado de Notificaciones y línea vertical de Revendedores */
+#games-panel .day-label{
+ display:flex!important;align-items:center!important;gap:9px!important;
+ margin:9px 2px 2px!important;color:#f5f4f1!important;
+ font:700 17px/1.1 var(--display)!important;letter-spacing:.35px!important;
+ text-transform:capitalize!important
+}
+#games-panel .day-label:before{
+ content:"|"!important;display:inline-block!important;flex:0 0 auto!important;
+ color:#00c6ff!important;font:800 21px/1 var(--display)!important;
+ text-shadow:0 0 10px #00c6ff55!important
+}
+</style>
+</head>
 <body>
 <main>
 <a class="back" href="cuenta.html" aria-label="Atrás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Atrás</span></a>
