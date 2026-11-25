@@ -210,6 +210,7 @@
 }
 </style>
 
+<style id="support-panel-hide-empty-detail">.ticket-detail[hidden]{display:none!important}</style>
 </head>
 <body>
 <main class="support-page" hidden>
@@ -303,7 +304,8 @@ function renderTickets(){
   list.querySelectorAll("[data-ticket]").forEach(btn=>btn.addEventListener("click",()=>{const t=state.tickets.find(x=>x.id===btn.dataset.ticket);if(t)openTicket(t)}));
 }
 function renderEmptyDetail(){
-  $("ticketDetail").innerHTML='<div class="ticket-empty-state"><span>✦</span><h3>Tu espacio de soporte</h3><p>Selecciona un ticket para consultar la conversación o crea uno nuevo para recibir ayuda.</p></div>';
+  $("ticketDetail").innerHTML="";
+  $("ticketDetail").hidden=true;
   renderTickets();
 }
 async function openTicket(ticket){
@@ -323,6 +325,7 @@ async function openTicket(ticket){
 function renderThread(){
   const t=state.activeTicket;
   if(!t){renderEmptyDetail();return;}
+  $("ticketDetail").hidden=false;
   const owner=state.ownerInfo;
   const ownerHtml=state.isSupport?'<div class="ticket-owner"><b>Información del usuario</b><br>Nombre: '+esc(owner?.full_name||"No indicado")+'<br>Usuario: '+esc(owner?.username||"No indicado")+'<br>Correo: '+esc(owner?.email||"No disponible")+'<br>ID de cuenta: '+esc(owner?.user_code||t.user_id)+'<br>Teléfono: '+esc(owner?.phone||"No indicado")+'</div>':"";
   const messages=state.messages.map(m=>'<article class="ticket-message '+(m.author_id===state.user.id?"mine":"")+'"><div class="ticket-message-head">'+(m.author_role==="soporte"?"Soporte":"Usuario")+'<time>'+dateText(m.created_at)+'</time></div><p>'+esc(m.message)+'</p></article>').join("");
