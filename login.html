@@ -49,6 +49,10 @@ h1{margin:0;text-align:center;font:800 clamp(39px,9vw,53px)/.98 var(--display);l
 .google{width:100%;height:54px;display:flex;align-items:center;justify-content:center;gap:12px;border:1px solid #ffffff30;border-radius:15px;background:linear-gradient(145deg,#081a35,#050b18);color:#f1f1f3;font:700 13px var(--font);cursor:pointer;transition:border-color .2s,box-shadow .2s}
 .google:hover{border-color:#28e4ffa8;box-shadow:0 0 13px #28e4ff2b}
 .google svg{width:21px;height:21px}
+.socials{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;background:transparent;box-shadow:none}
+.socials .google{flex:1 1 0;width:auto;min-width:0;height:52px;padding:0 8px;border-radius:13px;border:1px solid #ffffff24;box-shadow:none;font-size:12px;gap:8px}
+.socials .google:hover{border-color:#28e4ffa8;box-shadow:0 0 12px #28e4ff20}
+@media(max-width:420px){.socials{gap:8px}.socials .google{height:49px;padding:0 5px;font-size:11px;gap:6px}.socials .google svg{width:19px;height:19px}}
 .notice{display:none;margin:14px 0 0;padding:11px 13px;border:1px solid #2bc5ff70;border-radius:12px;background:#2cd5ff12;color:#9de3ff;text-align:center;font-size:11px;line-height:1.5}
 .notice.show{display:block}
 .register{text-align:center;margin:23px 0 0;color:#dedee1;font-size:13px}
@@ -92,14 +96,16 @@ INICIAR SESIÓN
 <div class="notice" id="notice" role="status" aria-live="polite"></div>
 </form>
 <div class="divider">O CONTINÚA CON</div>
-<button class="google telegram" id="telegramButton" type="button">
+<div class="socials" aria-label="Otras opciones de acceso">
+<button class="google telegram" id="telegramButton" type="button" aria-label="Telegram">
 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#2AABEE" d="M21.7 4.4 18.4 20c-.2 1.1-.9 1.4-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L5.8 13.6.9 12c-1.1-.3-1.1-1 .2-1.5L20.2 3c.9-.3 1.7.2 1.5 1.4Z"/></svg>
-Continuar con Telegram
+Telegram
 </button>
-<button class="google" id="googleButton" type="button">
+<button class="google" id="googleButton" type="button" aria-label="Google">
 <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.8 6.1-15Z"/><path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.8l-6.6-5.1c-1.8 1.2-4 2-6.9 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20 20 0 0 0 24 44Z"/><path fill="#FBBC05" d="M12.6 27.7a12 12 0 0 1 0-7.4V15H5.8a20 20 0 0 0 0 18l6.8-5.3Z"/><path fill="#EA4335" d="M24 12.1c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 6.1 29.5 4 24 4A20 20 0 0 0 5.8 15l6.8 5.3c1.6-4.8 6.1-8.2 11.4-8.2Z"/></svg>
-Continuar con Google
+Google
 </button>
+</div>
 <p class="register">¿Todavía no tienes cuenta? <a href="registro.html">Regístrate</a></p>
 </div>
 </section>
