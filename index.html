@@ -986,9 +986,12 @@ async function prefetchGameCatalogs() {
 
 if (entryLink) entryLink.hidden = true;
 
-const { data: { user }, error: userError } = await supabase.auth.getUser();
+// La sesión persistida localmente es la fuente inmediata de autenticación.
+ // getUser() consulta al servidor y puede fallar temporalmente con mala conexión,
+ // aunque el usuario siga teniendo una sesión válida guardada en este dispositivo.
 const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-const verifiedSession = !userError && !sessionError && Boolean(user && session?.access_token && session.user?.id === user.id);
+const user = session?.user || null;
+const verifiedSession = !sessionError && Boolean(user && session?.access_token && session.user?.id === user.id);
 
 const pendingReferralCode = (new URLSearchParams(window.location.search).get("ref") || "")
   .replace(/[^a-z0-9]/gi, "").slice(0, 32).toUpperCase();
