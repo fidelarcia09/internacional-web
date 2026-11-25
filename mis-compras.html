@@ -56,7 +56,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .game-order-card .order-details{flex:1;min-width:0}
 @media(max-width:380px){.game-order-thumb{width:66px;flex-basis:66px;min-height:66px}}
 .day-group{display:flex;flex-direction:column;gap:8px}
-.day-label{margin:9px 2px 2px;color:#2ecfff;font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:capitalize}
+.day-label{margin:9px 2px 2px;color:#2ecfff;font:700 17px/1.1 var(--display);letter-spacing:.35px;text-transform:capitalize}
 .history-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0;border:1px solid #00c6ff5c;border-radius:13px;background:linear-gradient(105deg,#0d2342,#081a35 65%);overflow:hidden}
 .game-order-thumb{width:76px;height:76px;flex:0 0 76px;align-self:stretch;min-height:76px;position:relative;overflow:hidden;border-radius:10px;background:#171b24;border:1px solid #ffffff18}
 .game-order-thumb img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center}
@@ -473,7 +473,7 @@ function renderOrders(rows) {
       const sameDay=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
       if(sameDay(orderDate,today)) heading.textContent="Hoy";
       else if(sameDay(orderDate,yesterday)) heading.textContent="Ayer";
-      else heading.textContent=orderDate.toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+      else heading.textContent=orderDate.toLocaleDateString("es",{day:"numeric",month:"long",year:"numeric"});
     }
     group.append(heading);
     orders.forEach(order=>group.append(makeHistoryItem({
