@@ -23,7 +23,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .tabs{display:flex;align-items:center;gap:5px;padding:4px;border:1px solid #ffffff18;border-radius:13px;background:#081a35;flex-shrink:0}
 .tab{appearance:none;border:0;background:transparent;color:#8d9099;font:700 11px var(--font);padding:10px 13px;border-radius:9px;cursor:pointer;white-space:nowrap;transition:background .18s,color .18s,box-shadow .18s}
 .tab.active{color:#fff;background:linear-gradient(105deg,#08809b,#08abd9 58%,#18c7ff);box-shadow:0 0 14px #00c6ff2b}
-.content-panel{min-height:320px;border:0;border-radius:0;background:transparent;box-shadow:none;display:grid;place-items:center;padding:18px 0;text-align:center}\n.history-list{width:100%;display:flex;flex-direction:column;gap:22px;text-align:left}\n.day-group{display:flex;flex-direction:column;gap:11px}\n.day-label{margin:0;color:#f5f4f1;font-size:13px;font-weight:800;letter-spacing:.2px}\n.transaction-card{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 16px;border:1px solid #00c6ff78;border-radius:16px;background:linear-gradient(105deg,#0d2342,#081a35 65%);box-shadow:inset 0 0 16px #00c6ff0b}\n.transaction-info{min-width:0;display:flex;flex-direction:column;gap:5px}\n.transaction-name{margin:0;font-size:12px;font-weight:800;color:#f5f4f1}\n.transaction-detail{margin:0;font-size:10px;line-height:1.5;color:#92959e}\n.transaction-amount{flex-shrink:0;font-size:13px;font-weight:800;color:#2ecfff;white-space:nowrap}
+.content-panel{min-height:320px;border:0;border-radius:0;background:transparent;box-shadow:none;display:grid;place-items:center;padding:18px 0;text-align:center}\n#games-panel.content-panel{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;text-align:left}\n.history-list{width:100%;display:flex;flex-direction:column;gap:22px;text-align:left}\n.day-group{display:flex;flex-direction:column;gap:11px}\n.day-label{margin:0;color:#f5f4f1;font-size:13px;font-weight:800;letter-spacing:.2px}\n.transaction-card{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 16px;border:1px solid #00c6ff78;border-radius:16px;background:linear-gradient(105deg,#0d2342,#081a35 65%);box-shadow:inset 0 0 16px #00c6ff0b}\n.transaction-info{min-width:0;display:flex;flex-direction:column;gap:5px}\n.transaction-name{margin:0;font-size:12px;font-weight:800;color:#f5f4f1}\n.transaction-detail{margin:0;font-size:10px;line-height:1.5;color:#92959e}\n.transaction-amount{flex-shrink:0;font-size:13px;font-weight:800;color:#2ecfff;white-space:nowrap}
 
 .history-list{width:100%;display:flex;flex-direction:column;gap:13px;text-align:left}
 
@@ -367,30 +367,39 @@ function showLoading(panel,label) {
 function renderOrders(rows) {
   allGameOrders=Array.isArray(rows)?rows:[];
   updateOrderSummary(allGameOrders);
-  const visibleRows=activeOrderFilter==="todos"?allGameOrders:allGameOrders.filter(order=>orderCategory(order.status)===activeOrderFilter);
+
+  const visibleRows=activeOrderFilter==="todos"
+    ? allGameOrders
+    : allGameOrders.filter(order=>orderCategory(order.status)===activeOrderFilter);
+
+  // Mantener siempre visibles el resumen y los filtros; solo reemplazar el contenido de pedidos.
+  gamesPanel.querySelector(".history-list")?.remove();
+  gamesPanel.querySelector(".empty-state")?.remove();
+
   if (!visibleRows.length) {
-    gamesPanel.querySelector(".history-list")?.remove();
-    const oldEmpty=gamesPanel.querySelector(".empty-state");if(oldEmpty)oldEmpty.remove();
-    gamesPanel.append(makeEmpty(allGameOrders.length?"No hay pedidos en este filtro":"Sin recargas todavía",allGameOrders.length?"Prueba con otro filtro para ver tus pedidos.":"Aquí aparecerán tus compras."));
+    gamesPanel.append(makeEmpty(
+      allGameOrders.length?"No hay pedidos en este filtro":"Sin recargas todavía",
+      allGameOrders.length?"Prueba con otro filtro para ver tus pedidos.":"Aquí aparecerán tus compras."
+    ));
     return;
   }
-  const existingEmpty=gamesPanel.querySelector(".empty-state");if(existingEmpty)existingEmpty.remove();
-  rows=visibleRows;
-  if (!Array.isArray(rows) || !rows.length) {
-    gamesPanel.replaceChildren(makeEmpty("Sin recargas todavía","Aquí aparecerán tus compras."));
-    return;
-  }
-  const list=document.createElement("div"); list.className="history-list";
+
+  const list=document.createElement("div");
+  list.className="history-list";
   const days=new Map();
-  rows.forEach(order=>{
+
+  visibleRows.forEach(order=>{
     const date=new Date(order.created_at);
     const key=Number.isNaN(date.getTime())?"sin-fecha":date.toLocaleDateString("sv-SE");
     if(!days.has(key)) days.set(key,[]);
     days.get(key).push(order);
   });
+
   days.forEach((orders,key)=>{
-    const group=document.createElement("section");group.className="day-group";
-    const heading=document.createElement("h3");heading.className="day-label";
+    const group=document.createElement("section");
+    group.className="day-group";
+    const heading=document.createElement("h3");
+    heading.className="day-label";
     if(key==="sin-fecha") {
       heading.textContent="Fecha no disponible";
     } else {
@@ -405,13 +414,19 @@ function renderOrders(rows) {
     }
     group.append(heading);
     orders.forEach(order=>group.append(makeHistoryItem({
-      title:order.description,code:order.order_code,playerId:order.player_id,
-      amount:order.amount_usdt,date:order.created_at,status:order.status,isOrder:true,
+      title:order.description,
+      code:order.order_code,
+      playerId:order.player_id,
+      amount:order.amount_usdt,
+      date:order.created_at,
+      status:order.status,
+      isOrder:true,
       gameImage:gameImageForOrder(order.game)
     })));
     list.append(group);
   });
-  gamesPanel.replaceChildren(list);
+
+  gamesPanel.append(list);
 }
 function renderDeposits(rows, ledgerRows) {
   if (!Array.isArray(rows) || !rows.length) {
