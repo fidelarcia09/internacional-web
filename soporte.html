@@ -161,6 +161,138 @@
 </style>
 
 <style id="GG_BOTTOM_GLOW_BLUE">.mobile-nav:before{background:radial-gradient(ellipse at center,rgba(0,184,255,.34) 0%,rgba(0,184,255,.15) 42%,rgba(0,184,255,0) 76%)!important}</style>
+
+<style id="gamers-gold-support-redesign">
+:root{
+ --bg:#050b18;--panel:#081a35;--orange:#28e4ff;--gold:#FFD000;
+ --white:#f5f7ff;--muted:#aab7ca;--line:rgba(90,190,255,.18);
+}
+body{
+ background:
+ radial-gradient(ellipse at 50% 0%,rgba(0,191,255,.16),transparent 42%),
+ radial-gradient(ellipse at 100% 45%,rgba(255,208,0,.045),transparent 35%),
+ #050b18!important;
+ color:#f5f7ff;
+}
+.support-page{width:min(1060px,92%);padding-top:12px}
+.hero{padding:22px 0 18px;position:relative}
+.hero:before{
+ content:"";position:absolute;inset:0 auto auto 0;width:100%;height:100%;
+ pointer-events:none;opacity:.55;
+ background:radial-gradient(ellipse at 50% 30%,rgba(0,194,255,.13),transparent 65%);
+}
+.hero-copy{position:relative;padding:8px 0 14px;text-align:center}
+.hero h1{
+ font:900 clamp(42px,8vw,68px)/.95 var(--display);
+ letter-spacing:-1.5px;color:#f8fbff;text-shadow:0 0 22px rgba(0,190,255,.16)
+}
+.hero h1:before{
+ content:"";display:block;width:66px;height:4px;margin:0 auto 15px;border-radius:5px;
+ background:linear-gradient(90deg,#28e4ff,#FFD000);box-shadow:0 0 16px #28e4ff70
+}
+.hero h2{margin:12px 0 0;font-size:clamp(19px,3.2vw,29px);font-weight:800;font-style:normal}
+.hero h2 em{color:#FFD000;font-style:normal}
+.ticket-app{
+ margin:8px 0 20px;padding:clamp(14px,2.6vw,24px);
+ border:1px solid rgba(40,228,255,.24);border-radius:20px;
+ background:linear-gradient(145deg,rgba(10,31,58,.98),rgba(5,13,29,.98));
+ box-shadow:0 18px 48px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.035)
+}
+.ticket-top{align-items:center;margin-bottom:18px}
+.ticket-kicker{color:#FFD000;letter-spacing:1.8px}
+.ticket-top h2{font-size:clamp(20px,3vw,27px);letter-spacing:-.6px}
+.ticket-top p{color:#aebed2;font-size:12px}
+.ticket-primary{
+ border:1px solid #ffe36a;border-radius:12px;padding:12px 17px;
+ background:linear-gradient(135deg,#ffe45c,#FFD000 60%,#f4b900);
+ color:#111827;font:900 12px var(--font);
+ box-shadow:0 5px 22px rgba(255,208,0,.18),inset 0 1px rgba(255,255,255,.55);
+ transition:transform .18s,filter .18s
+}
+.ticket-primary:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.ticket-alert{border:1px solid rgba(40,228,255,.22);background:#0b2b3a;color:#b9f3ff}
+.ticket-alert.success{border-color:rgba(100,220,155,.2);background:#102b25;color:#b6f5d0}
+.ticket-login{
+ border:1px solid rgba(40,228,255,.2);border-radius:14px;
+ background:linear-gradient(135deg,#0c2442,#0a172c);color:#c8d5e7;padding:22px
+}
+.ticket-login a{background:#FFD000;color:#111827;border-radius:10px}
+.ticket-workspace{gap:14px}
+.ticket-sidebar,.ticket-detail{
+ border:1px solid rgba(72,175,230,.2);border-radius:15px;
+ background:rgba(4,13,29,.72)
+}
+.ticket-list-head{padding:15px;border-bottom:1px solid rgba(72,175,230,.16)}
+.ticket-list-head strong{font-size:14px}
+.ticket-list-head button{color:#FFD000}
+.ticket-item{border-radius:11px;margin:2px 0}
+.ticket-item:hover,.ticket-item.active{
+ border-color:rgba(40,228,255,.42);
+ background:linear-gradient(100deg,rgba(0,183,255,.13),rgba(8,26,53,.55))
+}
+.ticket-item .ticket-code{color:#28e4ff}
+.ticket-status{border:1px solid rgba(255,255,255,.07);letter-spacing:.2px}
+.ticket-status.abierto{background:rgba(0,174,255,.13);color:#8be4ff}
+.ticket-status.respondido{background:rgba(40,190,120,.13);color:#9be8bf}
+.ticket-status.cerrado{background:rgba(255,208,0,.1);color:#ffe27a}
+.ticket-empty-state>span{color:#FFD000;text-shadow:0 0 18px rgba(255,208,0,.3)}
+.ticket-empty-state h3{font-size:18px}
+.ticket-empty-state p{color:#aebed2}
+.ticket-thread-head{border-bottom:1px solid rgba(72,175,230,.16)}
+.ticket-thread-head h3{font-size:16px}
+.ticket-owner{background:#0b1c32;border:1px solid rgba(72,175,230,.12);border-radius:10px}
+.ticket-message{border:1px solid rgba(90,150,190,.2);background:#101d31}
+.ticket-message.mine{border-color:rgba(40,228,255,.3);background:#0b2935}
+.ticket-message-head{color:#FFD000}
+.ticket-reply{border-top:1px solid rgba(72,175,230,.16)}
+.ticket-reply textarea,.ticket-create input,.ticket-create select,.ticket-create textarea{
+ border:1px solid rgba(100,160,205,.25);border-radius:10px;background:#071426;color:#f5f7ff
+}
+.ticket-reply textarea:focus,.ticket-create input:focus,.ticket-create select:focus,.ticket-create textarea:focus{
+ border-color:#28e4ff;box-shadow:0 0 0 3px rgba(40,228,255,.08)
+}
+.ticket-reply button{border-radius:10px;background:#FFD000;color:#101827;font-weight:900}
+.ticket-status-actions button{border-color:rgba(90,170,210,.25);background:#10213a}
+.ticket-create{
+ margin-top:16px;padding:clamp(14px,2.5vw,21px);
+ border:1px solid rgba(255,208,0,.3);border-radius:15px;
+ background:linear-gradient(145deg,#0c203a,#091629)
+}
+.ticket-form-head{border-bottom:1px solid rgba(90,170,210,.15);padding-bottom:12px}
+.ticket-form-head h3{font-size:19px}
+.ticket-close{color:#FFD000}
+.priority{
+ border:1px solid rgba(255,208,0,.35);border-radius:17px;
+ background:linear-gradient(110deg,#0b1b32,#0a2740 55%,#111d32);
+ box-shadow:0 0 24px rgba(0,190,255,.08),inset 0 0 22px rgba(255,208,0,.035)
+}
+.priority svg{stroke:#FFD000;filter:drop-shadow(0 0 8px rgba(255,208,0,.3))}
+.priority em{color:#FFD000}
+.faq-heading{font-size:22px}
+.faq details{border:1px solid rgba(72,175,230,.2);border-radius:12px;background:linear-gradient(120deg,#0b1d35,#081426)}
+.faq summary{font-size:13px}
+.faq summary:after{color:#FFD000}
+.faq details p{color:#b6c5d8}
+.mobile-nav{background:rgba(5,11,24,.96)!important;border-top:1px solid rgba(40,228,255,.16)!important}
+.mobile-nav a:hover,.mobile-nav a.current{color:#28e4ff!important}
+.mobile-nav:before{background:radial-gradient(ellipse at center,rgba(0,184,255,.32),rgba(0,184,255,.12) 45%,transparent 76%)!important}
+.mobile-nav a.current svg{filter:drop-shadow(0 0 4px rgba(40,228,255,.55))!important}
+@media(max-width:650px){
+ .support-page{width:92%;padding-top:4px}
+ .hero{padding:15px 0 12px}
+ .hero-copy{padding:4px 0 10px}
+ .ticket-app{margin-top:5px;padding:13px;border-radius:16px}
+ .ticket-top{gap:12px}
+ .ticket-top h2{font-size:20px}
+ .ticket-top p{font-size:11px}
+ .ticket-primary{padding:11px 14px}
+ .ticket-workspace{gap:10px}
+ .ticket-sidebar,.ticket-detail{border-radius:12px}
+ .priority{margin-top:12px}
+ .faq-heading{font-size:20px}
+}
+</style>
+
 </head>
 <body>
 <main class="support-page">
