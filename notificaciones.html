@@ -16,6 +16,11 @@ body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 12%,#ff
 a{color:inherit;text-decoration:none}
 main{width:min(92%,760px);margin:25px auto 38px}
 .page-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:27px}
+.head-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.clear-button{min-height:42px;padding:0 15px;border:1px solid #a94a3a;border-radius:12px;background:#24110f;color:#ff9b85;font:800 10px var(--font);letter-spacing:.2px;cursor:pointer}
+.clear-button:disabled{opacity:.45;cursor:default}
+.clear-status{margin:8px 0 0;color:#92959e;font-size:10px;line-height:1.5;text-align:right}
+.clear-status:empty{display:none}
 .page-kicker{color:var(--orange);font-size:9px;font-weight:800;letter-spacing:2px;margin:0 0 7px}
 h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0}
 .notice-list{display:flex;flex-direction:column;gap:24px}
@@ -31,7 +36,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .push-description{margin:9px 0 0;color:#92959e;font-size:10px;line-height:1.6;max-width:390px}
 .push-button{flex:0 0 auto;min-height:42px;padding:0 15px;border:1px solid #ff790078;border-radius:12px;background:linear-gradient(110deg,#ff7900,#ff9b35);color:#17100a;font:800 10px var(--font);letter-spacing:.2px;cursor:pointer;box-shadow:0 5px 18px #ff79001c}
 .push-button:disabled{opacity:.65;cursor:default}.push-button[hidden]{display:none!important}
-@media(max-width:520px){.page-head{align-items:flex-start;flex-direction:column}.push-button{width:100%}.push-description{max-width:none}}
+@media(max-width:520px){.page-head{align-items:flex-start;flex-direction:column}.head-actions{width:100%;flex-direction:column-reverse;align-items:stretch}.push-button,.clear-button{width:100%}.clear-status{text-align:left}.push-description{max-width:none}}
 
 .empty-state{min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 18px}
 .empty-icon{width:74px;height:74px;margin:0 auto 18px;border:1px solid #ff79005c;border-radius:23px;background:radial-gradient(circle,#ff790020,#111114 72%);display:grid;place-items:center;color:#ff922e;box-shadow:0 0 24px #ff790012}
@@ -65,7 +70,8 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 <main>
 <header class="page-head">
 <div><h1>NOTIFICACIONES</h1><p class="push-description" id="push-status" aria-live="polite" hidden></p></div>
-<button class="push-button" id="push-toggle" type="button" hidden>Activar notificaciones</button>
+<div class="head-actions"><button class="clear-button" id="clear-notifications" type="button" disabled>Limpiar</button><button class="push-button" id="push-toggle" type="button" hidden>Activar notificaciones</button></div>
+<p class="clear-status" id="clear-status" role="status" aria-live="polite"></p>
 </header>
 <section class="notice-list" id="notice-list" aria-live="polite">
 <div class="empty-state" id="empty-state">
@@ -89,6 +95,8 @@ import { supabase } from "./supabase-client.js";
 const list = document.getElementById("notice-list");
 
 const pushToggle = document.getElementById("push-toggle");
+const clearButton = document.getElementById("clear-notifications");
+const clearStatus = document.getElementById("clear-status");
 const pushStatus = document.getElementById("push-status");
 const VAPID_PUBLIC_KEY = "BHTV5yJXTfvalz80W5gPYe9-T_-tTU1b6QmSRvYhfNENLq26R4QmjMzMHqkSqK8J66Ykeg54zslk4jQLFpeibjU";
 
@@ -304,6 +312,7 @@ function formatDepositMessage(value) {
 }
 
 function renderNotifications(rows) {
+  clearButton.disabled = rows.length === 0;
   if (!rows.length) {
     list.replaceChildren(makeEmpty(
       "Todo al día",
@@ -410,6 +419,34 @@ async function init() {
     }, () => loadNotifications(currentUserId))
     .subscribe();
 }
+
+clearButton.addEventListener("click", async () => {
+  if (!currentUserId || clearButton.disabled) return;
+  const confirmed = window.confirm("¿Quieres eliminar todas tus notificaciones? Esta acción no se puede deshacer.");
+  if (!confirmed) return;
+
+  clearButton.disabled = true;
+  clearButton.textContent = "Limpiando...";
+  clearStatus.textContent = "";
+  try {
+    const { error } = await supabase
+      .from("user_notifications")
+      .delete()
+      .eq("user_id", currentUserId);
+    if (error) throw error;
+    list.replaceChildren(makeEmpty(
+      "Todo al día",
+      "Has limpiado tus notificaciones. Las próximas novedades aparecerán aquí."
+    ));
+    clearStatus.textContent = "Tus notificaciones se limpiaron correctamente.";
+  } catch (error) {
+    console.error("No se pudieron limpiar las notificaciones:", error);
+    clearStatus.textContent = "No se pudieron limpiar tus notificaciones. Inténtalo de nuevo.";
+    clearButton.disabled = false;
+  } finally {
+    clearButton.textContent = "Limpiar";
+  }
+});
 
 pushToggle.addEventListener("click", async () => {
   if (pushToggle.textContent.includes("Desactivar")) {
