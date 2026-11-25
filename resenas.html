@@ -154,7 +154,9 @@ form.addEventListener("submit",async event=>{
  if(error){console.error("Error guardando reseña:",error);showNotice(error.code==="23505"?"Ya existe una reseña para esta cuenta. Actualiza la que publicaste anteriormente.":"No se pudo guardar tu reseña. Comprueba tu sesión e inténtalo de nuevo.",true);return;}
  panel.classList.remove("open");await loadReviews();
 });
-const {data:{user}}=await supabase.auth.getUser();currentUser=user||null;
+// Leer la sesión persistida evita marcar al usuario como desconectado
+// cuando getUser() no alcanza el servidor por una conexión inestable.
+const {data:{session}}=await supabase.auth.getSession();currentUser=session?.user||null;
 if(!currentUser){writeButton.textContent="✎ Inicia sesión para opinar";}
 await loadReviews();
 supabase.auth.onAuthStateChange((_event,session)=>{window.setTimeout(async()=>{currentUser=session?.user||null;await loadReviews();},0);});
