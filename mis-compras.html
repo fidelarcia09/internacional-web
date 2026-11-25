@@ -209,7 +209,35 @@ main{min-width:0;max-width:100%;overflow-x:clip}
  .orders-filters{gap:8px!important}
 }
 </style>
-</head>
+<style id="GG_ORDERS_SUMMARY_COMPACT">
+/* Las tres estadísticas caben juntas dentro del ancho real de la página */
+#games-panel .orders-summary{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ align-items:stretch!important;justify-content:stretch!important;
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ gap:8px!important;padding:0!important;margin:0 0 18px!important;
+ overflow:visible!important;scroll-snap-type:none!important;
+ border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important
+}
+#games-panel .orders-stat{
+ display:flex!important;flex:initial!important;min-width:0!important;width:100%!important;
+ min-height:94px!important;padding:10px 5px!important;gap:5px!important;
+ border:1px solid #00c6ff45!important;border-radius:14px!important;
+ background:linear-gradient(145deg,#102b4d,#081a35 75%)!important;
+ scroll-snap-align:none!important
+}
+#games-panel .orders-stat+.orders-stat{border-left:1px solid #00c6ff45!important}
+#games-panel .orders-stat-icon{width:21px!important;height:21px!important}
+#games-panel .orders-stat-number{font-size:24px!important;line-height:1!important}
+#games-panel .orders-stat-label{font-size:10px!important;line-height:1.2!important;white-space:nowrap!important}
+@media(max-width:380px){
+ #games-panel .orders-summary{gap:6px!important;margin-bottom:15px!important}
+ #games-panel .orders-stat{min-height:88px!important;padding:9px 2px!important;border-radius:12px!important}
+ #games-panel .orders-stat-icon{width:19px!important;height:19px!important}
+ #games-panel .orders-stat-number{font-size:22px!important}
+ #games-panel .orders-stat-label{font-size:9px!important}
+}
+</style></head>
 <body>
 <main>
 <a class="back" href="cuenta.html" aria-label="Atrás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Atrás</span></a>
