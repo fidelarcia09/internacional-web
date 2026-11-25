@@ -503,7 +503,7 @@
 
 
 <style id="home-games-marquee-clean-edges">
-.games-showcase{display:flex;flex-direction:column;gap:16px;overflow:hidden;width:100%;padding:2px 0 8px;contain:layout paint}
+.games-showcase{display:flex;flex-direction:column;gap:16px;overflow:hidden;width:100%;padding:2px 0 8px;contain:layout paint;pointer-events:none;user-select:none;-webkit-user-select:none}
 .games-marquee{width:100%;overflow:hidden;position:relative;mask:none!important;-webkit-mask:none!important}
 .games-marquee:before,.games-marquee:after,.games-showcase:before,.games-showcase:after{content:none!important;display:none!important}
 .games-track{display:flex;flex-wrap:nowrap;gap:0;width:max-content;will-change:transform;animation-timing-function:linear;animation-iteration-count:infinite;animation-duration:58s}
@@ -516,7 +516,7 @@
 .games-track .game-info{min-height:68px}
 @keyframes home-games-left{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 @keyframes home-games-right{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
-.games-showcase:hover .games-track{animation-play-state:paused}
+
 @media(max-width:620px){
  .games-showcase{gap:11px;padding:1px 0 5px}
  .games-track{animation-duration:66s}
