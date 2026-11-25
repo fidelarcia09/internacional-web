@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050b18">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#050b18">
 <meta name="description" content="Tu universo gaming, en un solo lugar."><link rel="preload" as="image" href="fuentes/grok_1795571351069.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/free_fire.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/grok_1795312374293.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/grok_1795312370899.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/genshin_impact.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/honor_of_kings.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/arena_breakout.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/blood_strike.webp" type="image/webp" fetchpriority="high"><link rel="preload" as="image" href="fuentes/call_of_duty.webp" type="image/webp" fetchpriority="high"><title>INTERNACIONAL WEB — Gaming Store</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Inter:wght@400;500;600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet"><style>
@@ -823,8 +823,8 @@ if ("serviceWorker" in navigator) {
 </style>
 
 <style id="gg-bottom-nav-edge-fix">
-/* Barra pegada al borde inferior sin extender el fondo hacia la zona segura */
-.mobile-nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;inset-block-end:0!important;margin:0!important;box-sizing:border-box!important;height:64px!important;padding:3px 1%!important;padding-bottom:3px!important;}
+/* Extiende la barra hasta el borde físico inferior, incluida la zona segura */
+.mobile-nav{position:fixed!important;left:0!important;right:0!important;bottom:calc(-1 * env(safe-area-inset-bottom,0px))!important;inset-block-end:calc(-1 * env(safe-area-inset-bottom,0px))!important;margin:0!important;box-sizing:border-box!important;height:64px!important;padding:3px 1%!important;padding-bottom:3px!important;}
 </style>
 </head>
 <body>
