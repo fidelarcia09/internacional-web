@@ -283,10 +283,12 @@ main{min-width:0;max-width:100%;overflow-x:clip}
  <button class="orders-filter" type="button" data-order-filter="pendientes" aria-pressed="false">Pendientes <span class="orders-filter-count" id="ordersCountPending">0</span></button>
  <button class="orders-filter" type="button" data-order-filter="revision" aria-pressed="false">Revisión <span class="orders-filter-count" id="ordersCountReview">0</span></button>
 </nav>
+<div id="orders-content">
 <div class="empty-state">
 <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M11 11h14a6 6 0 0 1 5.7 4.2l2 7.1a3.5 3.5 0 0 1-5.7 3.6l-3.4-2.8H12.4L9 29a3.5 3.5 0 0 1-5.7-3.6l2-10.2A5 5 0 0 1 11 11Z"/><path d="M11 17v7m-3.5-3.5h7m9-1h.1m4 4h.1"/></svg></div>
 <h2>Sin recargas todavía</h2>
 <p>Aquí aparecerán tus compras y recargas de juegos cuando realices una.</p>
+</div>
 </div>
 </section>
 <section class="content-panel" id="deposits-panel" role="tabpanel" aria-labelledby="deposits-tab" hidden>
@@ -448,7 +450,8 @@ function makeHistoryItem({title,code,transaction,amount,status,date,kind,isDepos
   return item;
 }
 function showLoading(panel,label) {
-  panel.replaceChildren(makeEmpty("Cargando...",label));
+  const target=panel===gamesPanel?document.getElementById("orders-content"):panel;
+  if(target) target.replaceChildren(makeEmpty("Cargando...",label));
 }
 function renderOrders(rows) {
   allGameOrders=Array.isArray(rows)?rows:[];
@@ -458,12 +461,13 @@ function renderOrders(rows) {
     ? allGameOrders
     : allGameOrders.filter(order=>orderCategory(order.status)===activeOrderFilter);
 
-  // Mantener siempre visibles el resumen y los filtros; solo reemplazar el contenido de pedidos.
-  gamesPanel.querySelector(".history-list")?.remove();
-  gamesPanel.querySelector(".empty-state")?.remove();
+  // Mantener siempre visibles el resumen y los filtros; solo reemplazar el contenido dinámico.
+  const ordersContent=document.getElementById("orders-content");
+  if(!ordersContent) return;
+  ordersContent.replaceChildren();
 
   if (!visibleRows.length) {
-    gamesPanel.append(makeEmpty(
+    ordersContent.append(makeEmpty(
       allGameOrders.length?"No hay pedidos en este filtro":"Sin recargas todavía",
       allGameOrders.length?"Prueba con otro filtro para ver tus pedidos.":"Aquí aparecerán tus compras."
     ));
@@ -512,7 +516,7 @@ function renderOrders(rows) {
     list.append(group);
   });
 
-  gamesPanel.append(list);
+  ordersContent.append(list);
 }
 function renderDeposits(rows, ledgerRows) {
   if (!Array.isArray(rows) || !rows.length) {
@@ -558,7 +562,7 @@ async function loadHistory() {
   ]);
 
   if(!ordersResult.error) renderOrders(ordersResult.data||[]);
-  else if(gamesPanel.querySelector(".history-list")===null) gamesPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
+  else if(document.getElementById("orders-content")) document.getElementById("orders-content").replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
 
   if(!depositsResult.error) renderDeposits(depositsResult.data||[],ledgerResult.data||[]);
   else if(depositsPanel.querySelector(".history-list")===null) depositsPanel.replaceChildren(makeEmpty("No se pudo cargar el historial","Inténtalo de nuevo más tarde."));
