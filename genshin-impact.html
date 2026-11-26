@@ -229,14 +229,14 @@ function normalizeGenshinRegion(region){
  if(["na","north america","north american","america","america server","us","usa"].includes(value))return "NA";
  return null;
 }
-const GENSHIN_REGIONS=[{value:"Global",label:"🌐 Global"},{value:"EU",label:"🌍 EU"},{value:"NA",label:"🌎 NA"}];
+const GENSHIN_REGIONS=[{value:"Global",symbol:"🌐"},{value:"EU",symbol:"🌍"},{value:"NA",symbol:"🌎"}];
 function renderRegions(){
  regions.innerHTML="";
  selectedRegion="Global";
  GENSHIN_REGIONS.forEach(region=>{
    const button=document.createElement("button");
    button.type="button";button.className="choice"+(region.value===selectedRegion?" selected":"");
-   button.dataset.value=region.value;button.textContent=region.label;
+   button.dataset.value=region.value;button.innerHTML='<span class="symbol" aria-hidden="true">'+region.symbol+'</span><span>'+safeText(region.value)+'</span>';
    button.addEventListener("click",()=>{
      selectedRegion=region.value;
      selectedProduct=null;
