@@ -2,4 +2,4 @@
 
 Prototipo visual responsive para una tienda internacional de recargas gaming.
 
-© 2026 Internacional Web — prototipo.
+© 2026 Gamers Gold TopUp — prototipo.
