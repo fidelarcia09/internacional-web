@@ -399,7 +399,7 @@ buyButton.addEventListener("click",async()=>{
    const response=await fetch(SUPABASE_URL+"/functions/v1/rechargegames-comprar",{
      method:"POST",
      headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+accessToken,"Content-Type":"application/json",Accept:"application/json"},
-     body:JSON.stringify({product_key:selectedProduct.productId,game:GAME,player_id:playerId,server_id:zoneId,client_reference:clientReference})
+     body:JSON.stringify({product_key:selectedProduct.productId,game:GAME,player_id:playerId,server_id:zoneId,client_reference:clientReference,expected_amount:price})
    });
    const data=await response.json().catch(()=>({}));
    if(response.status===402&&data.error==="insufficient_usdt_balance"){
@@ -411,7 +411,7 @@ buyButton.addEventListener("click",async()=>{
    }else if(response.status===202||data.error==="provider_submission_pending_confirmation"){
      notify("Pedido pendiente de confirmación. No repitas la compra; consulta soporte. Código: "+(data.order?.code||"pendiente"));
    }else if(!response.ok||!data.ok){
-     throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":(data.error||"No se pudo crear el pedido."));
+     throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":data.error==="price_changed"?"El precio cambió. Actualiza el catálogo y confirma de nuevo.":(data.error||"No se pudo crear el pedido."));
    }else{
      const status=data.order?.status||"pending";\n     if(["completed","delivered","failed"].includes(status)) clearPendingReference();\n     notify("Pedido "+((status==="completed"||status==="delivered")?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
    }
