@@ -82,7 +82,7 @@ body{overflow-x:hidden}
 </div>
 </section>
 <section class="section section-heading-outside" aria-labelledby="player-title">
-<h2 class="section-head" id="player-title"><span class="ico player-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 16c.6-1.8 1.7-2.7 3.2-2.7s2.6.9 3.2 2.7M14.5 9h4M14.5 12h4M14.5 15h2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tu ID de jugador y Zone ID (Server ID)</h2>
+<h2 class="section-head" id="player-title"><span class="ico player-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 16c.6-1.8 1.7-2.7 3.2-2.7s2.6.9 3.2 2.7M14.5 9h4M14.5 12h4M14.5 15h2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Player ID</h2>
 <div class="section-panel">
 <div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 16c.6-1.8 1.7-2.7 3.2-2.7s2.6.9 3.2 2.7M14.5 9h4M14.5 12h4M14.5 15h2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Ingresa tu ID de jugador..." maxlength="32" aria-label="Tu Player ID"><button class="player-paste" id="player-paste" type="button" aria-label="Pegar Player ID" title="Pegar desde el portapapeles"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="2"/><path d="M16 3V2.5A1.5 1.5 0 0 0 14.5 1h-9A1.5 1.5 0 0 0 4 2.5v13A1.5 1.5 0 0 0 5.5 17H8"/><path d="M14 9v7m-3-3 3 3 3-3"/></svg></button></div></div>
 </div>
@@ -330,7 +330,7 @@ function updateRequirements(){
    if(!zoneId){
      const field=document.createElement("div");
      field.id="provider-zone-wrap";field.className="player-field";field.style.flex="1";field.style.minWidth="0";
-     field.innerHTML='<input class="player-input" id="provider-zone-id" type="text" autocomplete="off" placeholder="Ingresa tu Zone ID (Server ID)..." aria-label="Zone ID / Server ID" style="width:100%;min-width:0">';
+     field.innerHTML='<input class="player-input" id="provider-zone-id" type="text" autocomplete="off" placeholder="Server ID" aria-label="Zone ID / Server ID" style="width:100%;min-width:0">';
      playerSection.querySelector(".field-row").append(field);
    }
  }else{
