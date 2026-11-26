@@ -31,22 +31,24 @@
 .modal-backdrop{position:fixed;inset:0;z-index:30;display:none;place-items:center;padding:18px;background:#000a;backdrop-filter:blur(7px)}.modal-backdrop.open{display:grid}.modal{width:min(430px,100%);padding:20px;border:1px solid #00c6ff55;border-radius:18px;background:#0b203c;box-shadow:0 20px 70px #000b}.modal h3{font:800 27px var(--display);margin:0 0 5px}.modal p{font-size:11px;color:#9aabc0;line-height:1.6}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:10px;color:#b7c5d7;font-weight:700}.field input{width:100%;padding:12px;border:1px solid #ffffff24;border-radius:10px;background:#050f20;color:#fff;outline:none}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.cancel{border:1px solid #ffffff25;border-radius:9px;padding:10px 13px;background:transparent;color:#c5d0df}.confirm{border:1px solid #00c6ff;border-radius:9px;padding:10px 14px;background:linear-gradient(100deg,#19a9f5,#00d2ff);color:#06162b;font-weight:900}.toast{position:fixed;right:18px;bottom:18px;z-index:40;max-width:min(380px,calc(100% - 36px));padding:12px 15px;border:1px solid #00c6ff55;border-radius:11px;background:#0b2343;color:#dff8ff;font-size:11px;box-shadow:0 8px 35px #0008}
 @media(max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.layout{width:94%;margin:15px auto}.heading{align-items:center}.heading h1{font-size:38px}.heading-actions{gap:6px}.back,.refresh{padding:9px 10px;font-size:10px}.sidebar{padding:9px;gap:7px}.nav-btn{min-height:58px;font-size:10px;padding:10px}.nav-btn svg{width:18px;height:18px;flex-basis:18px}.cards{gap:8px}.stat{padding:12px}.stat-value{font-size:25px}.panel-head{align-items:flex-start;flex-direction:column}.search{width:100%}}
+
+/* Inicio del panel: accesos grandes en cuadrícula */
+.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.admin-tile{position:relative;min-height:158px;display:flex;align-items:center;gap:18px;padding:22px;border:1px solid #ffffff18;border-radius:18px;background:linear-gradient(135deg,#0d2749 0%,#081a35 72%);color:var(--white);text-align:left;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.admin-tile:before{content:"";position:absolute;width:150px;height:150px;right:-55px;top:-65px;border-radius:50%;background:#00c6ff0b;transition:transform .25s}
+.admin-tile:hover{transform:translateY(-3px);border-color:#00c6ff75;box-shadow:0 12px 32px #0004,0 0 24px #00c6ff10}
+.tile-icon{position:relative;z-index:1;width:62px;height:62px;flex:0 0 62px;display:grid;place-items:center;border:1px solid #00c6ff55;border-radius:17px;background:linear-gradient(145deg,#00c6ff20,#00c6ff08);color:#49d9ff;box-shadow:inset 0 0 18px #00c6ff0b}
+.tile-icon svg{width:31px;height:31px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.tile-copy{position:relative;z-index:1;min-width:0}.tile-copy strong{display:block;font:800 27px/1 var(--display);letter-spacing:.4px;text-transform:uppercase}.tile-copy small{display:block;margin-top:8px;color:#9aabc0;font-size:10px;line-height:1.5}.tile-arrow{position:absolute;right:18px;bottom:16px;color:#4bdfff;font-size:19px}
+.detail-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+[hidden]{display:none!important}
+@media(max-width:560px){.menu-grid{gap:9px}.admin-tile{min-height:132px;padding:14px;gap:11px;border-radius:15px;align-items:flex-start;flex-direction:column}.tile-icon{width:45px;height:45px;flex-basis:45px;border-radius:13px}.tile-icon svg{width:24px;height:24px}.tile-copy strong{font-size:22px}.tile-copy small{font-size:9px;margin-top:5px}.tile-arrow{right:13px;bottom:12px}}
 </style>
 </head>
 <body>
 <div class="layout">
-  <aside class="sidebar">
-    <div class="side-title">Administración</div>
-    <button class="nav-btn active" data-section="overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Resumen</span></button>
-    <button class="nav-btn" data-section="users"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c.5-4 2.8-6 7-6s6.5 2 7 6m2-11a4 4 0 0 1 0 7m1 0c2 .5 3 1.8 3 4"/></svg><span>Usuarios</span></button>
-    <button class="nav-btn" data-section="orders"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.5 12h11L21 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span>Ventas</span></button>
-    <button class="nav-btn" data-section="recharges"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 6H9a3 3 0 0 0 0 6h6a3 3 0 0 1 0 6H6"/></svg><span>Recargas</span></button>
-    <button class="nav-btn" data-section="deposits"><svg viewBox="0 0 24 24"><path d="M3 7h18v13H3zM3 11h18M7 16h4"/><path d="M7 4h10"/></svg><span>Depósitos</span></button>
-    <button class="nav-btn" data-section="stats"><svg viewBox="0 0 24 24"><path d="M4 20V10m8 10V4m8 16v-7"/></svg><span>Estadísticas</span></button>
-    <button class="nav-btn" data-section="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.6.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.6-.9l-1.7.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.9l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.6-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.6.9l1.7-.6 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.9Z"/></svg><span>Configuración</span></button>
-  </aside>
   <main class="main">
-    <div class="heading"><div><div class="eyebrow">Gamers Gold TopUp</div><h1 id="pageTitle">Resumen general</h1><div class="sub" id="pageSubtitle">Actividad y estado de la tienda en tiempo real.</div></div><div class="heading-actions"><a class="back" href="cuenta.html">← Mi cuenta</a><button class="refresh" id="refreshBtn">↻ Actualizar</button></div></div>
+    <div class="heading"><div><div class="eyebrow">Gamers Gold TopUp / Administración</div><h1 id="pageTitle">Control Admin</h1><div class="sub" id="pageSubtitle">Administra tu tienda desde un solo lugar.</div></div><div class="heading-actions"><button class="back" id="homeBtn" hidden>← Todas las opciones</button><a class="back" href="cuenta.html">← Mi cuenta</a><button class="refresh" id="refreshBtn" hidden>↻ Actualizar</button></div></div>
     <section id="content"><div class="loading">Cargando panel administrativo...</div></section>
   </main>
 </div>
@@ -64,7 +66,20 @@ import { supabase } from "./supabase-client.js";
 const $ = s => document.querySelector(s);
 const content = $("#content");
 const titles = {overview:["Resumen general","Actividad y estado de la tienda en tiempo real."],users:["Usuarios","Cuentas registradas, saldo y actividad."],orders:["Ventas","Pedidos de la tienda y su estado."],recharges:["Recargas","Operaciones enviadas al proveedor RechargeGames."],deposits:["Depósitos","Solicitudes de depósito y su estado."],stats:["Estadísticas","Indicadores generales de Gamers Gold TopUp."],settings:["Configuración","Acceso y controles del panel administrativo."]};
-let section="overview", page=0, search="", total=0, selectedUser=null, searchTimer=null;
+let section="home", page=0, search="", total=0, selectedUser=null, searchTimer=null;
+const menuItems=[
+{key:"overview",title:"Resumen",desc:"Vista general de la actividad y los indicadores principales.",icon:'<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>'},
+{key:"users",title:"Usuarios",desc:"Cuentas, perfiles, roles, saldos y movimientos.",icon:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.7 2.7-5.6 6.5-5.6s6 1.9 6.5 5.6M16 5.2a3.5 3.5 0 0 1 0 6.7M17 14.7c2.6.5 4 2.2 4.5 5.3"/>'},
+{key:"orders",title:"Ventas",desc:"Consulta pedidos, importes y estados de las ventas.",icon:'<path d="M4 5h2l2.1 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 9H7"/><circle cx="11" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/><path d="M10 9h8"/>'},
+{key:"recharges",title:"Recargas",desc:"Historial de recargas procesadas con RechargeGames.",icon:'<path d="M13.5 2 5 13h6l-.5 9L19 11h-6l.5-9Z"/>'},
+{key:"deposits",title:"Depósitos",desc:"Revisa solicitudes y gestiona su resolución.",icon:'<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4M7 3h10"/>'},
+{key:"stats",title:"Estadísticas",desc:"Indicadores y rendimiento general de la tienda.",icon:'<path d="M4 20V11m5 9V5m5 15v-7m5 7V3"/><path d="M2 20h20"/>'},
+{key:"settings",title:"Configuración",desc:"Información de seguridad y controles administrativos.",icon:'<path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.6.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.6-.9l-1.7.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.9l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.6-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.6.9l1.7-.6 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.9Z"/>'}
+];
+function renderMenu(){return '<div class="menu-grid">'+menuItems.map(x=>'<button class="admin-tile" data-open-section="'+x.key+'"><span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+x.icon+'</svg></span><span class="tile-copy"><strong>'+x.title+'</strong><small>'+x.desc+'</small></span><span class="tile-arrow" aria-hidden="true">↗</span></button>').join('')+'</div>'}
+function showHome(){section="home";page=0;search="";$("#pageTitle").textContent="Control Admin";$("#pageSubtitle").textContent="Administra tu tienda desde un solo lugar.";$("#homeBtn").hidden=true;$("#refreshBtn").hidden=true;content.innerHTML=renderMenu();content.querySelectorAll("[data-open-section]").forEach(b=>b.addEventListener("click",()=>openSection(b.dataset.openSection)));}
+function openSection(key){section=key;page=0;search="";$("#homeBtn").hidden=false;$("#refreshBtn").hidden=false;loadSection();}
+
 const PAGE_SIZE=30;
 const esc = v => String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const money = v => Number(v||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" USDT";
@@ -82,7 +97,7 @@ function renderRecharges(d){total=d.total||0;const rows=(d.items||[]).map(x=>'<t
 function renderDeposits(d){total=d.total||0;const rows=(d.items||[]).map(x=>'<tr><td class="primary">'+esc(x.code)+'</td><td>'+esc(x.email)+'</td><td class="money">'+money(x.amount)+'</td><td>'+esc(x.method)+'</td><td>'+esc(x.reference||"—")+'</td><td>'+status(x.status)+'</td><td>'+date(x.created_at)+'</td><td>'+(x.status==="pending"?'<button class="action deposit-action" data-id="'+esc(x.id)+'" data-approved="true">Confirmar</button> <button class="action deposit-action" data-id="'+esc(x.id)+'" data-approved="false">Rechazar</button>':'—')+'</td></tr>').join("");return '<div class="panel"><div class="panel-head"><h2>Solicitudes de depósito</h2><input class="search" id="searchInput" placeholder="Buscar código o correo..." value="'+esc(search)+'"></div>'+(rows?table(["Código","Usuario","Importe","Método","Referencia","Estado","Fecha","Acción"],rows):'<div class="empty">No hay depósitos registrados.</div>')+pager()+'</div>'}
 function renderSettings(){return '<div class="panel"><div class="panel-head"><h2>Seguridad y configuración</h2></div><div class="settings"><p><strong>Control de acceso:</strong> el panel comprueba el rol <code>admin</code> en Supabase y cada consulta administrativa vuelve a validar ese permiso en el servidor.</p><p><strong>Cuenta administradora:</strong> '+esc((awaitUser?.email)||"Sesión autorizada")+'</p><p><strong>Registro de ajustes:</strong> cada cambio de saldo exige un motivo y genera un movimiento de tipo <code>adjustment</code> con saldo anterior y posterior.</p><div class="notice">La eliminación irreversible solo se permite si la cuenta no conserva saldo, pedidos, depósitos, transacciones ni recompensas. El servidor verifica estas condiciones y bloquea la eliminación cuando existe historial financiero.</div></div></div>'}
 let awaitUser=null;
-async function loadSection(){const t=titles[section];$("#pageTitle").textContent=t[0];$("#pageSubtitle").textContent=t[1];content.innerHTML='<div class="loading">Cargando información segura...</div>';$("#refreshBtn").disabled=true;
+async function loadSection(){if(section==="home"){showHome();return}const t=titles[section];$("#pageTitle").textContent=t[0];$("#pageSubtitle").textContent=t[1];content.innerHTML='<div class="loading">Cargando información segura...</div>';$("#refreshBtn").disabled=true;
 try{if(section==="settings"){content.innerHTML=renderSettings();return}
 const {data,error}=await supabase.rpc("admin_panel_data",{p_section:section==="overview"?"overview":section==="stats"?"stats":section,p_search:search||null,p_limit:PAGE_SIZE,p_offset:page*PAGE_SIZE});
 if(error)throw error;
@@ -101,9 +116,9 @@ function openBalance(id,email,balance){selectedUser=id;$("#balanceUserLabel").te
 function closeBalance(){$("#balanceModal").classList.remove("open");selectedUser=null}
 $("#cancelBalance").addEventListener("click",closeBalance);$("#balanceModal").addEventListener("click",e=>{if(e.target.id==="balanceModal")closeBalance()});
 $("#saveBalance").addEventListener("click",async()=>{const delta=Number($("#balanceDelta").value),reason=$("#balanceReason").value.trim();if(!selectedUser||!Number.isFinite(delta)||delta===0||!reason){toast("Indica un importe válido y el motivo del ajuste.");return}const btn=$("#saveBalance");btn.disabled=true;btn.textContent="Guardando...";try{const {data,error}=await supabase.rpc("admin_adjust_wallet",{p_user_id:selectedUser,p_delta:delta,p_reason:reason});if(error)throw error;toast("Saldo actualizado. Nuevo saldo: "+money(data.balance_after));closeBalance();await loadSection()}catch(e){toast(e.message||"No se pudo ajustar el saldo.");}finally{btn.disabled=false;btn.textContent="Guardar ajuste"}});
-document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>{section=b.dataset.section;page=0;search="";document.querySelectorAll(".nav-btn").forEach(n=>n.classList.toggle("active",n===b));loadSection()}));
+$("#homeBtn").addEventListener("click",showHome);
 $("#refreshBtn").addEventListener("click",loadSection);
-async function init(){const {data:{session},error}=await supabase.auth.getSession();if(error||!session?.user){location.replace("login.html");return}awaitUser=session.user;const {data:roles,error:roleError}=await supabase.from("user_roles").select("role_id").eq("user_id",session.user.id);if(roleError||!roles?.some(r=>r.role_id==="admin")){document.body.innerHTML='<main style="max-width:520px;margin:15vh auto;padding:24px;text-align:center;color:#fff;font-family:Inter,sans-serif"><h1>Acceso restringido</h1><p>Esta cuenta no tiene permisos de administrador.</p><a href="cuenta.html" style="color:#00c6ff">Volver a mi cuenta</a></main>';return}loadSection()}
+async function init(){const {data:{session},error}=await supabase.auth.getSession();if(error||!session?.user){location.replace("login.html");return}awaitUser=session.user;const {data:roles,error:roleError}=await supabase.from("user_roles").select("role_id").eq("user_id",session.user.id);if(roleError||!roles?.some(r=>r.role_id==="admin")){document.body.innerHTML='<main style="max-width:520px;margin:15vh auto;padding:24px;text-align:center;color:#fff;font-family:Inter,sans-serif"><h1>Acceso restringido</h1><p>Esta cuenta no tiene permisos de administrador.</p><a href="cuenta.html" style="color:#00c6ff">Volver a mi cuenta</a></main>';return}showHome()}
 init();
 </script>
 </body>
