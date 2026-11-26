@@ -185,6 +185,23 @@ body{overflow-x:hidden}
 }
 </style>
 
+<style id="gg-freefire-player-card-match">
+/* Player ID: título y campo dentro de una sola tarjeta, como en Gamevora. */
+[aria-labelledby="player-title"]>.section-panel{
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+[aria-labelledby="player-title"]>.section-head{
+  margin:0 0 14px!important;
+  padding:0!important;
+}
+@media(max-width:560px){
+  [aria-labelledby="player-title"]>.section-head{margin-bottom:12px!important}
+}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -198,7 +215,7 @@ body{overflow-x:hidden}
 <div class="region-grid" id="regions"><div class="catalog-state">Cargando regiones disponibles…</div></div>
 </div>
 </section>
-<section class="section section-heading-outside" aria-labelledby="player-title">
+<section class="section" aria-labelledby="player-title">
 <h2 class="section-head" id="player-title"><span class="ico player-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 16c.6-1.8 1.7-2.7 3.2-2.7s2.6.9 3.2 2.7M14.5 9h4M14.5 12h4M14.5 15h2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Player ID</h2>
 <div class="section-panel">
 <div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 16c.6-1.8 1.7-2.7 3.2-2.7s2.6.9 3.2 2.7M14.5 9h4M14.5 12h4M14.5 15h2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Introduce tu ID de Free Fire" maxlength="32" aria-label="Tu Player ID"><button class="player-paste" id="player-paste" type="button" aria-label="Pegar Player ID" title="Pegar desde el portapapeles"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="2"/><path d="M16 3V2.5A1.5 1.5 0 0 0 14.5 1h-9A1.5 1.5 0 0 0 4 2.5v13A1.5 1.5 0 0 0 5.5 17H8"/><path d="M14 9v7m-3-3 3 3 3-3"/></svg></button></div></div>
