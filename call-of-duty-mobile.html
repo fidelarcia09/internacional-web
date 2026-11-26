@@ -358,18 +358,18 @@ function getPendingClientReference(product,playerId,serverId){
  const key=[product?.productId||"",playerId||"",serverId||""].join("|");
  activePendingReferenceKey=key;
  let saved={};
- try{saved=JSON.parse(sessionStorage.getItem(pendingStorageKey)||"{}");if(!saved||typeof saved!=="object"||Array.isArray(saved))saved={};}catch(error){saved={};}
+ try{saved=JSON.parse(localStorage.getItem(pendingStorageKey)||"{}");if(!saved||typeof saved!=="object"||Array.isArray(saved))saved={};}catch(error){saved={};}
  if(!saved[key]) saved[key]="IW-"+crypto.randomUUID().replace(/-/g,"");
  pendingClientReference=String(saved[key]);
- try{sessionStorage.setItem(pendingStorageKey,JSON.stringify(saved));}catch(error){}
+ try{localStorage.setItem(pendingStorageKey,JSON.stringify(saved));}catch(error){}
  return pendingClientReference;
 }
 function clearPendingReference(){
  if(activePendingReferenceKey){
   try{
-   const saved=JSON.parse(sessionStorage.getItem(pendingStorageKey)||"{}");
+   const saved=JSON.parse(localStorage.getItem(pendingStorageKey)||"{}");
    if(saved&&typeof saved==="object") delete saved[activePendingReferenceKey];
-   sessionStorage.setItem(pendingStorageKey,JSON.stringify(saved||{}));
+   localStorage.setItem(pendingStorageKey,JSON.stringify(saved||{}));
   }catch(error){}
  }
  pendingClientReference="";
