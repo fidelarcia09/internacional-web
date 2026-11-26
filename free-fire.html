@@ -192,16 +192,22 @@ let selectedProduct=null;
 let selectedRegion="";
 function notify(text){message.textContent=text;message.classList.add("show")}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
+function normalizeFreeFireRegion(region){
+ const value=String(region||"").trim().toLowerCase();
+ if(/^(latam|latin america|américa latina|america latina|south america)$/.test(value)||value.includes("latam")||value.includes("latin")) return "LATAM";
+ if(/^(br|bra|brasil|brazil)$/.test(value)||value.includes("brasil")||value.includes("brazil")) return "Brasil";
+ if(/^(id|idn|indonesia)$/.test(value)||value.includes("indonesia")) return "Indonesia";
+ return null;
+}
 function regionEmoji(region){
- const value=String(region||"").toLowerCase();
- if(value.includes("latam")||value.includes("latin")) return "🌎";
- if(value.includes("usa")||value.includes("united states")||value==="us") return "🇺🇸";
- return "🌐";
+ if(region==="Brasil") return "🇧🇷";
+ if(region==="Indonesia") return "🇮🇩";
+ return "🌎";
 }
 function renderRegions(){
- const values=[...new Set(products.map(p=>p.region||"Global"))].sort((a,b)=>a.localeCompare(b,"es"));
+ const values=["LATAM","Brasil","Indonesia"];
  regions.innerHTML="";
- selectedRegion=values.find(region=>/latam|latin/i.test(region))||values.find(region=>/usa|united states|^us$/i.test(region))||values[0]||"";
+ selectedRegion=values.includes(selectedRegion)?selectedRegion:"LATAM";
  values.forEach(region=>{
    const button=document.createElement("button");
    button.type="button";
@@ -211,6 +217,7 @@ function renderRegions(){
    button.addEventListener("click",()=>{
      selectedRegion=region;
      selectedProduct=null;
+     buyButton.disabled=true;
      clearValidation();
      regions.querySelectorAll(".choice").forEach(el=>el.classList.toggle("selected",el===button));
      renderProducts();
@@ -281,7 +288,7 @@ function updateRequirements(){
  }
 }
 function applyCatalogProducts(rawProducts){
- products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,supportsPlayerValidation:false})):[];
+ products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,region:normalizeFreeFireRegion(p.region),supportsPlayerValidation:false})).filter(p=>p.region!==null):[];
  if(!products.length){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles en este momento. Vuelve a intentarlo más tarde.</div>';
    regions.innerHTML="";
