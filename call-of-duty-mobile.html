@@ -352,6 +352,30 @@ async function loadCatalog(){
 }
 let purchaseInProgress=false;
 let pendingClientReference="";
+const pendingStorageKey="gg-rechargegames-pending:"+GAME+":"+verifiedUser.id;
+let activePendingReferenceKey="";
+function getPendingClientReference(product,playerId,serverId){
+ const key=[product?.productId||"",playerId||"",serverId||""].join("|");
+ activePendingReferenceKey=key;
+ let saved={};
+ try{saved=JSON.parse(sessionStorage.getItem(pendingStorageKey)||"{}");if(!saved||typeof saved!=="object"||Array.isArray(saved))saved={};}catch(error){saved={};}
+ if(!saved[key]) saved[key]="IW-"+crypto.randomUUID().replace(/-/g,"");
+ pendingClientReference=String(saved[key]);
+ try{sessionStorage.setItem(pendingStorageKey,JSON.stringify(saved));}catch(error){}
+ return pendingClientReference;
+}
+function clearPendingReference(){
+ if(activePendingReferenceKey){
+  try{
+   const saved=JSON.parse(sessionStorage.getItem(pendingStorageKey)||"{}");
+   if(saved&&typeof saved==="object") delete saved[activePendingReferenceKey];
+   sessionStorage.setItem(pendingStorageKey,JSON.stringify(saved||{}));
+  }catch(error){}
+ }
+ pendingClientReference="";
+ activePendingReferenceKey="";
+}
+
 buyButton.addEventListener("click",async()=>{
  if(purchaseInProgress) return;
  if(!selectedProduct){notify("Selecciona primero un producto.");return;}
@@ -371,8 +395,7 @@ buyButton.addEventListener("click",async()=>{
  try{
    const accessToken=activeSession?.access_token;
    if(!accessToken) throw new Error("Tu sesión ya no está activa. Vuelve a iniciar sesión.");
-   if(!pendingClientReference) pendingClientReference="IW-"+crypto.randomUUID().replace(/-/g,"");
-   const clientReference=pendingClientReference;
+   const clientReference=getPendingClientReference(selectedProduct,playerId,zoneId);
    const response=await fetch(SUPABASE_URL+"/functions/v1/rechargegames-comprar",{
      method:"POST",
      headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+accessToken,"Content-Type":"application/json",Accept:"application/json"},
@@ -380,17 +403,17 @@ buyButton.addEventListener("click",async()=>{
    });
    const data=await response.json().catch(()=>({}));
    if(response.status===402&&data.error==="insufficient_usdt_balance"){
-     pendingClientReference="";
+     clearPendingReference();
      notify("Saldo USDT insuficiente. No se realizó el pedido.");
    }else if(data.refunded===true){
-     pendingClientReference="";
+     clearPendingReference();
      notify("Error al crear el pedido. El saldo fue reembolsado.");
    }else if(response.status===202||data.error==="provider_submission_pending_confirmation"){
      notify("Pedido pendiente de confirmación. No repitas la compra; consulta soporte. Código: "+(data.order?.code||"pendiente"));
    }else if(!response.ok||!data.ok){
      throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":(data.error||"No se pudo crear el pedido."));
    }else{
-     const status=data.order?.status||"pending";\n     if(["completed","delivered","failed"].includes(status)) pendingClientReference="";\n     notify("Pedido "+((status==="completed"||status==="delivered")?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
+     const status=data.order?.status||"pending";\n     if(["completed","delivered","failed"].includes(status)) clearPendingReference();\n     notify("Pedido "+((status==="completed"||status==="delivered")?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
    }
  }catch(error){
    notify(error instanceof Error?error.message:"Error al procesar. Si no sabes si se creó, consulta soporte antes de reintentar.");
