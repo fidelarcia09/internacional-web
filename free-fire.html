@@ -381,7 +381,7 @@ buyButton.addEventListener("click",async()=>{
      body:JSON.stringify({
        product_key:selectedProduct.productId,
        game:GAME,
-       player_id:playerId,server_id:zoneId,client_reference:clientReference
+       player_id:playerId,server_id:zoneId,client_reference:clientReference,expected_amount:price
      })
    });
    const data=await response.json().catch(()=>({}));
@@ -394,7 +394,7 @@ buyButton.addEventListener("click",async()=>{
    }else if(response.status===202||data.error==="provider_submission_pending_confirmation"){
      notify("El pedido quedó pendiente de confirmación. No vuelvas a comprarlo; consulta el estado o contacta soporte. Código: "+(data.order?.code||"pendiente"));
    }else if(!response.ok||!data.ok){
-     throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":(data.error||"No se pudo crear el pedido."));
+     throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":data.error==="price_changed"?"El precio cambió. Actualiza el catálogo y confirma de nuevo.":(data.error||"No se pudo crear el pedido."));
    }else{
      const status=data.order?.status||"pending";\n     if(["completed","delivered","failed"].includes(status)) clearPendingReference();\n     notify("Pedido "+((status==="completed"||status==="delivered")?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
    }
