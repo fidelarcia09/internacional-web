@@ -288,9 +288,9 @@ buyButton.textContent=selectedCategory==="offers"?"Comprar oferta":"Recargar aho
  if(needsZone){
    if(!zoneId){
      const field=document.createElement("div");
-     field.id="provider-zone-wrap";field.className="field-row";field.style.marginTop="9px";
-     field.innerHTML='<div class="player-field"><input class="player-input" id="provider-zone-id" type="text" autocomplete="off" placeholder="Ingresa tu Zone ID..." aria-label="Zone ID"></div>';
-     playerSection.querySelector(".field-row").after(field);
+     field.id="provider-zone-wrap";field.className="player-field";field.style.flex="1";field.style.minWidth="0";
+     field.innerHTML='<input class="player-input" id="provider-zone-id" type="text" autocomplete="off" placeholder="Ingresa tu Zone ID..." aria-label="Zone ID" style="width:100%;min-width:0">';
+     playerSection.querySelector(".field-row").append(field);
    }
  }else{
    document.getElementById("provider-zone-wrap")?.remove();
