@@ -1,8 +1,7 @@
 -- Gamers Gold TopUp: funciones protegidas del panel administrativo.
 insert into public.app_roles (id, name, description)
 values ('admin', 'Administrador', 'Acceso completo al panel administrativo de Gamers Gold TopUp.')
-on conflict (id) do update
-set name = excluded.name, description = excluded.description;
+on conflict (id) do update set name=excluded.name, description=excluded.description;
 
 CREATE OR REPLACE FUNCTION public.admin_panel_data(p_section text DEFAULT 'overview'::text, p_search text DEFAULT NULL::text, p_limit integer DEFAULT 50, p_offset integer DEFAULT 0)
  RETURNS jsonb
