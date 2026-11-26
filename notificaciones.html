@@ -19,6 +19,7 @@ main{width:min(92%,760px);margin:25px auto 38px}
 .head-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
 .clear-button{min-height:42px;padding:0 15px;border:1px solid #a94a3a;border-radius:12px;background:#24110f;color:#ff9b85;font:800 10px var(--font);letter-spacing:.2px;cursor:pointer}
 .clear-button:disabled{opacity:.45;cursor:default}
+.clear-button{width:max-content;min-width:0;align-self:flex-end;outline:1px solid #a94a3a;outline-offset:2px}
 .clear-status{margin:8px 0 0;color:#92959e;font-size:10px;line-height:1.5;text-align:right}
 .clear-status:empty{display:none}
 .page-kicker{color:var(--orange);font-size:9px;font-weight:800;letter-spacing:2px;margin:0 0 7px}
@@ -43,7 +44,7 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .push-description{margin:9px 0 0;color:#92959e;font-size:10px;line-height:1.6;max-width:390px}
 .push-button{flex:0 0 auto;min-height:42px;padding:0 15px;border:1px solid #00c6ff78;border-radius:12px;background:linear-gradient(110deg,#00c6ff,#35cbff);color:#081a35;font:800 10px var(--font);letter-spacing:.2px;cursor:pointer;box-shadow:0 5px 18px #00c6ff1c}
 .push-button:disabled{opacity:.65;cursor:default}.push-button[hidden]{display:none!important}
-@media(max-width:520px){.page-head{align-items:flex-start;flex-direction:column}.head-actions{width:100%;flex-direction:column-reverse;align-items:stretch}.push-button,.clear-button{width:100%}.clear-status{text-align:left}.push-description{max-width:none}}
+@media(max-width:520px){.page-head{align-items:flex-start;flex-direction:column}.head-actions{width:100%;flex-direction:column-reverse;align-items:stretch}.push-button{width:100%}.clear-button{width:max-content;align-self:flex-end}.clear-status{text-align:left}.push-description{max-width:none}}
 
 .empty-state{min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 18px}
 .empty-icon{width:74px;height:74px;margin:0 auto 18px;border:1px solid #00c6ff5c;border-radius:23px;background:radial-gradient(circle,#00c6ff20,#081a35 72%);display:grid;place-items:center;color:#2ecfff;box-shadow:0 0 24px #00c6ff12}
