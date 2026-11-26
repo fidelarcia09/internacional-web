@@ -356,11 +356,9 @@ buyButton.addEventListener("click",async()=>{
        Accept:"application/json"
      },
      body:JSON.stringify({
-       productId:selectedProduct.productId,
+       product_key:selectedProduct.productId,
        game:GAME,
-       playerId,
-       zoneId,
-       clientReference
+       player_id:playerId,server_id:zoneId,client_reference:clientReference
      })
    });
    const data=await response.json().catch(()=>({}));
