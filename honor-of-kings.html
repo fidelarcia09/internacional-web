@@ -223,31 +223,18 @@ let selectedRegion="Global";
 function notify(text){message.textContent=text;message.classList.add("show")}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
 function normalizeHonorRegion(region){
- const value=String(region??"").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\\s+/g," ");
- if(["global","gl","worldwide","world"].includes(value))return "Global";
- if(["eu","europe","european","europe server"].includes(value))return "EU";
- if(["na","north america","north american","america north","us","usa"].includes(value))return "NA";
- return null;
+ const value=String(region??"").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\s+/g," ");
+ return ["global","gl","worldwide","world"].includes(value)?"Global":null;
 }
-const HONOR_REGIONS=[{value:"Global",label:"🌐 Global"},{value:"EU",label:"🇪🇺 EU"},{value:"NA",label:"🇺🇸 NA"}];
 function renderRegions(){
  regions.innerHTML="";
  selectedRegion="Global";
- HONOR_REGIONS.forEach(region=>{
-   const button=document.createElement("button");
-   button.type="button";button.className="choice"+(region.value===selectedRegion?" selected":"");
-   button.dataset.value=region.value;button.textContent=region.label;
-   button.addEventListener("click",()=>{
-     selectedRegion=region.value;
-     selectedProduct=null;
-     clearValidation();
-     buyButton.disabled=true;
-     regions.querySelectorAll(".choice").forEach(el=>el.classList.toggle("selected",el===button));
-     renderProducts();
-     updateRequirements();
-   });
-   regions.append(button);
- });
+ const button=document.createElement("button");
+ button.type="button";
+ button.className="choice selected";
+ button.dataset.value="Global";
+ button.textContent="🌐 Global";
+ regions.append(button);
 }
 function productAmount(product){
  const direct=[product.amount,product.quantity,product.denomination,product.value].find(value=>value!==null&&value!==undefined&&value!==""&&Number.isFinite(Number(value))&&Number(value)>0);
@@ -309,7 +296,7 @@ function updateRequirements(){
  }
 }
 function applyCatalogProducts(rawProducts){
- products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,region:normalizeHonorRegion(p.region||"Global"),supportsPlayerValidation:false})).filter(p=>p.region!==null):[];
+ products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,region:normalizeHonorRegion(p.region||"Global"),supportsPlayerValidation:false})).filter(p=>p.region==="Global"):[];
  if(!products.length){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles en este momento. Vuelve a intentarlo más tarde.</div>';
    regions.innerHTML="";
