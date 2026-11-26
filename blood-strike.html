@@ -217,25 +217,25 @@ let resellerDiscountPercent=0;
 let resellerPricingLoaded=false;
 let selectedProduct=null;
      buyButton.disabled=true;
-let selectedRegion="";
+let selectedRegion="Global";
 function notify(text){message.textContent=text;message.classList.add("show")}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
+function normalizeBloodStrikeRegion(region){
+ const value=String(region??"").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\s+/g," ");
+ if(["global","gl","worldwide","world"].includes(value))return "Global";
+ if(["mena","middle east","middle east and north africa","middle east north africa"].includes(value)||value.includes("mena"))return "MENA";
+ return String(region??"").trim()||"Global";
+}
+function bloodStrikeRegionEmoji(region){return region==="MENA"?"🌍":"🌐"}
 function renderRegions(){
- const values=[...new Set(products.map(p=>p.region||"Global"))].sort((a,b)=>a.localeCompare(b,"es"));
+ const values=[...new Set(products.map(p=>normalizeBloodStrikeRegion(p.region)))];
+ values.sort((a,b)=>a==="Global"?-1:b==="Global"?1:a==="MENA"?-1:b==="MENA"?1:a.localeCompare(b,"es"));
  regions.innerHTML="";
- if(values.length>1){
-   const prompt=document.createElement("div");
-   prompt.className="catalog-prompt";
-   prompt.textContent="Selecciona la región para ver los productos disponibles";
-   regions.append(prompt);
-   selectedRegion="";
- }else{
-   selectedRegion=values[0]||"";
- }
+ selectedRegion=values.includes("Global")?"Global":(values[0]||"Global");
  values.forEach(region=>{
    const button=document.createElement("button");
    button.type="button";button.className="choice"+(region===selectedRegion?" selected":"");
-   button.dataset.value=region;button.textContent=region;
+   button.dataset.value=region;button.innerHTML='<span class="symbol" aria-hidden="true">'+bloodStrikeRegionEmoji(region)+'</span><span>'+safeText(region)+'</span>';
    button.addEventListener("click",()=>{
      selectedRegion=region;
      selectedProduct=null;
@@ -306,7 +306,7 @@ function updateRequirements(){
  }
 }
 function applyCatalogProducts(rawProducts){
- products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,supportsPlayerValidation:false})):[];
+ products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,region:normalizeBloodStrikeRegion(p.region),supportsPlayerValidation:false})):[];
  if(!products.length){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles en este momento. Vuelve a intentarlo más tarde.</div>';
    regions.innerHTML="";
