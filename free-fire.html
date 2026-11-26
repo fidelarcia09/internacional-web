@@ -111,6 +111,102 @@ body{overflow-x:hidden}
 <style id="GG_SUPPORT_NAV_MATCH">@media(max-width:620px){.mobile-nav{background:rgba(5,11,24,.96)!important;border-top:1px solid rgba(40,228,255,.16)!important}.mobile-nav:before{background:radial-gradient(ellipse at center,rgba(0,184,255,.34) 0%,rgba(0,184,255,.15) 42%,rgba(0,184,255,0) 76%)!important;border:0!important;outline:0!important;box-shadow:none!important}.mobile-nav a:hover,.mobile-nav a.current{color:#28e4ff!important}.mobile-nav a.current svg{stroke:#28e4ff!important;filter:drop-shadow(0 0 4px rgba(40,228,255,.55))!important}.mobile-nav a.current small{color:#28e4ff!important;text-shadow:0 0 8px rgba(0,199,255,.35)!important}}</style>
 <style id="gg-package-grid-fix">#packages{display:block!important;width:100%;min-width:0;box-sizing:border-box}#packages>.packages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;min-width:0;box-sizing:border-box}</style>
 <style id="gg-outside-section-headings">.section.section-heading-outside{margin-top:15px;padding:0;border:0;background:none;box-shadow:none}.section-heading-outside>.section-head{margin:0 0 9px;padding:0 4px;font-size:19px}.section-heading-outside>.section-head .ico{color:#168bff}.section-heading-outside>.section-panel{padding:13px;border:1px solid #00c6ff78;border-radius:19px;background:linear-gradient(145deg,#111115,#050b18 72%);box-shadow:0 0 18px #00c6ff18,inset 0 0 20px #00c6ff08}.player-heading-icon svg{display:block;width:25px;height:25px}.player-field>svg{width:22px;height:22px;flex:0 0 22px;fill:none;stroke:#168bff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}</style>
+
+<style id="gg-freefire-reference-player-region-design">
+/* Selector de regiones inspirado en Gamevora: control segmentado, sin alterar la carga dinámica. */
+#regions.region-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:3px!important;
+  width:100%!important;
+  padding:3px!important;
+  border:1px solid #173b64!important;
+  border-radius:14px!important;
+  background:linear-gradient(145deg,#0a1b35,#071329)!important;
+  box-shadow:inset 0 1px 4px rgba(0,0,0,.22)!important;
+}
+#regions .choice{
+  display:inline-flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  min-width:0!important;
+  min-height:38px!important;
+  padding:7px 6px!important;
+  border:1px solid transparent!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  color:#b8cbe0!important;
+  font:850 12px/1.2 var(--font)!important;
+  text-align:center!important;
+  box-shadow:none!important;
+  transition:background .22s ease,color .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease!important;
+}
+#regions .choice .symbol{font-size:16px!important;line-height:1!important;flex:0 0 auto}
+#regions .choice.selected{
+  background:linear-gradient(110deg,#087cff,#00baff)!important;
+  border-color:#35caff!important;
+  color:#fff!important;
+  box-shadow:0 0 15px rgba(0,140,255,.24)!important;
+  transform:translateY(-1px)!important;
+}
+#regions .choice:focus-visible{outline:2px solid #45c8ff!important;outline-offset:2px!important}
+#regions .choice:disabled{opacity:.55!important;cursor:not-allowed!important}
+
+/* Player ID: etiqueta e input compacto, siguiendo el formulario de referencia. */
+[aria-labelledby="player-title"]>.section-head{
+  margin:0 0 7px!important;
+  padding:0 4px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  color:#b8cbe0!important;
+}
+#player-title .ico{width:19px!important;height:19px!important;flex:0 0 19px!important}
+#player-title .ico svg{width:18px!important;height:18px!important}
+[aria-labelledby="player-title"]>.section-panel{
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+[aria-labelledby="player-title"] .field-row{gap:0!important}
+[aria-labelledby="player-title"] .player-field>svg{display:none!important}
+[aria-labelledby="player-title"] .player-input{
+  width:100%!important;
+  height:44px!important;
+  min-height:44px!important;
+  padding:10px 48px 10px 12px!important;
+  border:1px solid #204c78!important;
+  border-radius:7px!important;
+  outline:none!important;
+  background:#061226!important;
+  color:#fff!important;
+  font:600 14px var(--font)!important;
+  box-shadow:none!important;
+}
+[aria-labelledby="player-title"] .player-input::placeholder{color:#8299b4!important}
+[aria-labelledby="player-title"] .player-input:focus{
+  border-color:#159dff!important;
+  box-shadow:0 0 7px rgba(0,157,255,.15)!important;
+}
+[aria-labelledby="player-title"] .player-paste{
+  right:6px!important;
+  width:32px!important;
+  height:32px!important;
+  border:1px solid #204c78!important;
+  border-radius:7px!important;
+  background:#091a35!important;
+  color:#45c8ff!important;
+  box-shadow:none!important;
+}
+@media(max-width:370px){
+  #regions .choice{gap:4px!important;padding:7px 3px!important;font-size:10px!important}
+  #regions .choice .symbol{font-size:14px!important}
+}
+</style>
+
 </head>
 <body>
 <header class="topbar">
