@@ -62,6 +62,19 @@ Deno.serve(async (req: Request) => {
       return json({ error: "cannot_delete_another_admin" }, 403);
     }
 
+    const { data: wallet, error: walletError } = await admin
+      .from("usdt_wallets")
+      .select("balance")
+      .eq("user_id", targetId)
+      .maybeSingle();
+    if (walletError) return json({ error: "could_not_check_wallet" }, 500);
+    if (Number(wallet?.balance || 0) > 0) {
+      return json({
+        error: "account_has_remaining_balance",
+        message: "La cuenta conserva saldo disponible. Primero debe resolverse el saldo para proteger los fondos del usuario.",
+      }, 409);
+    }
+
     const blockers = [
       ["usdt_orders", "id", "user_id"],
       ["usdt_transactions", "id", "user_id"],
