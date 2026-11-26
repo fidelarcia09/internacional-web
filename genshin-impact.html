@@ -229,7 +229,7 @@ function normalizeGenshinRegion(region){
  if(["na","north america","north american","america","america server","us","usa"].includes(value))return "NA";
  return null;
 }
-const GENSHIN_REGIONS=[{value:"Global",label:"🌐 Global"},{value:"EU",label:"🇪🇺 EU"},{value:"NA",label:"🇺🇸 NA"}];
+const GENSHIN_REGIONS=[{value:"Global",label:"🌐 Global"},{value:"EU",label:"🌍 EU"},{value:"NA",label:"🌎 NA"}];
 function renderRegions(){
  regions.innerHTML="";
  selectedRegion="Global";
