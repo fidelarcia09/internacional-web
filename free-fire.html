@@ -340,7 +340,7 @@ function updateRequirements(){
  }
 }
 function applyCatalogProducts(rawProducts){
- products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,region:normalizeFreeFireRegion(p.region),supportsPlayerValidation:false})).filter(p=>p.region!==null):[];
+ products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,providerRegion:String(p.region||""),region:normalizeFreeFireRegion(p.region),supportsPlayerValidation:true})).filter(p=>p.region!==null):[];
  if(!products.length){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles en este momento. Vuelve a intentarlo más tarde.</div>';
    regions.innerHTML="";
@@ -473,54 +473,41 @@ buyButton.addEventListener("click",async()=>{
 });
 
 async function verifyNicknameAutomatically(){
- const playerId=playerInput?.value.trim()||"";
- const requestId=++validationRequest;
- if(!/^\d{5,20}$/.test(playerId)||!selectedRegion) return;
- const validationProduct=selectedProduct||products.find(p=>p.region===selectedRegion&&p.requiresPlayerId&&p.supportsPlayerValidation);
- if(!validationProduct) return;
- const zoneId=document.getElementById("provider-zone-id")?.value.trim()||"";
- if(validationProduct.requiresZoneId&&!zoneId){
-   showValidation("Ingresa también tu Zone ID para verificar esta cuenta.","error");
-   return;
- }
- showValidation("Verificando nickname...","loading");
- try{
-   const {data:sessionData,error:sessionError}=await supabase.auth.getSession();
-   if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
-   if(sessionError) throw new Error("No se pudo comprobar tu sesión.");
-   const accessToken=sessionData?.session?.access_token;
-   if(!accessToken) throw new Error("Inicia sesión en Internacional Web para verificar tu cuenta.");
-   const response=await fetch(SUPABASE_URL+"/functions/v1/nextlevel-player-validate",{
-     method:"POST",
-     headers:{
-       apikey:SUPABASE_PUBLISHABLE_KEY,
-       Authorization:"Bearer "+accessToken,
-       "Content-Type":"application/json",
-       Accept:"application/json"
-     },
-     body:JSON.stringify({game:GAME,productId:validationProduct.productId,playerId,zoneId:zoneId||undefined})
-   });
-   const data=await response.json().catch(()=>({}));
-   if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
-   if(!response.ok||!data.ok){
-     const errors={
-       INVALID_PLAYER_ID:"El Player ID debe contener entre 5 y 20 números.",
-       ZONE_ID_REQUIRED:"Este producto requiere un Zone ID.",
-       INVALID_ZONE_ID:"El Zone ID no tiene un formato válido.",
-       PLAYER_VALIDATION_NOT_SUPPORTED:"Este producto no permite verificar el nickname.",
-       PLAYER_NOT_FOUND:"No encontramos una cuenta con ese Player ID. Revísalo e inténtalo otra vez.",
-       NICKNAME_NOT_RETURNED:"No se pudo obtener el nickname de esta cuenta.",
-       UPSTREAM_TIMEOUT:"La verificación tardó demasiado. Inténtalo de nuevo.",
-       UPSTREAM_UNREACHABLE:"No se pudo conectar. Inténtalo más tarde."
-     };
-     throw new Error(errors[data.error]||"No se pudo verificar el Player ID. Inténtalo de nuevo.");
-   }
-   validatedPlayerId=playerId;
-   showValidation("✓ "+data.nickname,"success");
- }catch(error){
-   if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
-   showValidation(error instanceof Error?error.message:"No se pudo verificar la cuenta.","error");
- }
+  const playerId=playerInput?.value.trim()||"";
+  const requestId=++validationRequest;
+  if(!/^\\d{5,20}$/.test(playerId)||!selectedRegion) return;
+  const validationProduct=selectedProduct||products.find(p=>p.region===selectedRegion&&p.requiresPlayerId&&p.supportsPlayerValidation);
+  if(!validationProduct||!validationProduct.requiresPlayerId||!validationProduct.supportsPlayerValidation) return;
+  showValidation("Verificando nickname...","loading");
+  try{
+    const region=String(validationProduct.providerRegion||selectedRegion).trim();
+    const {data,error}=await supabase.functions.invoke("rechargegames-region-check",{
+      body:{game:"free-fire",uid:playerId,region}
+    });
+    if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
+    if(error) throw error;
+    if(!data?.ok) throw new Error(data?.error||"RechargeGames no pudo comprobar este ID.");
+    const result=data.result&&typeof data.result==="object"?data.result:data;
+    const status=String(result?.status||result?.result||result?.code||result?.state||data?.status||"").trim().toUpperCase();
+    const nickname=String(result?.nickname||result?.player_name||result?.playerName||result?.username||result?.name||"").trim();
+    const valid=["OK","EXISTS","VALID"].includes(status)||result?.valid===true;
+    if(valid){
+      validatedPlayerId=playerId;
+      if(nickname) showValidation(nickname,"success");
+      else showValidation("ID y región verificados. RechargeGames no devolvió el nickname.","success");
+      return;
+    }
+    if(status==="WRONG_REGION") throw new Error("Este ID pertenece a otra región. Comprueba la región seleccionada.");
+    if(["UID_NOT_FOUND","INVALID"].includes(status)||result?.valid===false){
+      throw new Error("No encontramos una cuenta con ese Player ID. Revísalo e inténtalo otra vez.");
+    }
+    throw new Error("RechargeGames no pudo confirmar el nickname de esta cuenta. Inténtalo más tarde.");
+  }catch(error){
+    if(requestId!==validationRequest||playerInput.value.trim()!==playerId) return;
+    validatedPlayerId="";
+    console.error("RECHARGEGAMES_FREE_FIRE_VALIDATION_FAILED",error);
+    showValidation(error instanceof Error?error.message:"No se pudo verificar la cuenta.","error");
+  }
 }
 function scheduleNicknameValidation(){
  clearTimeout(validationTimer);
