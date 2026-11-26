@@ -213,18 +213,19 @@ async function loadPersonalData() {
   currentUser = session.user;
   profileCacheKey = `iw-personal-data:${currentUser.id}`;
 
-  // Si ya tenemos los datos guardados, se muestran directamente sin volver a pedirlos.
+  // Mostrar la caché inmediatamente para que la pantalla no quede vacía.
+  let cachedData = null;
   try {
     const cached = localStorage.getItem(profileCacheKey);
     if (cached) {
-      showPersonalData(JSON.parse(cached));
-      return;
+      cachedData = JSON.parse(cached);
+      showPersonalData(cachedData);
     }
   } catch (cacheError) {
     console.warn("No se pudieron leer los datos guardados:", cacheError);
   }
 
-  // Solo la primera vez (cuando aún no hay caché) se consulta el perfil en Supabase.
+  // Actualizar siempre desde Supabase: el código de usuario puede haber cambiado.
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("full_name, username, phone, user_code")
@@ -232,7 +233,7 @@ async function loadPersonalData() {
     .single();
 
   if (error || !profile) {
-    if (!usernameField.value) showNotice("No se pudieron cargar tus datos. Actualiza la página.", true);
+    if (!cachedData) showNotice("No se pudieron cargar tus datos. Actualiza la página.", true);
     return;
   }
 
@@ -252,7 +253,7 @@ async function loadPersonalData() {
       user_code: personalData.user_code
     }));
   } catch (cacheError) {
-    console.warn("No se pudieron guardar los datos en caché:", cacheError);
+    console.warn("No se pudieron actualizar los datos guardados:", cacheError);
   }
 }
 
