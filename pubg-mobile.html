@@ -192,6 +192,11 @@ let selectedProduct=null;
 let selectedRegion="";
 function notify(text){message.textContent=text;message.classList.add("show")}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
+function pubgRegionEmoji(region){
+ const value=String(region||"").trim().toLowerCase();
+ if(["global","gl","worldwide","world"].includes(value))return "🌐";
+ return "🌍";
+}
 function renderRegions(){
  const values=[...new Set(products.map(p=>p.region||"Global"))].sort((a,b)=>a.localeCompare(b,"es"));
  regions.innerHTML="";
@@ -207,7 +212,7 @@ function renderRegions(){
  values.forEach(region=>{
    const button=document.createElement("button");
    button.type="button";button.className="choice"+(region===selectedRegion?" selected":"");
-   button.dataset.value=region;button.textContent=region;
+   button.dataset.value=region;button.innerHTML='<span class="symbol" aria-hidden="true">'+pubgRegionEmoji(region)+'</span><span>'+safeText(region)+'</span>';
    button.addEventListener("click",()=>{
      selectedRegion=region;
      selectedProduct=null;
