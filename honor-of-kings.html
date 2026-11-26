@@ -45,6 +45,8 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
  .catalog-state,.catalog-prompt{grid-column:1/-1;padding:16px;border:1px dashed #00a5ff66;border-radius:13px;color:#c5c5ca;font-size:12px;text-align:center;line-height:1.6}.catalog-prompt{margin-bottom:3px}.package{overflow-wrap:anywhere}.package strong{font-size:clamp(13px,2.5vw,18px);text-align:center;line-height:1.25}.package small{font-size:10px;color:#007bff} .section[hidden]{display:none!important}
 
 body{overflow-x:hidden}
+
+.package-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}.package-group{min-width:0;padding:12px;border:1px solid #25d1ff55;border-radius:15px;background:linear-gradient(145deg,#081a35aa,#050b18)}.package-group .section-head{font-size:16px;margin-bottom:11px;gap:7px}.package-group .section-head .ico{width:25px;height:25px;font-size:20px}.package-group .packages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.package-group .package{min-width:0;min-height:116px;padding:10px 5px}.package-group .package strong{overflow-wrap:anywhere;text-align:center;font-size:clamp(13px,2vw,17px)}.package-empty{grid-column:1/-1;padding:14px 8px;border:1px dashed #25d1ff55;border-radius:12px;color:#aeb8c8;font-size:11px;text-align:center}@media(max-width:650px){.package-columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.package-group{padding:8px}.package-group .section-head{font-size:13px;gap:4px}.package-group .section-head .ico{width:20px;height:20px;font-size:17px}.package-group .packages{grid-template-columns:1fr;gap:7px}.package-group .package{min-height:105px}.package-group .package strong{font-size:13px}}
 </style>
 <style id="mobile-nav-final-unified">
 @media(max-width:620px){
@@ -108,8 +110,8 @@ body{overflow-x:hidden}
 <div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Ingresa tu Player ID..." maxlength="32" aria-label="Tu Player ID"><button class="player-paste" id="player-paste" type="button" aria-label="Pegar Player ID" title="Pegar desde el portapapeles"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="2"/><path d="M16 3V2.5A1.5 1.5 0 0 0 14.5 1h-9A1.5 1.5 0 0 0 4 2.5v13A1.5 1.5 0 0 0 5.5 17H8"/><path d="M14 9v7m-3-3 3 3 3-3"/></svg></button></div></div>
 </section>
 <section class="section" aria-labelledby="packages-title">
-<h2 class="section-head" id="packages-title"><span class="ico">🪙</span>Paquetes de Tokens</h2>
-<div class="packages" id="packages"></div>
+<h2 class="section-head" id="packages-title"><span class="ico">🪙</span>Paquetes de recarga</h2>
+<div class="package-columns" id="packages"></div>
 <button class="cta" id="buy-button" type="button" disabled>Recargar ahora</button>
 <div class="toast" id="message" role="status"></div>
 </section>
@@ -252,32 +254,55 @@ function priceForProduct(product){
  return resellerDiscountPercent>0?Math.round((base*(1-resellerDiscountPercent/100))*100)/100:base;
 }
 function renderProducts(){
- packages.innerHTML="";
- const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion);
- if(!selectedRegion){
-   packages.innerHTML='<div class="catalog-state">Selecciona una región para cargar sus productos.</div>';
-   return;
- }
- if(!visible.length){
-   packages.innerHTML='<div class="catalog-state">No hay productos disponibles para esta región.</div>';
-   return;
- }
- [...visible].sort((a,b)=>Number(!isCurrencyPack(a))-Number(!isCurrencyPack(b))||productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0)).forEach(product=>{
-   const button=document.createElement("button");
-   button.type="button";
-   button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");
-   button.dataset.productId=product.productId;
-   const icon=product.type==="GIFT_CARD"?"🎁":"🪙";
-   button.innerHTML=(resellerDiscountPercent>0?'<span class="reseller-discount-badge">-'+resellerDiscountPercent+'%</span>':'')+'<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?priceForProduct(product).toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
-   button.addEventListener("click",()=>{
-     selectedProduct=product;
-     clearValidation();
-     buyButton.disabled=false;
-     packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
-     updateRequirements();
-   });
-   packages.append(button);
- });
+  packages.innerHTML="";
+  const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion);
+  if(!selectedRegion){
+    packages.innerHTML='<div class="catalog-state">Selecciona una región para cargar sus productos.</div>';
+    return;
+  }
+  if(!visible.length){
+    packages.innerHTML='<div class="catalog-state">No hay productos disponibles para esta región.</div>';
+    return;
+  }
+  const currencyGroup=document.createElement("section");
+  currencyGroup.className="package-group";
+  currencyGroup.innerHTML='<h3 class="section-head"><span class="ico">🪙</span>Tokens</h3><div class="packages" id="currency-packages"></div>';
+  const extraGroup=document.createElement("section");
+  extraGroup.className="package-group";
+  extraGroup.innerHTML='<h3 class="section-head"><span class="ico">🎁</span>Ofertas Extra</h3><div class="packages" id="extra-packages"></div>';
+  packages.append(currencyGroup,extraGroup);
+  const currencyContainer=currencyGroup.querySelector(".packages");
+  const extraContainer=extraGroup.querySelector(".packages");
+  const currencyProducts=visible.filter(isCurrencyPack).sort((a,b)=>productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0));
+  const extraProducts=visible.filter(p=>!isCurrencyPack(p)).sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"es"));
+  function renderGroup(list,container){
+    if(!list.length){
+      const empty=document.createElement("div");
+      empty.className="package-empty";
+      empty.textContent="No hay productos disponibles.";
+      container.append(empty);
+      return;
+    }
+    list.forEach(product=>{
+      const button=document.createElement("button");
+      button.type="button";
+      button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");
+      button.dataset.productId=product.productId;
+      const icon=product.type==="GIFT_CARD"?"🎁":"🪙";
+      button.innerHTML=(resellerDiscountPercent>0?'<span class="reseller-discount-badge">-'+resellerDiscountPercent+'%</span>':'')+'<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?priceForProduct(product).toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
+      button.addEventListener("click",()=>{
+        selectedProduct=product;
+        clearValidation();
+        buyButton.disabled=false;
+        packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));
+        updateRequirements();
+        
+      });
+      container.append(button);
+    });
+  }
+  renderGroup(currencyProducts,currencyContainer);
+  renderGroup(extraProducts,extraContainer);
 }
 function updateRequirements(){
  const needsPlayer=selectedProduct ? !!selectedProduct.requiresPlayerId : products.some(p=>p.requiresPlayerId);
