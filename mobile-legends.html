@@ -196,7 +196,7 @@ let selectedRegion="";
 function notify(text){message.textContent=text;message.classList.add("show")}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
 function normalizeMobileLegendsRegion(region){
- const value=String(region||"").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\\s+/g," ");
+ const value=String(region||"").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\s+/g," ");
  if(value==="global"||value==="gl"||value==="worldwide") return "Global";
  if(value==="united states"||value==="united states of america"||value==="usa"||value==="us"||value==="na") return "United States";
  return null;
