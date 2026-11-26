@@ -233,7 +233,7 @@ function renderRegions(){
  button.type="button";
  button.className="choice selected";
  button.dataset.value="Global";
- button.textContent="🌐 Global";
+ button.innerHTML='<span class="symbol" aria-hidden="true">🌐</span><span>Global</span>';
  regions.append(button);
 }
 function productAmount(product){
