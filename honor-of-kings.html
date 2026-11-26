@@ -46,7 +46,7 @@ main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{height:245px;positi
 
 body{overflow-x:hidden}
 
-.package-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}.package-group{min-width:0;padding:12px;border:1px solid #25d1ff55;border-radius:15px;background:linear-gradient(145deg,#081a35aa,#050b18)}.package-group .section-head{font-size:16px;margin-bottom:11px;gap:7px}.package-group .section-head .ico{width:25px;height:25px;font-size:20px}.package-group .packages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.package-group .package{min-width:0;min-height:116px;padding:10px 5px}.package-group .package strong{overflow-wrap:anywhere;text-align:center;font-size:clamp(13px,2vw,17px)}.package-empty{grid-column:1/-1;padding:14px 8px;border:1px dashed #25d1ff55;border-radius:12px;color:#aeb8c8;font-size:11px;text-align:center}@media(max-width:650px){.package-columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.package-group{padding:8px}.package-group .section-head{font-size:13px;gap:4px}.package-group .section-head .ico{width:20px;height:20px;font-size:17px}.package-group .packages{grid-template-columns:1fr;gap:7px}.package-group .package{min-height:105px}.package-group .package strong{font-size:13px}}
+.category-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 13px;padding:5px;border:1px solid #25d1ff55;border-radius:14px;background:linear-gradient(145deg,#081a35,#050b18)}.category-tab{appearance:none;display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:47px;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#aeb8c8;font:800 13px var(--font);cursor:pointer;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}.category-tab .tab-icon{font-size:19px;line-height:1}.category-tab.active{border-color:#25d1ff99;background:linear-gradient(135deg,#10345a,#0a2340);color:#fff;box-shadow:inset 0 -2px 0 #00c6ff,0 0 13px #00c6ff22}.category-tab:focus-visible{outline:2px solid #25d1ff;outline-offset:2px}.packages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.package-empty{grid-column:1/-1;padding:14px 8px;border:1px dashed #25d1ff55;border-radius:12px;color:#aeb8c8;font-size:11px;text-align:center}@media(max-width:650px){.category-tabs{gap:6px;padding:4px}.category-tab{min-height:43px;padding:7px 5px;font-size:12px}.category-tab .tab-icon{font-size:17px}.packages{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}@media(max-width:370px){.category-tab{font-size:11px;gap:5px}.packages{gap:7px}}.package-group{padding:8px}.package-group .section-head{font-size:13px;gap:4px}.package-group .section-head .ico{width:20px;height:20px;font-size:17px}.package-group .packages{grid-template-columns:1fr;gap:7px}.package-group .package{min-height:105px}.package-group .package strong{font-size:13px}}
 </style>
 <style id="mobile-nav-final-unified">
 @media(max-width:620px){
@@ -111,7 +111,7 @@ body{overflow-x:hidden}
 </section>
 <section class="section" aria-labelledby="packages-title">
 <h2 class="section-head" id="packages-title"><span class="ico">🪙</span>Paquetes de recarga</h2>
-<div class="package-columns" id="packages"></div>
+<div class="category-tabs" role="tablist" aria-label="Categorías de productos"><button class="category-tab active" id="tab-currency" type="button" role="tab" aria-selected="true"><span class="tab-icon" aria-hidden="true">💎</span><span>Tokens</span></button><button class="category-tab" id="tab-offers" type="button" role="tab" aria-selected="false"><span class="tab-icon" aria-hidden="true">🎁</span><span>Ofertas</span></button></div><div class="packages" id="packages" role="tabpanel"></div>
 <button class="cta" id="buy-button" type="button" disabled>Recargar ahora</button>
 <div class="toast" id="message" role="status"></div>
 </section>
@@ -220,6 +220,7 @@ let products=[];
 let resellerDiscountPercent=0;
 let resellerPricingLoaded=false;
 let selectedProduct=null;
+let selectedCategory="currency";
      buyButton.disabled=true;
 let selectedRegion="Global";
 function notify(text){message.textContent=text;message.classList.add("show")}
@@ -270,9 +271,9 @@ function renderProducts(){
   const extraGroup=document.createElement("section");
   extraGroup.className="package-group";
   extraGroup.innerHTML='<h3 class="section-head"><span class="ico">🎁</span>Ofertas Extra</h3><div class="packages" id="extra-packages"></div>';
-  packages.append(currencyGroup,extraGroup);
-  const currencyContainer=currencyGroup.querySelector(".packages");
-  const extraContainer=extraGroup.querySelector(".packages");
+  const activeGroup=selectedCategory==="currency"?currencyGroup:extraGroup;
+   packages.append(activeGroup);
+   const activeContainer=activeGroup.querySelector(".packages");
   const currencyProducts=visible.filter(isCurrencyPack).sort((a,b)=>productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0));
   const extraProducts=visible.filter(p=>!isCurrencyPack(p)).sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"es"));
   function renderGroup(list,container){
@@ -301,10 +302,31 @@ function renderProducts(){
       container.append(button);
     });
   }
-  renderGroup(currencyProducts,currencyContainer);
-  renderGroup(extraProducts,extraContainer);
+  renderGroup(selectedCategory==="currency"?currencyProducts:extraProducts,activeContainer);
 }
+
+function setProductCategory(category){
+ if(!["currency","offers"].includes(category)||selectedCategory===category)return;
+ selectedCategory=category;
+ selectedProduct=null;
+ clearValidation();
+ buyButton.disabled=true;
+ buyButton.textContent=category==="offers"?"Comprar oferta":"Recargar ahora";
+ const currencyTab=document.getElementById("tab-currency");
+ const offersTab=document.getElementById("tab-offers");
+ currencyTab.classList.toggle("active",category==="currency");
+ offersTab.classList.toggle("active",category==="offers");
+ currencyTab.setAttribute("aria-selected",String(category==="currency"));
+ offersTab.setAttribute("aria-selected",String(category==="offers"));
+ renderProducts();
+ updateRequirements();
+}
+document.getElementById("tab-currency").addEventListener("click",()=>setProductCategory("currency"));
+document.getElementById("tab-offers").addEventListener("click",()=>setProductCategory("offers"));
+buyButton.textContent="Recargar ahora";
+
 function updateRequirements(){
+ buyButton.textContent=selectedCategory==="offers"?"Comprar oferta":"Recargar ahora";
  const needsPlayer=selectedProduct ? !!selectedProduct.requiresPlayerId : products.some(p=>p.requiresPlayerId);
  playerSection.hidden=!needsPlayer;
  const zoneId=document.getElementById("provider-zone-id");
