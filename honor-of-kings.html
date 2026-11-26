@@ -219,31 +219,32 @@ let resellerDiscountPercent=0;
 let resellerPricingLoaded=false;
 let selectedProduct=null;
      buyButton.disabled=true;
-let selectedRegion="";
+let selectedRegion="Global";
 function notify(text){message.textContent=text;message.classList.add("show")}
 function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]))}
+function normalizeHonorRegion(region){
+ const value=String(region??"").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\\s+/g," ");
+ if(["global","gl","worldwide","world"].includes(value))return "Global";
+ if(["eu","europe","european","europe server"].includes(value))return "EU";
+ if(["na","north america","north american","america north","us","usa"].includes(value))return "NA";
+ return null;
+}
+const HONOR_REGIONS=[{value:"Global",label:"🌐 Global"},{value:"EU",label:"🇪🇺 EU"},{value:"NA",label:"🇺🇸 NA"}];
 function renderRegions(){
- const values=[...new Set(products.map(p=>p.region||"Global"))].sort((a,b)=>a.localeCompare(b,"es"));
  regions.innerHTML="";
- if(values.length>1){
-   const prompt=document.createElement("div");
-   prompt.className="catalog-prompt";
-   prompt.textContent="Selecciona la región para ver los productos disponibles";
-   regions.append(prompt);
-   selectedRegion="";
- }else{
-   selectedRegion=values[0]||"";
- }
- values.forEach(region=>{
+ selectedRegion="Global";
+ HONOR_REGIONS.forEach(region=>{
    const button=document.createElement("button");
-   button.type="button";button.className="choice"+(region===selectedRegion?" selected":"");
-   button.dataset.value=region;button.textContent=region;
+   button.type="button";button.className="choice"+(region.value===selectedRegion?" selected":"");
+   button.dataset.value=region.value;button.textContent=region.label;
    button.addEventListener("click",()=>{
-     selectedRegion=region;
+     selectedRegion=region.value;
      selectedProduct=null;
      clearValidation();
+     buyButton.disabled=true;
      regions.querySelectorAll(".choice").forEach(el=>el.classList.toggle("selected",el===button));
      renderProducts();
+     updateRequirements();
    });
    regions.append(button);
  });
@@ -308,7 +309,7 @@ function updateRequirements(){
  }
 }
 function applyCatalogProducts(rawProducts){
- products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,supportsPlayerValidation:false})):[];
+ products=Array.isArray(rawProducts)?rawProducts.filter(p=>p.type==="TOPUP"&&typeof p.priceUSDT==="number"&&p.priceUSDT>0&&p.currency==="USDT").map(p=>({...p,region:normalizeHonorRegion(p.region||"Global"),supportsPlayerValidation:false})).filter(p=>p.region!==null):[];
  if(!products.length){
    packages.innerHTML='<div class="catalog-state">No hay productos disponibles en este momento. Vuelve a intentarlo más tarde.</div>';
    regions.innerHTML="";
