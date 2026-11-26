@@ -1,4 +1,4 @@
-# Internacional Web — Gaming Store
+# Gamers Gold TopUp — Tienda de videojuegos Internacional
 
 Prototipo visual responsive para una tienda internacional de recargas gaming.
 
