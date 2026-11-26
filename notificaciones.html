@@ -30,6 +30,12 @@ h1{font:900 clamp(39px,8vw,54px)/.92 var(--display);letter-spacing:.4px;margin:0
 .notice-card{display:flex;align-items:flex-start;gap:13px;padding:16px;border:1px solid #00c6ff78;border-radius:16px;background:linear-gradient(105deg,#0d2342,#081a35 65%);box-shadow:inset 0 0 16px #00c6ff0b}
 .notice-icon{width:39px;height:39px;flex:0 0 39px;border:1px solid #00c6ff5c;border-radius:12px;background:radial-gradient(circle,#00c6ff20,#081a35 72%);display:grid;place-items:center;color:#2ecfff}
 .notice-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.notice-icon.is-recharge{width:42px;height:42px;flex:0 0 42px;border-width:1.5px;border-radius:13px;background:#081a35;color:#fff}
+.notice-icon.is-recharge svg{width:23px;height:23px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.notice-icon.is-received{border-color:#168bff;background:linear-gradient(145deg,#102d50,#081a35);box-shadow:0 0 13px #168bff25}
+.notice-icon.is-completed{border-color:#16b364;background:linear-gradient(145deg,#103b2b,#081a35);box-shadow:0 0 13px #16b36425}
+.notice-icon.is-failed{border-color:#ef4444;background:linear-gradient(145deg,#451b25,#081a35);box-shadow:0 0 13px #ef444425}
+@media(max-width:520px){.notice-icon.is-recharge{width:39px;height:39px;flex-basis:39px}.notice-icon.is-recharge svg{width:22px;height:22px}}
 .notice-copy{min-width:0;flex:1}
 .notice-title{margin:1px 0 5px;font-size:12px;font-weight:800;color:#f5f4f1}
 .notice-message{margin:0;color:#92959e;font-size:10px;line-height:1.65}
@@ -300,18 +306,35 @@ function dayTitle(value) {
   });
 }
 
-function iconFor(type) {
+function rechargeNotificationKind(row) {
+  const type = String(row?.event_type || "").toLowerCase();
+  const title = String(row?.title || "").toLowerCase();
+  const text = type + " " + title;
+
+  if (/(purchase|recharge|recarga)[_-]?(completed|complete|completad[oa])/.test(type) ||
+      /recarga\s+completad[oa]|compra\s+completad[oa]/.test(title)) return "completed";
+  if (/(purchase|recharge|recarga)[_-]?(failed|fallid[oa]|error)/.test(type) ||
+      /recarga\s+fallid[oa]|compra\s+fallid[oa]/.test(title)) return "failed";
+  if (/(purchase|recharge|recarga)[_-]?(received|created|pending|processing)/.test(type) ||
+      /recarga\s+(recibida|recibido)|pedido\s+recibido|compra\s+recibida/.test(title)) return "received";
+  return "";
+}
+
+function iconFor(type, kind = "") {
+  if (kind === "received") {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-4-4 4 4 4-4"/><path d="M4 15v5h16v-5"/></svg>';
+  }
+  if (kind === "completed" || type === "purchase_completed") {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.6 2.6L16.5 9"/></svg>';
+  }
+  if (kind === "failed" || type === "purchase_failed") {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/></svg>';
+  }
   if (type.startsWith("deposit_")) {
     return '<svg viewBox="0 0 24 24"><path d="M12 3v18m6-14H9a3 3 0 0 0 0 6h6a3 3 0 0 1 0 6H6"/></svg>';
   }
   if (type === "password_changed" || type.startsWith("two_factor_")) {
     return '<svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3"/></svg>';
-  }
-  if (type === "purchase_completed") {
-    return '<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="9"/></svg>';
-  }
-  if (type === "purchase_failed") {
-    return '<svg viewBox="0 0 24 24"><path d="M12 8v5m0 4h.01"/><path d="M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>';
   }
   return '<svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>';
 }
@@ -353,9 +376,10 @@ function renderNotifications(rows) {
       const card = document.createElement("article");
       card.className = "notice-card";
       const icon = document.createElement("div");
-      icon.className = "notice-icon";
+      const rechargeKind = rechargeNotificationKind(row);
+      icon.className = "notice-icon" + (rechargeKind ? " is-recharge is-" + rechargeKind : "");
       icon.setAttribute("aria-hidden", "true");
-      icon.innerHTML = iconFor(row.event_type);
+      icon.innerHTML = iconFor(row.event_type, rechargeKind);
 
       const copy = document.createElement("div");
       copy.className = "notice-copy";
