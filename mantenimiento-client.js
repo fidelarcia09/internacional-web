@@ -17,33 +17,41 @@ export function initStoreMaintenance(supabase) {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 13px;
+      gap: 15px;
+      box-sizing: border-box;
       width: 100vw;
-      min-height: 66px;
-      margin-left: calc(50% - 50vw);
-      padding: 14px clamp(18px, 7vw, 110px);
+      max-width: 100vw;
+      min-width: 100vw;
+      min-height: 72px;
+      margin-inline: calc(50% - 50vw);
+      padding: 16px clamp(20px, 7vw, 120px);
       border-top: 1px solid #9a704d;
       border-bottom: 1px solid #a87845;
-      background: linear-gradient(100deg, #382719, #563b28 52%, #382719);
+      background: linear-gradient(100deg, #241b18 0%, #49301f 24%, #563b28 50%, #49301f 76%, #241b18 100%);
       color: #f8eadb;
       text-align: center;
       font: 800 14px/1.35 Inter, sans-serif;
-      letter-spacing: .45px;
-      box-shadow: 0 7px 22px #0005;
+      letter-spacing: .55px;
+      box-shadow: 0 8px 24px #0006;
     }
     .gg-maintenance-banner svg {
       display: block;
-      flex: 0 0 27px;
-      width: 27px;
-      height: 27px;
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      box-sizing: border-box;
       fill: none;
-      stroke: currentColor;
-      stroke-width: 1.8;
+      stroke: #24efff;
+      stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      filter: drop-shadow(0 0 5px #f8eadb55);
+      filter: drop-shadow(0 0 5px #24efff80);
     }
-    .gg-maintenance-banner span { display: inline-block; max-width: 100%; }
+    .gg-maintenance-banner span {
+      display: inline-block;
+      max-width: min(100%, 900px);
+      text-wrap: balance;
+    }
     .gg-maintenance-blocked {
       opacity: .48 !important;
       filter: saturate(.35) !important;
@@ -69,15 +77,15 @@ export function initStoreMaintenance(supabase) {
     }
     @media (max-width: 620px) {
       .gg-maintenance-banner {
-        min-height: 60px;
-        gap: 10px;
-        padding: 12px 16px;
+        min-height: 64px;
+        gap: 11px;
+        padding: 12px 14px;
         font-size: 13px;
       }
       .gg-maintenance-banner svg {
-        flex-basis: 24px;
-        width: 24px;
-        height: 24px;
+        flex-basis: 27px;
+        width: 27px;
+        height: 27px;
       }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -103,8 +111,7 @@ export function initStoreMaintenance(supabase) {
     banner.setAttribute("aria-live", "polite");
     banner.innerHTML = `
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M14.2 5.1a5.6 5.6 0 0 0-6.9 7.1l-4.5 4.5a2.2 2.2 0 0 0 3.1 3.1l4.5-4.5a5.6 5.6 0 0 0 7.1-6.9l-3.2 3.2-3.3-3.3 3.2-3.2Z"/>
-        <path d="m5.1 18.9 0 0"/>
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.4-3.4a6 6 0 0 1-7.9 7.9l-6.2 6.2a2.1 2.1 0 0 1-3-3l6.2-6.2a6 6 0 0 1 7.9-7.9z"/>
       </svg>
       <span>Tienda en Mantenimiento</span>
     `;
