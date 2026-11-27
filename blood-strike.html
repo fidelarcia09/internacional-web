@@ -453,7 +453,7 @@ function isCurrencyPack(product){
 function priceForProduct(product){
  const base=Number(product?.priceUSDT);
  if(!Number.isFinite(base)||base<=0)return 0;
- return resellerDiscountPercent>0?Math.round((base*(1-resellerDiscountPercent/100))*100)/100:base;
+ return resellerDiscountPercent>0?Math.max(0,Math.floor((base*(1-resellerDiscountPercent/100)+1e-9)*100)/100):base;
 }
 function renderProducts(){
   packages.innerHTML="";
