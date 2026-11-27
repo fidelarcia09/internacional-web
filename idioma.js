@@ -30,7 +30,7 @@
         if (result) return result;
       } catch (_) { /* Reintenta una vez antes de conservar el original. */ }
     }
-    return value;
+    return null;
   }
   async function translateBatch(values, lang) {
     const missing = [...new Set(values)].filter(v => localStorage.getItem(cacheKey(lang,v)) === null);
@@ -53,7 +53,7 @@
       } else {
         for (const value of chunk) {
           const result = await requestTranslation(value,lang);
-          try { localStorage.setItem(cacheKey(lang,value),result); } catch (_) {}
+          if (result !== null) { try { localStorage.setItem(cacheKey(lang,value),result); } catch (_) {} }
         }
       }
     }
