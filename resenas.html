@@ -212,5 +212,6 @@ supabase.auth.onAuthStateChange((_event,session)=>{window.setTimeout(async()=>{c
 <script>
 (()=>{const nav=document.querySelector(".mobile-nav");if(!nav)return;const links=[...nav.querySelectorAll("a")];const file=location.pathname.split("/").pop()||"index.html";let active=links.findIndex(a=>(a.getAttribute("href")||"").split("#")[0]===file||(file==="mis-compras.html"&&a.getAttribute("href")==="cuenta.html"));if(active<0)active=0;nav.style.setProperty("--active-index",active);links.forEach((a,i)=>{a.classList.toggle("current",i===active);if(i===active)a.setAttribute("aria-current","page")});})();
 </script>
+<script src="idioma.js" defer></script>
 </body>
 </html>
