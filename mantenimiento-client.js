@@ -4,7 +4,7 @@ export function initStoreMaintenance(supabase) {
 
   const state = { enabled: false, loaded: false, updatedAt: 0 };
   const pathname = window.location.pathname;
-  const basename = pathname.replace(/\\/+$/, "").split("/").pop() || "";
+  const basename = pathname.replace(/\/+$/, "").split("/").pop() || "";
   const isHome = pathname.endsWith("/") || basename.toLowerCase() === "index.html";
 
   const style = document.createElement("style");
@@ -139,7 +139,7 @@ export function initStoreMaintenance(supabase) {
     if (button.id === "payButton" || button.id === "pay-button") return true;
     if (button.id === "buy-button" || button.hasAttribute("data-maintenance-purchase")) return true;
     const label = (button.innerText || button.textContent || "")
-      .replace(/\\s+/g, " ")
+      .replace(/\s+/g, " ")
       .trim()
       .toLocaleLowerCase("es");
     return /^(comprar oferta|comprar|comprar ahora|comprar usdt|recargar|recargar ahora|pagar|pagar ahora|finalizar compra)$/.test(label);
