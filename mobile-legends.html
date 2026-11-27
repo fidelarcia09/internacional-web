@@ -169,6 +169,16 @@ body{overflow-x:hidden}
 .package.selected{border:1px solid #00c6ff;background:linear-gradient(145deg,#10314a,#071326);box-shadow:0 0 0 1px #00c6ff55,0 0 20px #00c6ff3d,inset 0 0 18px #00c6ff12}
 @media(max-width:700px){.packages{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}.package{height:105px;min-height:105px;max-height:105px;padding:10px}.package strong{font-size:19px}.package .price-usdt{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.package{transition:none}.package:hover{transform:none}}
+
+/* Reserva espacio para la etiqueta roja sin cubrir nombre, importe ni región. */
+.package:has(.reseller-discount-badge){padding:27px 13px 7px!important}
+.package:has(.reseller-discount-badge) strong{max-height:2.1em!important;font-size:18px!important;line-height:1.05!important}
+.package:has(.reseller-discount-badge) .price-usdt{padding-top:3px!important}
+.package:has(.reseller-discount-badge) .region-label{margin-top:1px!important}
+@media(max-width:700px){
+ .package:has(.reseller-discount-badge){padding:27px 10px 7px!important}
+ .package:has(.reseller-discount-badge) strong{font-size:17px!important}
+}
 </style>
 </head>
 <body>
