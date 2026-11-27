@@ -433,12 +433,7 @@
   };
   const skip = "script,style,noscript,svg,code,pre,input,textarea,[contenteditable=true],[data-no-translate],.username,#account-user-code,.order-code,.player-id,.private-data";
   const skipAttributes = "script,style,noscript,svg,code,pre,[contenteditable=true],[data-no-translate],.username,#account-user-code,.order-code,.player-id,.private-data";
-  const isEligible = node => {
-    if (!node || !node.nodeValue || !node.nodeValue.trim() || !node.parentElement) return false;
-    const protectedElement = node.parentElement.closest(skip);
-    if (!protectedElement) return true;
-    return protectedElement.matches(".username") && ["Mi cuenta","Usuario"].includes(node.nodeValue.trim());
-  };
+  const isEligible = node => !!(node && node.nodeValue && node.nodeValue.trim() && node.parentElement && !node.parentElement.closest(skip));
   const preserve = (value) => {
     const leading = value.match(/^\s*/)?.[0] || "";
     const trailing = value.match(/\s*$/)?.[0] || "";
