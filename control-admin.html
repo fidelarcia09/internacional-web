@@ -29,6 +29,7 @@
 .panel{border:1px solid var(--line);border-radius:17px;background:linear-gradient(150deg,#0b203c,#081a35);overflow:hidden}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 17px;border-bottom:1px solid var(--line)}.panel-head h2{font:800 24px var(--display);margin:0;text-transform:uppercase;letter-spacing:.3px}.search{width:min(300px,55vw);padding:10px 12px;border:1px solid #ffffff22;border-radius:10px;background:#050f20;color:white;outline:none;font-size:11px}.search:focus{border-color:var(--cyan)}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:720px}th,td{padding:13px 14px;text-align:left;border-bottom:1px solid #ffffff0d;font-size:10px;white-space:nowrap}th{color:#8294aa;font-size:9px;letter-spacing:.7px;text-transform:uppercase;font-weight:800;background:#ffffff04}td{color:#dce5f1}tr:last-child td{border-bottom:0}.muted{color:#8192a8}.primary{color:#44dfff;font-weight:700}.money{color:#ffd84b;font-weight:800}.status{display:inline-flex;padding:5px 8px;border-radius:20px;background:#ffffff10;color:#cbd5e1;font-size:9px;font-weight:800;text-transform:uppercase}.status.completed,.status.confirmed,.status.delivered{background:#1d9e6b20;color:#69ddb0}.status.pending,.status.submitting,.status.processing{background:#e9ae2820;color:#ffd36b}.status.failed,.status.rejected,.status.cancelled{background:#e84b5720;color:#ff8d98}.action{border:1px solid #00c6ff55;border-radius:8px;background:#00c6ff12;color:#4bdfff;padding:7px 9px;font-size:9px;font-weight:800}.delete-btn{border:1px solid #ff667055;border-radius:8px;background:#ff667012;color:#ff9aa4;padding:7px 9px;font-size:9px;font-weight:800}.empty,.loading,.error{padding:35px 18px;text-align:center;color:#9aabc0;font-size:12px}.error{color:#ff9aa4}.pager{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--line);color:#8294aa;font-size:10px}.pager button{padding:7px 10px;border:1px solid #ffffff22;border-radius:8px;background:#ffffff08;color:#dce5f1}.pager button:disabled{opacity:.35;cursor:not-allowed}
 .recent{margin-top:16px}.settings{padding:20px;line-height:1.7;color:#b7c5d7;font-size:12px}.settings strong{color:#fff}.notice{padding:12px 14px;border:1px solid #ffd00030;border-radius:11px;background:#ffd0000b;color:#d9c98d;font-size:10px;line-height:1.6;margin-top:14px}
 .modal-backdrop{position:fixed;inset:0;z-index:30;display:none;place-items:center;padding:18px;background:#000a;backdrop-filter:blur(7px)}.modal-backdrop.open{display:grid}.modal{width:min(430px,100%);padding:20px;border:1px solid #00c6ff55;border-radius:18px;background:#0b203c;box-shadow:0 20px 70px #000b}.modal h3{font:800 27px var(--display);margin:0 0 5px}.modal p{font-size:11px;color:#9aabc0;line-height:1.6}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:10px;color:#b7c5d7;font-weight:700}.field input{width:100%;padding:12px;border:1px solid #ffffff24;border-radius:10px;background:#050f20;color:#fff;outline:none}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.cancel{border:1px solid #ffffff25;border-radius:9px;padding:10px 13px;background:transparent;color:#c5d0df}.confirm{border:1px solid #00c6ff;border-radius:9px;padding:10px 14px;background:linear-gradient(100deg,#19a9f5,#00d2ff);color:#06162b;font-weight:900}.toast{position:fixed;right:18px;bottom:18px;z-index:40;max-width:min(380px,calc(100% - 36px));padding:12px 15px;border:1px solid #00c6ff55;border-radius:11px;background:#0b2343;color:#dff8ff;font-size:11px;box-shadow:0 8px 35px #0008}
+.status.maintenance{background:#9a6b4326;color:#d7a16b;border:1px solid #a8784555}.status.open{background:#1b8e5526;color:#66dfa0;border:1px solid #249b6255}
 @media(max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.layout{width:94%;margin:15px auto}.top-navigation{margin-bottom:15px}.home-options{min-height:40px;padding:0 11px;font-size:10px}.detail-toolbar{margin:10px 0 12px}.detail-toolbar .refresh{min-height:38px}.heading{align-items:center}.heading h1{font-size:38px}.heading-actions{gap:6px}.back,.refresh{padding:9px 10px;font-size:10px}.sidebar{padding:9px;gap:7px}.nav-btn{min-height:58px;font-size:10px;padding:10px}.nav-btn svg{width:18px;height:18px;flex-basis:18px}.cards{gap:8px}.stat{padding:12px}.stat-value{font-size:25px}.panel-head{align-items:flex-start;flex-direction:column}.search{width:100%}}
 
@@ -70,7 +71,7 @@
 import { supabase } from "./supabase-client.js";
 const $ = s => document.querySelector(s);
 const content = $("#content");
-const titles = {overview:["Resumen general","Actividad y estado de la tienda en tiempo real."],users:["Usuarios","Cuentas registradas, saldo y actividad."],orders:["Ventas","Pedidos de la tienda y su estado."],recharges:["Recargas","Operaciones enviadas al proveedor RechargeGames."],deposits:["Depósitos","Solicitudes de depósito y su estado."],stats:["Estadísticas","Indicadores generales de Gamers Gold TopUp."],settings:["Configuración","Acceso y controles del panel administrativo."]};
+const titles = {overview:["Resumen general","Actividad y estado de la tienda en tiempo real."],users:["Usuarios","Cuentas registradas, saldo y actividad."],orders:["Ventas","Pedidos de la tienda y su estado."],recharges:["Recargas","Operaciones enviadas al proveedor RechargeGames."],deposits:["Depósitos","Solicitudes de depósito y su estado."],stats:["Estadísticas","Indicadores generales de Gamers Gold TopUp."],settings:["Configuración","Acceso y controles del panel administrativo."],maintenance:["Mantenimiento global","Activa o desactiva las compras y nuevas recargas de toda la tienda."]};
 let section="home", page=0, search="", total=0, selectedUser=null, searchTimer=null, balanceMode="increase";
 const menuItems=[
 {key:"overview",title:"Resumen",desc:"Vista general de la actividad y los indicadores principales.",icon:'<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>'},
@@ -79,7 +80,7 @@ const menuItems=[
 {key:"recharges",title:"Recargas",desc:"Historial de recargas procesadas con RechargeGames.",icon:'<path d="M13.5 2 5 13h6l-.5 9L19 11h-6l.5-9Z"/>'},
 {key:"deposits",title:"Depósitos",desc:"Revisa solicitudes y gestiona su resolución.",icon:'<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4M7 3h10"/>'},
 {key:"stats",title:"Estadísticas",desc:"Indicadores y rendimiento general de la tienda.",icon:'<path d="M4 20V11m5 9V5m5 15v-7m5 7V3"/><path d="M2 20h20"/>'},
-
+{key:"maintenance",title:"Mantenimiento",desc:"Bloquea o habilita compras y nuevas recargas en toda la web.",icon:'<path d="M12 3 4.5 6v5.5c0 4.6 3.1 7.8 7.5 9.5 4.4-1.7 7.5-4.9 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/>'}
 ];
 function renderMenu(){return '<div class="menu-grid">'+menuItems.map(x=>'<button class="admin-tile" data-open-section="'+x.key+'"><span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+x.icon+'</svg></span><span class="tile-copy"><strong>'+x.title+'</strong><small>'+x.desc+'</small></span><span class="tile-arrow" aria-hidden="true">↗</span></button>').join('')+'</div>'}
 function showHome(){section="home";page=0;search="";$("#pageTitle").textContent="Control Admin";$("#homeBtn").hidden=true;$("#detailToolbar").hidden=true;content.innerHTML=renderMenu();content.querySelectorAll("[data-open-section]").forEach(b=>b.addEventListener("click",()=>openSection(b.dataset.openSection)));}
@@ -101,9 +102,43 @@ function renderOrders(d){total=d.total||0;const rows=(d.items||[]).map(x=>'<tr><
 function renderRecharges(d){total=d.total||0;const rows=(d.items||[]).map(x=>'<tr><td class="primary">'+esc(x.buyer_ref)+'</td><td>'+esc(x.email||"—")+'</td><td>'+esc(x.product_name)+'</td><td>'+esc(x.game)+'</td><td>'+esc(x.player_id||"—")+'</td><td class="money">'+money(x.price_usdt)+'</td><td>'+status(x.status)+'</td><td>'+date(x.created_at)+'</td></tr>').join("");return '<div class="panel"><div class="panel-head"><h2>Historial de recargas</h2><input class="search" id="searchInput" placeholder="Buscar juego, producto o correo..." value="'+esc(search)+'"></div>'+(rows?table(["Referencia","Usuario","Producto","Juego","Player ID","Precio","Estado","Fecha"],rows):'<div class="empty">No hay recargas registradas.</div>')+pager()+'</div>'}
 function renderDeposits(d){total=d.total||0;const rows=(d.items||[]).map(x=>'<tr><td class="primary">'+esc(x.code)+'</td><td>'+esc(x.email)+'</td><td class="money">'+money(x.amount)+'</td><td>'+esc(x.method)+'</td><td>'+esc(x.reference||"—")+'</td><td>'+status(x.status)+'</td><td>'+date(x.created_at)+'</td><td>'+(x.status==="pending"?'<button class="action deposit-action" data-id="'+esc(x.id)+'" data-approved="true">Confirmar</button> <button class="action deposit-action" data-id="'+esc(x.id)+'" data-approved="false">Rechazar</button>':'—')+'</td></tr>').join("");return '<div class="panel"><div class="panel-head"><h2>Solicitudes de depósito</h2><input class="search" id="searchInput" placeholder="Buscar código o correo..." value="'+esc(search)+'"></div>'+(rows?table(["Código","Usuario","Importe","Método","Referencia","Estado","Fecha","Acción"],rows):'<div class="empty">No hay depósitos registrados.</div>')+pager()+'</div>'}
 function renderSettings(){return '<div class="panel"><div class="panel-head"><h2>Seguridad y configuración</h2></div><div class="settings"><p><strong>Control de acceso:</strong> el panel comprueba el rol <code>admin</code> en Supabase y cada consulta administrativa vuelve a validar ese permiso en el servidor.</p><p><strong>Cuenta administradora:</strong> '+esc((awaitUser?.email)||"Sesión autorizada")+'</p><p><strong>Registro de ajustes:</strong> cada cambio de saldo exige un motivo y genera un movimiento de tipo <code>adjustment</code> con saldo anterior y posterior.</p><div class="notice">La eliminación irreversible solo se permite si la cuenta no conserva saldo, pedidos, depósitos, transacciones ni recompensas. El servidor verifica estas condiciones y bloquea la eliminación cuando existe historial financiero.</div></div></div>'}
+async function renderMaintenanceSettings(){
+  content.innerHTML='<div class="loading">Comprobando el estado global de la tienda...</div>';
+  const {data,error}=await supabase.from("store_maintenance").select("enabled,updated_at").eq("id",true).maybeSingle();
+  if(error||!data)throw error||new Error("No se encontró la configuración de mantenimiento.");
+  const enabled=Boolean(data.enabled);
+  const label=enabled?"Tienda en Mantenimiento":"Tienda Abierta";
+  const statusClass=enabled?"maintenance":"open";
+  const action=enabled?"Desactivar mantenimiento":"Activar mantenimiento";
+  const description=enabled
+    ?"Las compras de juegos, Gift Cards y ofertas, además de las nuevas recargas USDT, están bloqueadas. Los pedidos y verificaciones pendientes siguen funcionando."
+    :"La tienda está disponible. Al activar el mantenimiento se bloquearán en tiempo real las compras y las nuevas recargas.";
+  content.innerHTML='<div class="panel"><div class="panel-head"><h2>Estado de la tienda</h2><span class="status '+statusClass+'">'+(enabled?"ACTIVO":"ABIERTA")+'</span></div><div class="settings"><p><strong>'+label+'</strong></p><p>'+description+'</p><p class="muted">Último cambio: '+date(data.updated_at)+'</p><button class="confirm" id="maintenance-toggle" type="button">'+action+'</button><p class="muted" style="margin-top:12px">El cambio se aplica por Realtime y se envía como notificación interna y push a los usuarios con avisos habilitados.</p></div></div>';
+  $("#maintenance-toggle").addEventListener("click",async event=>{
+    const button=event.currentTarget;
+    if(!confirm(enabled
+      ?"¿Desactivar el mantenimiento y volver a abrir la tienda?"
+      :"¿Activar el mantenimiento y bloquear las nuevas compras y recargas?"))return;
+    button.disabled=true;
+    button.textContent=enabled?"Abriendo tienda...":"Activando mantenimiento...";
+    try{
+      const {data:result,error:toggleError}=await supabase.rpc("set_store_maintenance",{p_enabled:!enabled});
+      if(toggleError)throw toggleError;
+      toast(result?.changed
+        ?(enabled?"Tienda abierta. Se notificó a los usuarios.":"Mantenimiento activado. Se bloquearon las nuevas operaciones y se notificó a los usuarios.")
+        :"La tienda ya tenía ese estado.");
+      await renderMaintenanceSettings();
+    }catch(error){
+      toast(error.message||"No se pudo cambiar el estado de la tienda.");
+      button.disabled=false;
+      button.textContent=action;
+    }
+  });
+}
 let awaitUser=null;
 async function loadSection(){if(section==="home"){showHome();return}const t=titles[section];$("#pageTitle").textContent=t[0];content.innerHTML='<div class="loading">Cargando información segura...</div>';$("#refreshBtn").disabled=true;
 try{if(section==="settings"){content.innerHTML=renderSettings();return}
+if(section==="maintenance"){await renderMaintenanceSettings();return}
 const {data,error}=await supabase.rpc("admin_panel_data",{p_section:section==="overview"?"overview":section==="stats"?"stats":section,p_search:search||null,p_limit:PAGE_SIZE,p_offset:page*PAGE_SIZE});
 if(error)throw error;
 if(section==="overview"||section==="stats")content.innerHTML=renderOverview(data||{});
