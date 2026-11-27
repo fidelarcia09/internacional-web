@@ -8,8 +8,9 @@
   const STORE_KEY = "gg_language";
   const current = () => localStorage.getItem(STORE_KEY) || "es";
   const originals = new WeakMap();
+  const lastTranslated = new WeakMap();
   let observer = null, busy = false, timer = 0, pendingNodes = [];
-  const skip = "script,style,noscript,svg,code,pre,textarea,input,select,option,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
+  const skip = "script,style,noscript,svg,code,pre,textarea,input,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
   const cacheKey = (lang, value) => "ggtr:" + lang + ":" + value;
   const remember = node => { if (!originals.has(node)) originals.set(node, node.nodeValue); return originals.get(node); };
   const eligible = node => {
@@ -48,7 +49,7 @@
     if (busy) { pendingNodes.push(...nodes); return; }
     busy = true;
     const valid = nodes.filter(eligible);
-    const originalsForNodes = valid.map(remember);
+    const originalsForNodes = valid.map(node=>{if(lastTranslated.has(node)&&node.nodeValue!==lastTranslated.get(node))originals.set(node,node.nodeValue);return remember(node);});
     const values = originalsForNodes.map(v=>v.trim());
     const translated = await translateBatch(values,lang);
     if (current() === lang) {
@@ -58,6 +59,7 @@
         const leading = original.match(/^\s*/)?.[0] || "";
         const trailing = original.match(/\s*$/)?.[0] || "";
         node.nodeValue = leading + translated[i] + trailing;
+        lastTranslated.set(node,node.nodeValue);
       });
       if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true});
     }
@@ -79,7 +81,7 @@
       if (observer) observer.disconnect();
       document.querySelectorAll("[data-gg-placeholder],[data-gg-aria-label],[data-gg-title]").forEach(el=>["placeholder","aria-label","title"].forEach(attr=>{const key="data-gg-"+attr;if(el.hasAttribute(key))el.setAttribute(attr,el.getAttribute(key));}));
       const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
-      while(walker.nextNode()){const n=walker.currentNode;if(originals.has(n))n.nodeValue=originals.get(n);}
+      while(walker.nextNode()){const n=walker.currentNode;if(originals.has(n)){n.nodeValue=originals.get(n);lastTranslated.delete(n);}}
       if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true});
       return;
     }
