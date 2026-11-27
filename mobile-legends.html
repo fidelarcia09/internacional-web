@@ -420,7 +420,28 @@ function priceForProduct(product){
 }
 function renderProducts(){
   packages.innerHTML="";
-  const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion);
+  const globalAllowedNames=new Set([
+    "55 diamonds (first top-up bonus)",
+    "165 diamonds (first top-up bonus)",
+    "275 diamonds",
+    "565 diamonds (first top-up bonus)",
+    "878 diamonds",
+    "1928 diamonds",
+    "3688 diamonds",
+    "3946 diamonds",
+    "4480 diamonds",
+    "5100 diamonds",
+    "5358 diamonds",
+    "5618 diamonds",
+    "5876 diamonds",
+    "6238 diamonds",
+    "7541 diamonds",
+    "10700 diamonds",
+    "12189 diamonds",
+    "12976 diamonds"
+  ]);
+  const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion)
+    .filter(p=>selectedRegion!=="Global"||globalAllowedNames.has(String(p.name||"").trim().replace(/\\s+/g," ").toLowerCase()));
   if(!selectedRegion){
     packages.innerHTML='<div class="catalog-state">Selecciona una región para cargar sus productos.</div>';
     return;
@@ -438,7 +459,10 @@ function renderProducts(){
   const activeGroup=selectedCategory==="currency"?currencyGroup:extraGroup;
    packages.append(activeGroup);
    const activeContainer=activeGroup.querySelector(".packages");
-  const currencyProducts=visible.filter(isCurrencyPack).sort((a,b)=>productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0));
+  const currencyProducts=visible.filter(isCurrencyPack);
+  if(selectedRegion!=="Global"){
+    currencyProducts.sort((a,b)=>productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0));
+  }
   const extraProducts=visible.filter(p=>!isCurrencyPack(p)).sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"es"));
   function renderGroup(list,container){
     if(!list.length){
