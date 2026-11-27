@@ -75,6 +75,7 @@
     else document.documentElement.dir = "ltr";
     if (lang === "es") {
       if (observer) observer.disconnect();
+      document.querySelectorAll("[data-gg-placeholder],[data-gg-aria-label],[data-gg-title]").forEach(el=>["placeholder","aria-label","title"].forEach(attr=>{const key="data-gg-"+attr;if(el.hasAttribute(key))el.setAttribute(attr,el.getAttribute(key));}));
       const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
       while(walker.nextNode()){const n=walker.currentNode;if(originals.has(n))n.nodeValue=originals.get(n);}
       if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true});
