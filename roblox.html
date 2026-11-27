@@ -361,6 +361,11 @@ function renderProducts(){
       const button=document.createElement("button");button.type="button";button.className="package"+(selectedProduct?.productId===product.productId?" selected":"");button.dataset.productId=product.productId;
       const icon=product.type==="GIFT_CARD"?"🎁":"R$";
       button.innerHTML=(resellerDiscountPercent>0?'<span class="reseller-discount-badge">-'+resellerDiscountPercent+'%</span>':'')+'<span class="diamond">'+icon+'</span><strong>'+safeText(product.name)+'</strong><small class="price-usdt">'+(typeof product.priceUSDT==="number"?priceForProduct(product).toFixed(2)+" USDT":"Precio no disponible")+'</small><small class="region-label">'+safeText(product.region)+'</small>';
+      const productTitle=button.querySelector("strong");
+      if(productTitle){
+        const titleLength=productTitle.textContent.trim().length;
+        productTitle.style.fontSize=titleLength>36?"13px":titleLength>29?"14px":titleLength>22?"16px":"";
+      }
       button.addEventListener("click",()=>{selectedProduct=product;clearValidation();buyButton.disabled=false;packages.querySelectorAll(".package").forEach(el=>el.classList.toggle("selected",el===button));updateRequirements();});
       container.append(button);
     });
