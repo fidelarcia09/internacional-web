@@ -290,6 +290,25 @@ body{overflow-x:hidden}
  .package:has(.reseller-discount-badge) strong{font-size:13px!important}
 }
 
+
+/* Refinamiento final: tipografía más legible y mejor aprovechamiento del espacio. */
+.package:has(.reseller-discount-badge){padding:25px 11px 7px!important;gap:3px!important;justify-content:flex-start!important}
+.package:has(.reseller-discount-badge) strong{font-size:17px!important;line-height:1.08!important;max-height:2.16em!important;letter-spacing:-.15px!important}
+.package:has(.reseller-discount-badge) .price-line{gap:3px!important;padding:0!important;margin:0!important}
+.package:has(.reseller-discount-badge) .price-before{font-size:10px!important;line-height:1.15!important}
+.package:has(.reseller-discount-badge) .price-line .price-current{padding:3px 8px!important;font-size:12px!important;line-height:1.15!important;border-radius:8px!important}
+.package:has(.reseller-discount-badge) .region-label{font-size:11px!important;line-height:1.15!important;margin:0!important}
+@media(max-width:700px){
+ .package:has(.reseller-discount-badge){padding:25px 10px 6px!important;gap:3px!important}
+ .package:has(.reseller-discount-badge) strong{font-size:16px!important;line-height:1.08!important;max-height:2.16em!important}
+ .package:has(.reseller-discount-badge) .price-before{font-size:9px!important}
+ .package:has(.reseller-discount-badge) .price-line .price-current{padding:3px 7px!important;font-size:11px!important}
+ .package:has(.reseller-discount-badge) .region-label{font-size:10px!important}
+}
+@media(max-width:370px){
+ .package:has(.reseller-discount-badge) strong{font-size:15px!important}
+}
+
 </style>
 </head>
 <body>
