@@ -128,5 +128,6 @@ $("#refreshBtn").addEventListener("click",loadSection);
 async function init(){const {data:{session},error}=await supabase.auth.getSession();if(error||!session?.user){location.replace("login.html");return}awaitUser=session.user;const {data:roles,error:roleError}=await supabase.from("user_roles").select("role_id").eq("user_id",session.user.id);if(roleError||!roles?.some(r=>r.role_id==="admin")){document.body.innerHTML='<main style="max-width:520px;margin:15vh auto;padding:24px;text-align:center;color:#fff;font-family:Inter,sans-serif"><h1>Acceso restringido</h1><p>Esta cuenta no tiene permisos de administrador.</p><a href="cuenta.html" style="color:#00c6ff">Volver a mi cuenta</a></main>';return}showHome()}
 init().catch(e=>{console.error(e);content.innerHTML='<div class="error">No se pudo iniciar Control Admin. '+esc(e.message||"Comprueba la conexión y vuelve a intentarlo.")+' <button class="action" id="retryInit">Reintentar</button></div>';$("#retryInit")?.addEventListener("click",()=>{content.innerHTML='<div class="loading">Cargando panel administrativo...</div>';init().catch(err=>{content.innerHTML='<div class="error">No se pudo iniciar Control Admin. '+esc(err.message||"Comprueba la conexión.")+'</div>'})})});
 </script>
+<script src="idioma.js" defer></script>
 </body>
 </html>
