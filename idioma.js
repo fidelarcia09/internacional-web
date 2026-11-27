@@ -19,30 +19,45 @@
     const value = node.nodeValue.trim();
     return value.length > 1 && !/^[\d\s.,:%$€£¥₽+\-_/()#]+$/.test(value);
   };
+  async function requestTranslation(value, lang) {
+    const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl="+encodeURIComponent(lang)+"&dt=t&q="+encodeURIComponent(value);
+    for (let attempt=0;attempt<2;attempt++) {
+      try {
+        const response = await fetch(url, {cache:"no-store"});
+        if (!response.ok) continue;
+        const data = await response.json();
+        const result = (data[0] || []).map(part => part[0] || "").join("").trim();
+        if (result) return result;
+      } catch (_) { /* Reintenta una vez antes de conservar el original. */ }
+    }
+    return value;
+  }
   async function translateBatch(values, lang) {
     const missing = [...new Set(values)].filter(v => localStorage.getItem(cacheKey(lang,v)) === null);
-    for (let i=0;i<missing.length;i+=12) {
-      const chunk = missing.slice(i,i+12);
+    for (let i=0;i<missing.length;i+=5) {
+      const chunk = missing.slice(i,i+5);
       const marker = " ⟪GGSEP⟫ ";
+      let pieces = [];
       try {
         const joined = chunk.join(marker);
         const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl="+encodeURIComponent(lang)+"&dt=t&q="+encodeURIComponent(joined);
-        const response = await fetch(url, {cache:"force-cache"});
+        const response = await fetch(url, {cache:"no-store"});
         if (!response.ok) throw new Error("translation unavailable");
         const data = await response.json();
         const translated = (data[0] || []).map(part => part[0] || "").join("");
-        const pieces = translated.split(marker);
-        if (pieces.length === chunk.length) chunk.forEach((v,n)=>localStorage.setItem(cacheKey(lang,v),pieces[n]));
-        else {
-          for (const v of chunk) {
-            const single = await fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=es&tl="+encodeURIComponent(lang)+"&dt=t&q="+encodeURIComponent(v));
-            const one = await single.json();
-            localStorage.setItem(cacheKey(lang,v),(one[0]||[]).map(part=>part[0]||"").join("") || v);
-          }
+        pieces = translated.split(marker);
+        if (pieces.length !== chunk.length || pieces.some(value=>!value.trim())) pieces = [];
+      } catch (_) { pieces = []; }
+      if (pieces.length === chunk.length) {
+        chunk.forEach((value,index)=>localStorage.setItem(cacheKey(lang,value),pieces[index].trim()));
+      } else {
+        for (const value of chunk) {
+          const result = await requestTranslation(value,lang);
+          try { localStorage.setItem(cacheKey(lang,value),result); } catch (_) {}
         }
-      } catch (_) { /* Si el servicio no responde, el texto original permanece visible. */ }
+      }
     }
-    return values.map(v => localStorage.getItem(cacheKey(lang,v)) || v);
+    return values.map(value => localStorage.getItem(cacheKey(lang,value)) || value);
   }
   async function translateNodes(nodes, lang) {
     if (lang === "es" || !nodes.length) return;
@@ -90,17 +105,28 @@
     translateNodes(collect(),lang);
     const title = document.querySelector("title");
     if (title) translateNodes([title.firstChild].filter(Boolean),lang);
-    document.querySelectorAll("[placeholder],[aria-label],[title]").forEach(el=>{
+    translateAttributes(document.body,lang);
+  }
+  function translateAttributes(root,lang) {
+    if (!root || lang === "es") return;
+    const selector = "[placeholder],[aria-label],[title]";
+    const elements = [];
+    if (root.nodeType === Node.ELEMENT_NODE && root.matches(selector)) elements.push(root);
+    if (root.querySelectorAll) elements.push(...root.querySelectorAll(selector));
+    elements.forEach(el=>{
+      if (el.closest(skip)) return;
       ["placeholder","aria-label","title"].forEach(attr=>{
-        if(!el.hasAttribute("data-gg-"+attr))el.setAttribute("data-gg-"+attr,el.getAttribute(attr));
-        const original=el.getAttribute("data-gg-"+attr);
-        if(original && !el.closest(skip)) translateAttribute(el,attr,original,lang);
+        if(!el.hasAttribute(attr)) return;
+        const key="data-gg-"+attr;
+        if(!el.hasAttribute(key))el.setAttribute(key,el.getAttribute(attr));
+        const original=el.getAttribute(key);
+        if(original) translateAttribute(el,attr,original,lang);
       });
     });
   }
   async function translateAttribute(el,attr,value,lang){
     const result=(await translateBatch([value],lang))[0];
-    if(current()===lang)el.setAttribute(attr,result);
+    if(current()===lang && el.isConnected && el.getAttribute(attr)!==result)el.setAttribute(attr,result);
   }
   function openPicker() {
     if(document.getElementById("ggLanguageModal")) return;
@@ -137,12 +163,24 @@
       if(current()==="es")return;
       const added=[];
       records.forEach(record=>{
-        if(record.type==="characterData")added.push(record.target);
-        record.addedNodes.forEach(node=>{if(node.nodeType===Node.TEXT_NODE)added.push(node);else if(node.nodeType===Node.ELEMENT_NODE)added.push(...collect(node));});
+        if(record.type==="characterData") added.push(record.target);
+        if(record.type==="attributes") {
+          const attr=record.attributeName, el=record.target, key="data-gg-"+attr;
+          if(el.hasAttribute(attr) && !el.hasAttribute(key)) el.setAttribute(key,el.getAttribute(attr));
+          const original=el.getAttribute(key);
+          if(original && !el.closest(skip)) translateAttribute(el,attr,original,current());
+        }
+        record.addedNodes.forEach(node=>{
+          if(node.nodeType===Node.TEXT_NODE) added.push(node);
+          else if(node.nodeType===Node.ELEMENT_NODE) {
+            added.push(...collect(node));
+            translateAttributes(node,current());
+          }
+        });
       });
       clearTimeout(timer);timer=setTimeout(()=>translateNodes(added, current()),100);
     });
-    observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+    observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["placeholder","aria-label","title"]});
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});else start();
   window.GGLanguage={get:current,set:lang=>{if(LANGS.some(x=>x[0]===lang)){localStorage.setItem(STORE_KEY,lang);applyLanguage(lang);}},open:openPicker,languages:LANGS};
