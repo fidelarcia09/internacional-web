@@ -440,8 +440,12 @@ function renderProducts(){
     "12189 diamonds",
     "12976 diamonds"
   ]);
-  const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion)
-    .filter(p=>selectedRegion!=="Global"||globalAllowedNames.has(String(p.name||"").trim().replace(/\s+/g," ").toLowerCase()));
+  const regionProducts=products.filter(p=>!selectedRegion||p.region===selectedRegion);
+  // La lista permitida de Global solo limita las recargas de diamantes.
+  // Las ofertas del catálogo deben seguir disponibles en su propia pestaña.
+  const visible=selectedRegion==="Global"&&selectedCategory==="currency"
+    ?regionProducts.filter(p=>globalAllowedNames.has(String(p.name||"").trim().replace(/\s+/g," ").toLowerCase()))
+    :regionProducts;
   if(!selectedRegion){
     packages.innerHTML='<div class="catalog-state">Selecciona una región para cargar sus productos.</div>';
     return;
