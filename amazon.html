@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050b18">
+<meta name="description" content="Compra tarjetas regalo Amazon por región en Gamers Gold Top-Up. Recibe tu código por correo electrónico.">
+<title>Amazon Gift Cards — Gamers Gold Top-Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050b18;--panel:#081a35;--cyan:#00c6ff;--blue:#007bff;--white:#f5f4f1;--muted:#92949c;--line:#ffffff18;--font:'Inter',sans-serif;--display:'Barlow Condensed',sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;padding:16px 0 94px;background:radial-gradient(ellipse at 50% 8%,#00c6ff19,transparent 43%),var(--bg);color:var(--white);font-family:var(--font)}a{color:inherit;text-decoration:none}button,input,select{font:inherit}
+.topbar{width:min(1100px,calc(100% - 16px));height:62px;margin:0 auto 14px;display:flex;align-items:center;gap:12px}.back{height:42px;display:inline-flex;align-items:center;gap:8px;padding:0 13px;border:1px solid #ffffff25;border-radius:13px;color:#c5c8d0;font-size:12px;font-weight:800;white-space:nowrap}.back svg{width:18px;height:18px;fill:none;stroke:var(--cyan);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.balance{margin-left:auto;padding:9px 12px;border:1px solid #007bff88;border-radius:12px;background:#08090c9c;box-shadow:0 5px 18px #0007;font-size:12px;font-weight:850;white-space:nowrap;backdrop-filter:blur(8px)}.balance small{display:none}.brand{display:flex;align-items:center;gap:8px;min-width:0}.brand-symbol{color:var(--cyan);font-size:25px;filter:drop-shadow(0 0 8px #00c6ff77)}.brand-name{font:800 22px var(--display);white-space:nowrap}.brand-name span{color:var(--cyan)}
+main{width:min(1100px,calc(100% - 16px));margin:0 auto}.hero{position:relative;min-height:220px;overflow:hidden;display:flex;align-items:center;padding:28px;border:1px solid #00c6ff80;border-radius:22px;background:radial-gradient(circle at 83% 45%,#174a75 0,#12243a 30%,transparent 59%),linear-gradient(115deg,#081a35,#050b18 72%);box-shadow:0 0 25px #00c6ff22,inset 0 0 30px #00c6ff0c}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,#ffffff0b 50%,transparent 70%);pointer-events:none}.hero-copy{position:relative;z-index:1;max-width:65%}.kicker{margin:0 0 8px;color:var(--cyan);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.hero h1{margin:0;font:900 clamp(44px,8vw,76px)/.88 var(--display);letter-spacing:-1px;text-shadow:0 4px 18px #000}.hero p:last-child{margin:12px 0 0;color:#c3d9e8;font-size:clamp(12px,2vw,16px);font-weight:600}.steam-mark{position:absolute;right:6%;top:50%;transform:translateY(-50%);width:clamp(115px,21vw,190px);height:clamp(115px,21vw,190px);display:grid;place-items:center;border:2px solid #dce8f155;border-radius:50%;background:radial-gradient(circle,#263d51 0,#111e2b 66%,#08101b 100%);box-shadow:0 0 0 9px #00c6ff0c,0 0 36px #00c6ff45;color:#f5f4f1;font:900 clamp(25px,5vw,43px) var(--display);letter-spacing:-1px}
+.panel{margin-top:13px;padding:17px;border:1px solid #00c6ff70;border-radius:19px;background:linear-gradient(145deg,#0b1b32,#050b18 80%);box-shadow:0 0 18px #00c6ff14,inset 0 0 20px #00c6ff08}.panel-title{display:flex;align-items:center;gap:10px;margin:0 0 13px;font-size:17px;font-weight:850}.panel-title svg{width:25px;height:25px;fill:none;stroke:var(--cyan);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.field{display:block;width:100%;height:51px;padding:0 14px;border:1px solid #00a5ff;border-radius:13px;outline:none;background:#050b18;color:#fff;font-size:14px;font-weight:600;box-shadow:inset 0 0 12px #0007}.field:focus{border-color:var(--cyan);box-shadow:0 0 0 2px #00c6ff25,0 0 15px #00c6ff25}.field::placeholder{color:#777f8c}.hint{margin:8px 0 0;color:var(--muted);font-size:11px;line-height:1.5}.region-wrap{position:relative}.region-wrap:after{content:"";position:absolute;right:17px;top:50%;width:9px;height:9px;border-right:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:translateY(-70%) rotate(45deg);pointer-events:none}.region-select{appearance:none;padding-right:43px;cursor:pointer}.region-select option{background:#081a35;color:#fff}.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.product{appearance:none;position:relative;min-width:0;min-height:112px;padding:16px 13px;border:1px solid #00c6ff68;border-radius:15px;background:linear-gradient(145deg,#0c2340,#050b18);color:var(--white);text-align:left;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}.product:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 0 18px #00c6ff30}.product.selected{border-color:var(--cyan);background:linear-gradient(145deg,#10314a,#071326);box-shadow:0 0 0 1px #00c6ff55,0 0 20px #00c6ff3d,inset 0 0 18px #00c6ff12}.product .value{display:block;font:800 27px var(--display);color:#f5f4f1}.product .label{display:block;margin-top:4px;color:#aeb9c6;font-size:11px}.product .price{display:block;margin-top:12px;color:var(--cyan);font-size:14px;font-weight:900}.product .unit{font-size:10px;color:var(--muted);font-weight:700}.state{padding:20px;border:1px dashed #00c6ff55;border-radius:13px;color:#aab5c2;font-size:13px;text-align:center;grid-column:1/-1}.summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:15px 0 12px;padding:13px 14px;border:1px solid #ffffff16;border-radius:12px;background:#050b18}.summary span{color:var(--muted);font-size:12px}.summary strong{color:var(--cyan);font-size:16px}.buy{width:100%;min-height:53px;border:1px solid #37dfff;border-radius:14px;background:linear-gradient(100deg,#007bff,#00c6ff);color:#03101c;font-size:15px;font-weight:900;letter-spacing:.2px;box-shadow:0 0 20px #00c6ff30;cursor:pointer;transition:filter .2s,transform .2s}.buy:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}.buy:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.message{display:none;margin-top:12px;padding:12px 14px;border:1px solid #00c6ff66;border-radius:12px;background:#071a2d;color:#d9f6ff;font-size:12px;line-height:1.5}.message.show{display:block}.footnote{margin:12px 2px 0;color:#858e9b;font-size:10px;line-height:1.5}
+.mobile-nav{position:fixed!important;z-index:10!important;left:0!important;right:0!important;bottom:0!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;height:76px!important;padding:5px 1%!important;padding-bottom:env(safe-area-inset-bottom)!important;align-items:center!important;background:#101217f5!important;border-top:1px solid rgba(255,255,255,.09)!important;backdrop-filter:blur(15px)!important}.mobile-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;height:60px;color:#777}.mobile-nav svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.mobile-nav small{font-size:8px;letter-spacing:.2px}.mobile-nav a.current{color:#24efff}.mobile-nav a.current svg{filter:drop-shadow(0 0 4px #00c6ff) drop-shadow(0 0 9px #00d6ff73)}
+@media(max-width:700px){.topbar{width:calc(100% - 18px);gap:8px}.brand-name{font-size:19px}.back{padding:0 10px}.hero{min-height:184px;padding:20px;border-radius:18px}.hero-copy{max-width:69%}.steam-mark{right:4%;width:105px;height:105px;font-size:25px}.panel{padding:13px;border-radius:16px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.product{min-height:105px;padding:13px 10px}.product .value{font-size:24px}.product .price{font-size:13px}}
+@media(max-width:360px){.hero-copy{max-width:72%}.hero h1{font-size:40px}.steam-mark{width:84px;height:84px;font-size:21px}.brand-name{font-size:17px}.back{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+<style id="GG_HOME_BOTTOM_NAV_MATCH">
+@media(max-width:620px){
+.mobile-nav{position:fixed!important;z-index:10000!important;inset:auto 0 0 0!important;top:auto!important;width:100%!important;margin:0!important;box-sizing:border-box!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:0!important;height:calc(64px + env(safe-area-inset-bottom,0px))!important;padding:3px 1% env(safe-area-inset-bottom,0px)!important;align-items:center!important;justify-content:initial!important;background:#050B18!important;background-color:#050B18!important;background-image:none!important;opacity:1!important;border:0!important;border-top:1px solid rgba(40,228,255,.16)!important;border-bottom:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;isolation:isolate!important;transform:none!important;animation:none!important;transition:none!important}
+.mobile-nav:before{content:""!important;position:absolute!important;z-index:0!important;top:5px!important;left:1%!important;width:19.6%!important;height:39px!important;border:0!important;border-radius:50%!important;outline:0!important;background:radial-gradient(ellipse at center,rgba(0,184,255,.34) 0%,rgba(0,184,255,.15) 42%,rgba(0,184,255,0) 76%)!important;box-shadow:none!important;filter:blur(2px)!important;transform:translateX(calc(var(--active-index,0)*100%))!important;transition:transform .62s cubic-bezier(.22,1.38,.42,1)!important;pointer-events:none!important}
+.mobile-nav a{position:relative!important;z-index:1!important;isolation:isolate!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:1px!important;min-width:0!important;height:50px!important;color:#858585!important;transition:color .22s ease!important}
+.mobile-nav svg{width:20px!important;height:20px!important;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important;filter:none!important}
+.mobile-nav small{font-size:7.5px!important;letter-spacing:.2px!important;color:inherit!important;text-shadow:none!important}
+.mobile-nav a:hover,.mobile-nav a.current{color:#28e4ff!important}
+.mobile-nav a.current svg{stroke:#28e4ff!important;filter:drop-shadow(0 0 4px rgba(40,228,255,.55))!important}
+.mobile-nav a.current small{color:#28e4ff!important;text-shadow:0 0 8px rgba(0,199,255,.35)!important}
+}
+@media(prefers-reduced-motion:reduce){.mobile-nav:before{transition:none!important}.mobile-nav a{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<a class="back" href="tienda.html" aria-label="Atrás"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>Atrás</span></a>
+<div class="balance">Amazon</div>
+</header>
+<main>
+<section class="panel">
+<h2 class="panel-title"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg> 1. Selecciona la región</h2>
+<div class="region-wrap"><select id="region-select" class="field region-select" aria-label="Región de la tarjeta Amazon"><option value="">Cargando regiones...</option></select></div>
+</section>
+
+<section class="panel">
+<h2 class="panel-title"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> 2. Correo de entrega</h2>
+<input id="delivery-email" class="field" type="email" inputmode="email" autocomplete="email" maxlength="254" placeholder="tucorreo@ejemplo.com" aria-label="Correo electrónico de entrega">
+
+</section>
+
+<section class="panel">
+<h2 class="panel-title"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h4M7 16h6"/></svg> 3. Elige el importe</h2>
+<div id="products" class="products"><div class="state">Cargando tarjetas Amazon disponibles...</div></div>
+<div class="summary"><span id="selected-label">Selecciona una tarjeta</span><strong id="selected-price">—</strong></div>
+<button id="buy-button" class="buy" type="button" disabled>Recargar</button>
+<div id="message" class="message" role="status" aria-live="polite"></div>
+</section>
+</main>
+
+<nav class="mobile-nav" aria-label="Navegación inferior" style="--active-index:1">
+<a href="index.html" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><small>Inicio</small></a>
+<a href="tienda.html" aria-label="Tienda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.5 11h-15L3 9Z"/><path d="M7 9 9 4h6l2 5M9 13v3m6-3v3"/></svg><small>Tienda</small></a>
+<a href="revendedores.html" aria-label="Revendedores"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.4-5 6-5s6 1.7 6 5m1-10 2 2 4-4m-5 9h5"/></svg><small>Revendedores</small></a>
+<a href="soporte.html" aria-label="Soporte"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 12H2v6h4v-6H4Zm16 0h2v6h-4v-6h2ZM18 19c-1 2-3 3-6 3"/></svg><small>Soporte</small></a>
+<a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
+</nav>
+
+<script type="module">
+import { supabase, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-client.js";
+
+const { data: { user }, error: authError } = await supabase.auth.getUser();
+if (authError || !user) { window.location.replace("login.html"); throw new Error("auth_required"); }
+const { data: { session: initialSession }, error: sessionError } = await supabase.auth.getSession();
+if (sessionError || !initialSession?.access_token || initialSession.user?.id !== user.id) { window.location.replace("login.html"); throw new Error("session_unavailable"); }
+let activeSession = initialSession;
+supabase.auth.onAuthStateChange((_event, session) => { activeSession = session; if (!session) window.location.replace("login.html"); });
+
+const CATALOG_URL = SUPABASE_URL + "/functions/v1/public-game-catalog";
+const regionSelect = document.getElementById("region-select");
+const emailInput = document.getElementById("delivery-email");
+const productsNode = document.getElementById("products");
+const buyButton = document.getElementById("buy-button");
+const message = document.getElementById("message");
+const selectedLabel = document.getElementById("selected-label");
+const selectedPrice = document.getElementById("selected-price");
+let products = [];
+let selectedRegion = "";
+let selectedProduct = null;
+let resellerDiscountPercent = 0;
+let catalogLoaded = false;
+let emailDeliveryReady = false;
+let purchaseInProgress = false;
+
+function safe(value) { return String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch])); }
+function notify(text) { message.textContent = text; message.classList.add("show"); }
+function clearMessage() { message.textContent = ""; message.classList.remove("show"); }
+function priceFor(product) {
+ const base = Number(product?.priceUSDT);
+ if (!Number.isFinite(base) || base <= 0) return 0;
+ return resellerDiscountPercent > 0 ? Math.round(base * (1 - resellerDiscountPercent / 100) * 100) / 100 : base;
+}
+function regionName(slug) {
+ const names = {
+  "global":"Global","cis":"CIS","argentina":"Argentina","brazil":"Brasil","chile":"Chile","colombia":"Colombia",
+  "costa-rica":"Costa Rica","eu":"Europa (EUR)","hong-kong":"Hong Kong","india":"India","indonesia":"Indonesia",
+  "malaysia":"Malasia","mexico":"México","peru":"Perú","philippines":"Filipinas","qatar":"Qatar",
+  "singapore":"Singapur","south-africa":"Sudáfrica","south-korea":"Corea del Sur","taiwan":"Taiwán",
+  "thailand":"Tailandia","turkey":"Turquía","uae":"Emiratos Árabes Unidos","united-states":"Estados Unidos (USD)",
+  "uruguay":"Uruguay","vietnam":"Vietnam"
+ };
+ return names[String(slug || "").toLowerCase()] || String(slug || "Global").replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase());
+}
+function updateSelection() {
+ const email = emailInput.value.trim();
+ const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+ const price = selectedProduct ? priceFor(selectedProduct) : 0;
+ selectedLabel.textContent = selectedProduct ? selectedProduct.name + " · " + regionName(selectedProduct.region) : "Selecciona una tarjeta";
+ selectedPrice.textContent = price > 0 ? price.toFixed(2) + " USDT" : "—";
+ buyButton.disabled = !catalogLoaded || !emailDeliveryReady || !selectedProduct || !validEmail || price <= 0 || purchaseInProgress;
+}
+function renderProducts() {
+ productsNode.replaceChildren();
+ const visible = products.filter(p => p.region === selectedRegion).sort((a,b) => {
+  const amountA = Number(a.amount) || Number(String(a.name).match(/[\d,.]+/)?.[0]?.replace(",",".")) || 0;
+  const amountB = Number(b.amount) || Number(String(b.name).match(/[\d,.]+/)?.[0]?.replace(",",".")) || 0;
+  return amountA - amountB || String(a.name).localeCompare(String(b.name),"es");
+ });
+ if (!visible.length) {
+  productsNode.innerHTML = '<div class="state">No hay tarjetas disponibles para esta región en este momento.</div>';
+  selectedProduct = null; updateSelection(); return;
+ }
+ visible.forEach(product => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "product" + (selectedProduct?.productId === product.productId ? " selected" : "");
+  const amount = product.amount ? String(product.amount) : product.name;
+  const unit = product.unit || "";
+  button.innerHTML = '<span class="value">' + safe(amount) + (unit ? ' <small class="unit">' + safe(unit) + '</small>' : '') + '</span><span class="label">' + safe(product.name) + '</span><span class="price">' + priceFor(product).toFixed(2) + ' USDT</span>';
+  button.addEventListener("click", () => {
+   selectedProduct = product;
+   productsNode.querySelectorAll(".product").forEach(node => node.classList.toggle("selected", node === button));
+   clearMessage(); updateSelection();
+  });
+  productsNode.append(button);
+ });
+ updateSelection();
+}
+function renderRegions() {
+ const regions = [...new Set(products.map(p => String(p.region || "global")))];
+ const priority = ["global","united-states","eu","cis"];
+ regions.sort((a,b) => {
+  const ia = priority.indexOf(a), ib = priority.indexOf(b);
+  if (ia >= 0 || ib >= 0) return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+  return regionName(a).localeCompare(regionName(b),"es");
+ });
+ regionSelect.innerHTML = regions.map(region => '<option value="' + safe(region) + '">' + safe(regionName(region)) + '</option>').join("");
+ selectedRegion = regions.includes("global") ? "global" : (regions[0] || "");
+ regionSelect.value = selectedRegion;
+ regionSelect.addEventListener("change", () => {
+  selectedRegion = regionSelect.value; selectedProduct = null; clearMessage(); renderProducts();
+ });
+ renderProducts();
+}
+async function loadCatalog() {
+ try {
+  const response = await fetch(CATALOG_URL + "?kind=giftcard&game=amazon", {
+   method:"GET",
+   headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+(activeSession?.access_token || ""),Accept:"application/json"}
+  });
+  const data = await response.json();
+  if (!response.ok || !data?.ok) throw new Error(data?.error || "catalog_unavailable");
+  resellerDiscountPercent = Number(data.reseller?.discountPercent) || 0;
+  emailDeliveryReady = data.emailDeliveryReady === true;
+  products = Array.isArray(data.products) ? data.products.filter(p => p.type === "GIFTCARD" && Number(p.priceUSDT) > 0 && p.currency === "USDT") : [];
+  if (!products.length) throw new Error("No hay tarjetas Amazon disponibles en el catálogo.");
+  catalogLoaded = true;
+  renderRegions();
+ } catch(error) {
+  console.error("AMAZON_GIFTCARD_CATALOG_FAILED",error);
+  regionSelect.innerHTML = '<option value="">No se pudieron cargar las regiones</option>';
+  productsNode.innerHTML = '<div class="state">No pudimos cargar las tarjetas Amazon. Comprueba tu conexión e inténtalo de nuevo.</div>';
+  notify(error instanceof Error ? error.message : "No se pudo cargar el catálogo.");
+ }
+ updateSelection();
+}
+function pendingKey(product,email) { return "gg-giftcard-pending:"+user.id+":"+product.productId+":"+email.toLowerCase(); }
+function getClientReference(product,email) {
+ const key = pendingKey(product,email);
+ let ref = localStorage.getItem(key);
+ if (!ref) { ref = "GG-"+crypto.randomUUID().replace(/-/g,""); localStorage.setItem(key,ref); }
+ return ref;
+}
+function clearClientReference(product,email) { localStorage.removeItem(pendingKey(product,email)); }
+
+emailInput.addEventListener("input", updateSelection);
+buyButton.addEventListener("click", async () => {
+ if (purchaseInProgress || !selectedProduct) return;
+ if (!emailDeliveryReady) { notify("La entrega por correo todavía está en configuración. No se realizó ningún cobro."); return; }
+ const email = emailInput.value.trim().toLowerCase();
+ if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { notify("Escribe un correo válido para recibir el código."); emailInput.focus(); return; }
+ const amount = priceFor(selectedProduct);
+ if (!amount) { notify("No se pudo comprobar el precio. Actualiza el catálogo."); return; }
+ const confirmed = window.confirm("¿Confirmas "+selectedProduct.name+" ("+regionName(selectedProduct.region)+") por "+amount.toFixed(2)+" USDT? Se descontará de tu saldo y el código se enviará al correo indicado.");
+ if (!confirmed) return;
+ purchaseInProgress = true; updateSelection(); buyButton.textContent = "Procesando pedido…"; notify("Creando el pedido de forma segura. No cierres esta página.");
+ try {
+  const token = activeSession?.access_token;
+  if (!token) throw new Error("Tu sesión ya no está activa. Inicia sesión de nuevo.");
+  const client_reference = getClientReference(selectedProduct,email);
+  const response = await fetch(SUPABASE_URL+"/functions/v1/rechargegames-comprar",{
+   method:"POST",
+   headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+token,"Content-Type":"application/json",Accept:"application/json"},
+   body:JSON.stringify({
+    product_key:selectedProduct.productId,game:selectedProduct.game,delivery_email:email,
+    client_reference,expected_amount:amount
+   })
+  });
+  const data = await response.json().catch(()=>({}));
+  if (response.status===402 && data.error==="insufficient_usdt_balance") {
+   clearClientReference(selectedProduct,email); notify("Saldo USDT insuficiente. No se realizó el pedido.");
+  } else if (data.refunded===true) { clearClientReference(selectedProduct,email); window.location.assign("checkout.html?order="+encodeURIComponent(data.order?.code||"")+"&received=0"); return; } else if (data.error==="giftcard_email_not_configured") {
+   notify("La entrega por correo todavía está en configuración. No se realizó ningún cobro.");
+  } else if (response.status===202 || data.error==="provider_submission_pending_confirmation") { window.location.assign("checkout.html?order="+encodeURIComponent(data.order?.code||"")+"&received=0"); return; } else if (!response.ok || !data.ok) {
+   throw new Error(data.error==="price_changed"?"El precio cambió. Actualiza el catálogo y vuelve a confirmar.":data.error||"No se pudo crear el pedido.");
+  } else { const status=data.order?.status||"pending"; if(["completed","delivered","failed"].includes(status)) clearClientReference(selectedProduct,email); window.location.assign("checkout.html?order="+encodeURIComponent(data.order?.code||"")+"&received=1"); return; }
+ } catch(error) {
+  notify(error instanceof Error?error.message:"Error al procesar el pedido. Si no sabes si se creó, consulta soporte antes de reintentar.");
+ } finally {
+  purchaseInProgress=false; buyButton.textContent="Recargar"; updateSelection();
+ }
+});
+loadCatalog();
+</script>
+<script id="GG_HOME_BOTTOM_NAV_BEHAVIOR">
+(()=> {
+ const nav=document.querySelector(".mobile-nav");if(!nav)return;
+ const links=[...nav.querySelectorAll("a")];
+ const file=location.pathname.split("/").pop()||"index.html";
+ const giftCardPage=/^(steam|google-play|playstation|xbox|nintendo)\.html$/i.test(file);
+ let active=giftCardPage?1:links.findIndex(a=>(a.getAttribute("href")||"").split("#")[0]===file);
+ if(active<0)active=0;
+ const select=index=>{nav.style.setProperty("--active-index",index);links.forEach((a,i)=>{a.classList.toggle("current",i===index);if(i===index)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")})};
+ select(active);
+ links.forEach((a,index)=>a.addEventListener("click",event=>{
+  if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  const href=a.getAttribute("href")||"";
+  if(a.hasAttribute("download")||a.target&&a.target!=="_self")return;
+  event.preventDefault();
+  if(index===active)return;
+  select(index);
+  const delay=window.matchMedia&&window.matchMedia("(max-width:620px)").matches?650:0;
+  window.setTimeout(()=>{window.location.href=a.href},delay);
+ }));
+})();
+</script>
+<script src="idioma.js" defer></script>
+</body>
+</html>
