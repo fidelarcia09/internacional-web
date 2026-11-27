@@ -8,7 +8,7 @@
   const STORE_KEY = "gg_language";
   const current = () => localStorage.getItem(STORE_KEY) || "es";
   const originals = new WeakMap();
-  let observer = null, busy = false, timer = 0;
+  let observer = null, busy = false, timer = 0, pendingNodes = [];
   const skip = "script,style,noscript,svg,code,pre,textarea,input,select,option,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
   const cacheKey = (lang, value) => "ggtr:" + lang + ":" + value;
   const remember = node => { if (!originals.has(node)) originals.set(node, node.nodeValue); return originals.get(node); };
@@ -44,7 +44,8 @@
     return values.map(v => localStorage.getItem(cacheKey(lang,v)) || v);
   }
   async function translateNodes(nodes, lang) {
-    if (busy || lang === "es" || !nodes.length) return;
+    if (lang === "es" || !nodes.length) return;
+    if (busy) { pendingNodes.push(...nodes); return; }
     busy = true;
     const valid = nodes.filter(eligible);
     const originalsForNodes = valid.map(remember);
@@ -61,6 +62,7 @@
       if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true});
     }
     busy = false;
+    if (pendingNodes.length) { const queued = pendingNodes.splice(0); translateNodes(queued, current()); }
   }
   function collect(root=document.body) {
     if (!root) return [];
@@ -128,7 +130,7 @@
     const lang=current();
     applyLanguage(lang);
     observer=new MutationObserver(records=>{
-      if(current()==="es"||busy)return;
+      if(current()==="es")return;
       const added=[];
       records.forEach(record=>{
         if(record.type==="characterData")added.push(record.target);
