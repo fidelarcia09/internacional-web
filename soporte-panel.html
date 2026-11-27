@@ -429,4 +429,5 @@ async function changeStatus(status){
 $("refreshTickets").addEventListener("click",async()=>{try{await loadTickets();alertBox("Lista actualizada.",true);}catch(e){alertBox("No se pudieron actualizar los tickets: "+e.message);}});
 init().catch(error=>alertBox("No se pudo iniciar el centro de soporte: "+error.message));
 </script>
+<script src="idioma.js" defer></script>
 </body></html>
