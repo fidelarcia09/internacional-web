@@ -389,6 +389,14 @@
     ["TU NEGOCIO",["YOUR BUSINESS","SEU NEGÓCIO","VOTRE ACTIVITÉ","DEIN GESCHÄFT","LA TUA ATTIVITÀ","ВАШ БИЗНЕС","你的业务","あなたのビジネス","عملك"]],
     ["Mi cuenta",["My account","Minha conta","Mon compte","Mein Konto","Il mio account","Мой аккаунт","我的账户","マイアカウント","حسابي"]],
     ["ID:",["ID:","ID:","ID :","ID:","ID:","ID:","ID：","ID：","المعرّف:"]]
+
+    ,["Foto de perfil",["Profile photo","Foto de perfil","Photo de profil","Profilfoto","Foto del profilo","Фото профиля","头像","プロフィール写真","صورة الملف الشخصي"]]
+    ,["Añadir foto",["Add photo","Adicionar foto","Ajouter une photo","Foto hinzufügen","Aggiungi foto","Добавить фото","添加照片","写真を追加","إضافة صورة"]]
+    ,["Añadir foto de perfil",["Add profile photo","Adicionar foto de perfil","Ajouter une photo de profil","Profilfoto hinzufügen","Aggiungi foto del profilo","Добавить фото профиля","添加头像","プロフィール写真を追加","إضافة صورة الملف الشخصي"]]
+    ,["Copiar ID",["Copy ID","Copiar ID","Copier l’ID","ID kopieren","Copia ID","Скопировать ID","复制 ID","IDをコピー","نسخ المعرّف"]]
+    ,["Control Admin",["Admin Control","Controle Admin","Contrôle admin","Admin-Steuerung","Controllo Admin","Управление администратора","管理控制","管理者コントロール","تحكم المسؤول"]]
+    ,["Pendiente",["Pending","Pendente","En attente","Ausstehend","In sospeso","Ожидает","待处理","保留中","معلق"]]
+
   ];
 
   const DICTIONARIES = Object.fromEntries(LANGS.map(([code], index) => [
