@@ -304,6 +304,9 @@ function updatePayButton() {
     (window.GG_STORE_MAINTENANCE_READY !== true || window.GG_STORE_MAINTENANCE_ACTIVE === true) &&
     !activeDeposit;
   payButton.dataset.maintenancePending = activeDeposit ? "true" : "false";
+  payButton.classList.toggle("gg-maintenance-blocked", maintenanceBlocksNewDeposit);
+  if (maintenanceBlocksNewDeposit) payButton.setAttribute("aria-disabled", "true");
+  else payButton.removeAttribute("aria-disabled");
   amountInput.disabled = Boolean(activeDeposit) || maintenanceBlocksNewDeposit;
   packageButtons.forEach(button => {
     button.disabled = Boolean(activeDeposit) || maintenanceBlocksNewDeposit;
