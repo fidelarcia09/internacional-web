@@ -307,23 +307,22 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 </style>
 
 <style id="GG_ACCOUNT_GVR_MONOGRAM_WATERMARK">
-/* Monograma G de Gamers Gold como marca de agua, detrás del contenido. */
+/* G geométrica angular: monograma propio, cian y detrás de los datos. */
 .account-panel::after{
-  content:"G";
+  content:"";
   position:absolute;
   z-index:0;
   top:50%;
-  right:-12px;
+  right:-18px;
   width:300px;
-  height:320px;
-  display:grid;
-  place-items:center;
-  transform:translateY(-50%) skew(-5deg);
-  font:900 310px/.8 var(--display);
-  letter-spacing:-.09em;
-  color:#24efff;
-  opacity:.10;
-  text-shadow:0 0 28px #00c6ff55;
+  height:310px;
+  transform:translateY(-50%) skew(-4deg);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 290'%3E%3Cpath d='M244 72 213 42 168 24H110L62 48 30 92 18 145 30 198 62 242 110 266H168L213 242 244 212V156H163' fill='none' stroke='%2324EFFF' stroke-width='25' stroke-linecap='square' stroke-linejoin='bevel'/%3E%3C/svg%3E");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain;
+  opacity:.16;
+  filter:drop-shadow(0 0 13px #00c6ff66);
   pointer-events:none;
   user-select:none;
 }
@@ -335,11 +334,10 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 }
 @media(max-width:620px){
   .account-panel::after{
-    right:-24px;
-    width:236px;
-    height:258px;
-    font-size:250px;
-    opacity:.10;
+    right:-26px;
+    width:238px;
+    height:252px;
+    opacity:.15;
   }
 }
 @media(prefers-reduced-motion:reduce){
