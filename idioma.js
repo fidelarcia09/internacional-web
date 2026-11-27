@@ -11,6 +11,7 @@
   const lastTranslated = new WeakMap();
   let observer = null, busy = false, timer = 0, pendingNodes = [];
   const skip = "script,style,noscript,svg,code,pre,textarea,input,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
+  const skipAttributes = "script,style,noscript,svg,code,pre,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
   const cacheKey = (lang, value) => "ggtr:" + lang + ":" + value;
   const remember = node => { if (!originals.has(node)) originals.set(node, node.nodeValue); return originals.get(node); };
   const eligible = node => {
@@ -114,7 +115,7 @@
     if (root.nodeType === Node.ELEMENT_NODE && root.matches(selector)) elements.push(root);
     if (root.querySelectorAll) elements.push(...root.querySelectorAll(selector));
     elements.forEach(el=>{
-      if (el.closest(skip)) return;
+      if (el.closest(skipAttributes)) return;
       ["placeholder","aria-label","title"].forEach(attr=>{
         if(!el.hasAttribute(attr)) return;
         const key="data-gg-"+attr;
@@ -168,7 +169,7 @@
           const attr=record.attributeName, el=record.target, key="data-gg-"+attr;
           if(el.hasAttribute(attr) && !el.hasAttribute(key)) el.setAttribute(key,el.getAttribute(attr));
           const original=el.getAttribute(key);
-          if(original && !el.closest(skip)) translateAttribute(el,attr,original,current());
+          if(original && !el.closest(skipAttributes)) translateAttribute(el,attr,original,current());
         }
         record.addedNodes.forEach(node=>{
           if(node.nodeType===Node.TEXT_NODE) added.push(node);
