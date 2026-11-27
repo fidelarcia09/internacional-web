@@ -866,33 +866,6 @@ if ("serviceWorker" in navigator) {
   }
 }
 
-/* Hero móvil: personaje a la derecha, integrado detrás del contenido y con más volumen */
-@media(max-width:620px){
- .hero-art{
-  z-index:2!important;
-  background:
-   radial-gradient(ellipse at 78% 57%,#24efff2b 0%,#007bff12 34%,transparent 66%)!important;
- }
- .hero-art .hero-character{
-  right:-3%!important;
-  bottom:-1%!important;
-  height:100%!important;
-  transform:scale(1.12)!important;
-  transform-origin:right bottom!important;
-  filter:
-   drop-shadow(0 14px 24px #00c6ff70)
-   drop-shadow(-9px 0 18px #24efff25)
-   drop-shadow(0 0 32px #007bff24)!important;
-  -webkit-mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.28) 11%,#000 30%,#000 100%)!important;
-  mask-image:linear-gradient(to right,transparent 0%,rgba(0,0,0,.28) 11%,#000 30%,#000 100%)!important;
- }
-}
-@media(max-width:390px){
- .hero-art .hero-character{
-  height:94%!important;
-  right:-4%!important;
- }
-}
 </style>
 </head>
 <body>
