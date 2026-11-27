@@ -274,7 +274,7 @@
     const clean = value.trim().replace(/\s+/g," ");
     return dictionary[clean] || value;
   };
-  const skip = "script,style,noscript,svg,code,pre,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
+  const skip = "script,style,noscript,svg,code,pre,input,textarea,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
   const skipAttributes = "script,style,noscript,svg,code,pre,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
   const isEligible = node => !!(node && node.nodeValue && node.nodeValue.trim() && node.parentElement && !node.parentElement.closest(skip));
   const preserve = (value) => {
@@ -304,7 +304,9 @@
     if (root.querySelectorAll) elements.push(...root.querySelectorAll(selector));
     elements.forEach(el => {
       if (el.closest(skipAttributes)) return;
-      ["placeholder","aria-label","title","value"].forEach(attr => {
+      const attrs = ["placeholder","aria-label","title"];
+      if (el.matches("input[type=button][value],input[type=submit][value],input[type=reset][value]")) attrs.push("value");
+      attrs.forEach(attr => {
         if (!el.hasAttribute(attr)) return;
         let originalsForElement = attributeOriginals.get(el);
         if (!originalsForElement) { originalsForElement = {}; attributeOriginals.set(el,originalsForElement); }
