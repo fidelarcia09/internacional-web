@@ -667,18 +667,9 @@ buyButton.addEventListener("click",async()=>{
    if(response.status===402&&data.error==="insufficient_usdt_balance"){
      clearPendingReference();
      notify("Saldo USDT insuficiente. No se realizó el pedido.");
-   }else if(data.refunded===true){
-     clearPendingReference();
-     notify("Error al crear el pedido. El saldo fue reembolsado.");
-   }else if(response.status===202||data.error==="provider_submission_pending_confirmation"){
-     notify("El pedido quedó pendiente de confirmación. No vuelvas a comprarlo; consulta el estado o contacta soporte. Código: "+(data.order?.code||"pendiente"));
-   }else if(!response.ok||!data.ok){
+   }else if(data.refunded===true){clearPendingReference();window.location.assign("checkout.html?order="+encodeURIComponent(data.order?.code||"")+"&received=0");return;}else if(response.status===202||data.error==="provider_submission_pending_confirmation"){window.location.assign("checkout.html?order="+encodeURIComponent(data.order?.code||"")+"&received=0");return;}else if(!response.ok||!data.ok){
      throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":data.error==="price_changed"?"El precio cambió. Actualiza el catálogo y confirma de nuevo.":(data.error||"No se pudo crear el pedido."));
-   }else{
-     const status=data.order?.status||"pending";
-     if(["completed","delivered","failed"].includes(status)) clearPendingReference();
-     notify("Pedido "+((status==="completed"||status==="delivered")?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
-   }
+   }else{const status=data.order?.status||"pending";if(["completed","delivered","failed"].includes(status))clearPendingReference();window.location.assign("checkout.html?order="+encodeURIComponent(data.order?.code||"")+"&received=1");return;}
  }catch(error){
    notify(error instanceof Error?error.message:"Error al procesar el pedido. Si no sabes si se creó, consulta soporte antes de reintentar.");
  }finally{
