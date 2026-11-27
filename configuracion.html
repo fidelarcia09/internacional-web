@@ -332,7 +332,9 @@ import { supabase } from "./supabase-client.js";
   if(!value)return 'No disponible';
   const date=new Date(value);
   if(Number.isNaN(date.getTime()))return 'No disponible';
-  return new Intl.DateTimeFormat('es-ES',{dateStyle:'medium',timeStyle:'short'}).format(date);
+  const language=(()=>{try{return localStorage.getItem('gg_language')||'es';}catch(_){return 'es';}})();
+  const locales={es:'es-ES',en:'en-US',pt:'pt-BR',fr:'fr-FR',de:'de-DE',it:'it-IT',ru:'ru-RU','zh-CN':'zh-CN',ja:'ja-JP',ar:'ar'};
+  return new Intl.DateTimeFormat(locales[language]||'es-ES',{dateStyle:'medium',timeStyle:'short'}).format(date);
  };
  const addText=(parent,tag,className,value)=>{
   const node=document.createElement(tag);
@@ -355,7 +357,7 @@ import { supabase } from "./supabase-client.js";
    const top=document.createElement('div');
    top.className='device-card-top';
    const details=browserDetails(session.user_agent);
-   addText(top,'div','device-name',session.is_current?'Este dispositivo':details.name+' · '+details.type);
+   addText(top,'div','device-name',session.is_current?'Este dispositivo · '+details.name+' · '+details.type:details.name+' · '+details.type);
    if(session.is_current)addText(top,'span','device-current','SESIÓN ACTUAL');
    card.appendChild(top);
    const meta=document.createElement('div');
@@ -374,14 +376,18 @@ import { supabase } from "./supabase-client.js";
   try{
    const {data:{session},error:sessionError}=await supabase.auth.getSession();
    if(sessionError)throw sessionError;
-   if(!session?.user)throw new Error('Tu sesión no está activa. Inicia sesión para consultar tus dispositivos.');
+   if(!session?.user){
+    status.classList.add('error');
+    status.textContent='Tu sesión no está activa. Inicia sesión para consultar tus dispositivos.';
+    return;
+   }
    const {data,error}=await supabase.rpc('get_my_active_sessions');
    if(error)throw error;
    renderSessions(Array.isArray(data)?data:[]);
   }catch(error){
    console.error('No se pudieron cargar las sesiones activas:',error);
    status.classList.add('error');
-   status.textContent=error?.message||'No se pudieron cargar los dispositivos. Inténtalo de nuevo.';
+   status.textContent='No se pudieron cargar los dispositivos. Inténtalo de nuevo.';
   }finally{
    refreshButton.disabled=false;
   }
