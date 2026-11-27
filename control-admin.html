@@ -135,6 +135,13 @@ async function renderMaintenanceSettings(){
     }
   });
 }
+window.addEventListener("gg:store-maintenance-change", event => {
+  if(section==="maintenance" && event.detail?.ready){
+    renderMaintenanceSettings().catch(error=>{
+      content.innerHTML='<div class="error">No se pudo actualizar el estado de mantenimiento. '+esc(error.message||"Comprueba la conexión.")+'</div>';
+    });
+  }
+});
 let awaitUser=null;
 async function loadSection(){if(section==="home"){showHome();return}const t=titles[section];$("#pageTitle").textContent=t[0];content.innerHTML='<div class="loading">Cargando información segura...</div>';$("#refreshBtn").disabled=true;
 try{if(section==="settings"){content.innerHTML=renderSettings();return}
