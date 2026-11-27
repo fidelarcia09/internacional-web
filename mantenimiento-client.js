@@ -131,9 +131,6 @@ export function initStoreMaintenance(supabase) {
     }
   }, true);
 
-  const observer = new MutationObserver(() => refreshControls());
-  observer.observe(document.body, { childList: true, subtree: true });
-
   function applyState(row) {
     if (!row || typeof row.enabled !== "boolean") return;
     const updatedAt = row.updated_at ? Date.parse(row.updated_at) || 0 : Date.now();
@@ -168,7 +165,6 @@ export function initStoreMaintenance(supabase) {
     .catch(error => console.warn("No se pudo cargar el estado de mantenimiento:", error));
 
   window.addEventListener("beforeunload", () => {
-    observer.disconnect();
     supabase.removeChannel(channel);
   }, { once: true });
 }
