@@ -460,7 +460,23 @@ function renderProducts(){
    packages.append(activeGroup);
    const activeContainer=activeGroup.querySelector(".packages");
   const currencyProducts=visible.filter(isCurrencyPack);
-  if(selectedRegion!=="Global"){
+  if(selectedRegion==="Global"){
+    const firstTopUpOrder=[
+      "55 diamonds (first top-up bonus)",
+      "165 diamonds (first top-up bonus)",
+      "565 diamonds (first top-up bonus)"
+    ];
+    currencyProducts.sort((a,b)=>{
+      const aIndex=firstTopUpOrder.indexOf(String(a.name||"").trim().replace(/\s+/g," ").toLowerCase());
+      const bIndex=firstTopUpOrder.indexOf(String(b.name||"").trim().replace(/\s+/g," ").toLowerCase());
+      if(aIndex!==-1||bIndex!==-1){
+        if(aIndex===-1)return 1;
+        if(bIndex===-1)return -1;
+        return aIndex-bIndex;
+      }
+      return 0;
+    });
+  }else{
     currencyProducts.sort((a,b)=>productAmount(a)-productAmount(b)||Number(a.priceUSDT||0)-Number(b.priceUSDT||0));
   }
   const extraProducts=visible.filter(p=>!isCurrencyPack(p)).sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""),"es"));
