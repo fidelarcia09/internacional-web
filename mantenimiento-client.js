@@ -4,24 +4,44 @@ export function initStoreMaintenance(supabase) {
 
   const state = { enabled: false, loaded: false, updatedAt: 0 };
   const pathname = window.location.pathname;
-  const basename = pathname.replace(/\/+$/, "").split("/").pop() || "";
+  const basename = pathname.replace(/\\/+$/, "").split("/").pop() || "";
   const isHome = pathname.endsWith("/") || basename.toLowerCase() === "index.html";
 
   const style = document.createElement("style");
   style.id = "gg-store-maintenance-styles";
   style.textContent = `
     .gg-maintenance-banner {
-      position: relative;
-      z-index: 10001;
-      width: 100%;
-      padding: 10px 14px;
+      position: sticky;
+      top: var(--gg-maintenance-header-offset, 84px);
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      width: 100vw;
+      min-height: 66px;
+      margin-left: calc(50% - 50vw);
+      padding: 14px clamp(18px, 7vw, 110px);
+      border-top: 1px solid #9a704d;
       border-bottom: 1px solid #a87845;
       background: linear-gradient(100deg, #382719, #563b28 52%, #382719);
       color: #f8eadb;
       text-align: center;
-      font: 800 12px/1.45 Inter, sans-serif;
-      letter-spacing: .25px;
-      box-shadow: 0 4px 18px #0003;
+      font: 800 14px/1.35 Inter, sans-serif;
+      letter-spacing: .45px;
+      box-shadow: 0 7px 22px #0005;
+    }
+    .gg-maintenance-banner svg {
+      display: block;
+      flex: 0 0 27px;
+      width: 27px;
+      height: 27px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 5px #f8eadb55);
     }
     .gg-maintenance-banner span { display: inline-block; max-width: 100%; }
     .gg-maintenance-blocked {
@@ -47,6 +67,19 @@ export function initStoreMaintenance(supabase) {
       font: 700 12px/1.5 Inter, sans-serif;
       text-align: center;
     }
+    @media (max-width: 620px) {
+      .gg-maintenance-banner {
+        min-height: 60px;
+        gap: 10px;
+        padding: 12px 16px;
+        font-size: 13px;
+      }
+      .gg-maintenance-banner svg {
+        flex-basis: 24px;
+        width: 24px;
+        height: 24px;
+      }
+    }
     @media (prefers-reduced-motion: reduce) {
       .gg-maintenance-banner, .gg-maintenance-toast { transition: none !important; animation: none !important; }
     }
@@ -55,13 +88,28 @@ export function initStoreMaintenance(supabase) {
 
   let banner = null;
   if (isHome) {
+    const header = document.querySelector(".topbar");
+    const syncHeaderOffset = () => {
+      const height = header?.getBoundingClientRect().height || 84;
+      document.documentElement.style.setProperty("--gg-maintenance-header-offset", height + "px");
+    };
+    syncHeaderOffset();
+    window.addEventListener("resize", syncHeaderOffset, { passive: true });
+
     banner = document.createElement("div");
     banner.className = "gg-maintenance-banner";
     banner.hidden = true;
     banner.setAttribute("role", "status");
     banner.setAttribute("aria-live", "polite");
-    banner.innerHTML = "<span>Tienda en Mantenimiento</span>";
-    document.body.insertBefore(banner, document.body.firstChild);
+    banner.innerHTML = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3.5 17.5a2.1 2.1 0 0 0 3 3l4.8-4.8a5 5 0 0 0 6.4-6.4l-3 3-3.5-3.5 3.5-3.5Z"/>
+        <path d="m5.4 18.6.0.0"/>
+      </svg>
+      <span>Tienda en Mantenimiento</span>
+    `;
+    if (header?.parentNode) header.insertAdjacentElement("afterend", banner);
+    else document.body.insertBefore(banner, document.body.firstChild);
   }
 
   let toastTimer = null;
@@ -91,7 +139,7 @@ export function initStoreMaintenance(supabase) {
     if (button.id === "payButton" || button.id === "pay-button") return true;
     if (button.id === "buy-button" || button.hasAttribute("data-maintenance-purchase")) return true;
     const label = (button.innerText || button.textContent || "")
-      .replace(/\s+/g, " ")
+      .replace(/\\s+/g, " ")
       .trim()
       .toLocaleLowerCase("es");
     return /^(comprar oferta|comprar|comprar ahora|comprar usdt|recargar|recargar ahora|pagar|pagar ahora|finalizar compra)$/.test(label);
