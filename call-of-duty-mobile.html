@@ -569,7 +569,9 @@ buyButton.addEventListener("click",async()=>{
    }else if(!response.ok||!data.ok){
      throw new Error(data.error==="wallet_not_found"?"No encontramos tu monedero USDT.":data.error==="price_changed"?"El precio cambió. Actualiza el catálogo y confirma de nuevo.":(data.error||"No se pudo crear el pedido."));
    }else{
-     const status=data.order?.status||"pending";\n     if(["completed","delivered","failed"].includes(status)) clearPendingReference();\n     notify("Pedido "+((status==="completed"||status==="delivered")?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
+     const status=data.order?.status||"pending";
+     if(["completed","delivered","failed"].includes(status)) clearPendingReference();
+     notify("Pedido "+((status==="completed"||status==="delivered")?"completado":status==="failed"?"rechazado y reembolsado":"enviado; pendiente del proveedor")+". Código: "+(data.order?.code||"—")+".");
    }
  }catch(error){
    notify(error instanceof Error?error.message:"Error al procesar. Si no sabes si se creó, consulta soporte antes de reintentar.");
