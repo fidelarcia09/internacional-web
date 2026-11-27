@@ -300,14 +300,30 @@ function validTxid(value) {
   return /^0x[a-fA-F0-9]{64}$/.test(value.trim());
 }
 function updatePayButton() {
-  payButton.disabled = !signedIn || !validTxid(txInput.value) || busy;
+  const maintenanceBlocksNewDeposit =
+    (window.GG_STORE_MAINTENANCE_READY !== true || window.GG_STORE_MAINTENANCE_ACTIVE === true) &&
+    !activeDeposit;
+  payButton.dataset.maintenancePending = activeDeposit ? "true" : "false";
+  amountInput.disabled = Boolean(activeDeposit) || maintenanceBlocksNewDeposit;
+  packageButtons.forEach(button => {
+    button.disabled = Boolean(activeDeposit) || maintenanceBlocksNewDeposit;
+  });
+  payButton.disabled = !signedIn || !validTxid(txInput.value) || busy || maintenanceBlocksNewDeposit;
 }
+window.addEventListener("gg:store-maintenance-change", event => {
+  updatePayButton();
+  if (event.detail?.enabled && !activeDeposit) {
+    setStatus("Tienda en mantenimiento. Las nuevas recargas están temporalmente deshabilitadas; puedes verificar cualquier depósito pendiente.");
+  }
+});
+
 function displayDeposit(deposit) {
   activeDeposit = deposit;
   orderInfo.hidden = false;
   orderAmount.textContent = formatAmount(deposit.amount_usdt) + " USDT";
   orderCode.textContent = deposit.deposit_code;
   lockAmount(true);
+  updatePayButton();
 }
 function errorMessage(code) {
   const messages = {
