@@ -1,4 +1,5 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { initStoreMaintenance } from "./mantenimiento-client.js";
 
 export const SUPABASE_URL = "https://fyyebxjysrhcxgmgperf.supabase.co";
 export const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_mD_KmxXF8wtT-7w08ECpUQ_xzhxsy3P";
@@ -11,6 +12,8 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     detectSessionInUrl: true
   }
 });
+
+initStoreMaintenance(supabase);
 
 
 // Si la cuenta tiene un factor TOTP verificado, no permitir que una sesión AAL1
