@@ -306,19 +306,24 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 }
 </style>
 
-<style id="GG_ACCOUNT_GVR_SHIELD_WATERMARK">
-/* Escudo GVR grande como marca de agua, detrás del contenido del panel. */
+<style id="GG_ACCOUNT_GVR_MONOGRAM_WATERMARK">
+/* Monograma G de Gamers Gold como marca de agua, detrás del contenido. */
 .account-panel::after{
-  content:"";
+  content:"G";
   position:absolute;
   z-index:0;
   top:50%;
-  right:-24px;
-  width:286px;
-  height:322px;
-  transform:translateY(-50%);
-  background:url("fuentes/gamers-gold-escudo.svg") center/contain no-repeat;
-  opacity:.12;
+  right:-12px;
+  width:300px;
+  height:320px;
+  display:grid;
+  place-items:center;
+  transform:translateY(-50%) skew(-5deg);
+  font:900 310px/.8 var(--display);
+  letter-spacing:-.09em;
+  color:#24efff;
+  opacity:.10;
+  text-shadow:0 0 28px #00c6ff55;
   pointer-events:none;
   user-select:none;
 }
@@ -330,10 +335,11 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
 }
 @media(max-width:620px){
   .account-panel::after{
-    right:-34px;
-    width:226px;
+    right:-24px;
+    width:236px;
     height:258px;
-    opacity:.12;
+    font-size:250px;
+    opacity:.10;
   }
 }
 @media(prefers-reduced-motion:reduce){
