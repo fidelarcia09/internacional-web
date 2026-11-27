@@ -441,7 +441,7 @@ function renderProducts(){
     "12976 diamonds"
   ]);
   const visible=products.filter(p=>!selectedRegion||p.region===selectedRegion)
-    .filter(p=>selectedRegion!=="Global"||globalAllowedNames.has(String(p.name||"").trim().replace(/\\s+/g," ").toLowerCase()));
+    .filter(p=>selectedRegion!=="Global"||globalAllowedNames.has(String(p.name||"").trim().replace(/\s+/g," ").toLowerCase()));
   if(!selectedRegion){
     packages.innerHTML='<div class="catalog-state">Selecciona una región para cargar sus productos.</div>';
     return;
