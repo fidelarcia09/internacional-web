@@ -82,6 +82,8 @@
       document.querySelectorAll("[data-gg-placeholder],[data-gg-aria-label],[data-gg-title]").forEach(el=>["placeholder","aria-label","title"].forEach(attr=>{const key="data-gg-"+attr;if(el.hasAttribute(key))el.setAttribute(attr,el.getAttribute(key));}));
       const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
       while(walker.nextNode()){const n=walker.currentNode;if(originals.has(n)){n.nodeValue=originals.get(n);lastTranslated.delete(n);}}
+      const titleNode=document.querySelector("title")?.firstChild;
+      if(titleNode&&originals.has(titleNode)){titleNode.nodeValue=originals.get(titleNode);lastTranslated.delete(titleNode);}
       if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true});
       return;
     }
