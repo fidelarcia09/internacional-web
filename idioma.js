@@ -404,26 +404,33 @@
     code,
     Object.fromEntries(ROWS.map(([source, values]) => [source, index === 0 ? source : values[index - 1]]))
   ]));
+  const isWordChar = char => !!char && /[\\p{L}\\p{N}]/u.test(char);
   const translate = (value, lang) => {
     if (!value || lang === "es") return value;
     const dictionary = DICTIONARIES[lang];
     if (!dictionary) return value;
-    const clean = value.trim().replace(/\s+/g," ");
+    const clean = value.trim().replace(/\\s+/g," ");
     if (dictionary[clean]) return dictionary[clean];
     let result = value;
-    const keys = Object.keys(dictionary).sort((a,b) => b.length - a.length);
+    const keys = Object.keys(dictionary).filter(source => source.length >= 4).sort((a,b) => b.length - a.length);
     keys.forEach(source => {
       const target = dictionary[source];
       if (!target || source === target || !result.includes(source)) return;
-      const escaped = source.replace(/[.*+?^${}()|[\]\\]/g,"\\  const translate = (value, lang) => {
-    if (!value || lang === "es") return value;
-    const dictionary = DICTIONARIES[lang];
-    if (!dictionary) return value;
-    const clean = value.trim().replace(/\s+/g," ");
-    return dictionary[clean] || value;
-  };");
-      const pattern = new RegExp("(^|[^\\p{L}\\p{N}])(" + escaped + ")(?=$|[^\\p{L}\\p{N}])","gu");
-      result = result.replace(pattern,(_match,prefix) => prefix + target);
+      let from = 0;
+      let at = result.indexOf(source,from);
+      let output = "";
+      let changed = false;
+      while (at !== -1) {
+        const before = at > 0 ? result[at - 1] : "";
+        const after = result[at + source.length] || "";
+        if (!isWordChar(before) && !isWordChar(after)) {
+          output += result.slice(from,at) + target;
+          from = at + source.length;
+          changed = true;
+        }
+        at = result.indexOf(source,Math.max(at + source.length,from));
+      }
+      if (changed) result = output + result.slice(from);
     });
     return result;
   };
