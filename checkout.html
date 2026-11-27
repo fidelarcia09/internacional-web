@@ -110,7 +110,7 @@ function render(row){
  const headline=failed?"No se pudo completar la compra":completed?"¡Compra <span>exitosa!</span>":received?"Tu pedido fue <span>recibido</span>":"Pedido en confirmación";
  const message=failed?"El proveedor no pudo completar esta operación. El estado de tu pedido y su reembolso se reflejan en tu historial.":completed?"Tu recarga se ha completado correctamente. Gracias por confiar en Gamers Gold Top-Up.":received?"RechargeGames recibió tu pedido y está trabajando en la entrega. El estado se actualizará automáticamente.":"Tu compra quedó registrada. Estamos esperando la confirmación de recepción del proveedor. No repitas la compra.";
  const symbol=failed?"×":completed?"✓":received?"✓":"…";
- const stateText=failed?"Fallido / Reembolsado":completed?"Completado":received?"Procesando":"Esperando al proveedor";
+ const stateText=failed?"Fallido / Reembolsado":completed?"Completado":received?"Procesando":"Recibido";
  const image=gameImages[key];
  const artwork=image?'<img src="'+safe(image)+'" alt="'+safe(game)+'" onerror="this.remove()">':(gift?"▣":"✦");
  const player=gift?"":row.player_id?'<span><b>Player ID:</b> '+safe(row.player_id)+'</span>':"";
