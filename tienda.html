@@ -138,6 +138,87 @@
   }
 }
 </style>
+<style id="GG_STORE_CATEGORIES_SEARCH">
+/* Selector elevado sobre el borde del banner, inspirado en la referencia */
+.tabs{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin-top:-27px!important;
+  margin-bottom:20px!important;
+  position:relative!important;
+  z-index:3!important;
+}
+.tab{
+  min-width:0!important;
+  min-height:66px!important;
+  padding:10px 8px!important;
+  gap:8px!important;
+  flex-direction:row!important;
+  justify-content:center!important;
+  border:1px solid rgba(0,198,255,.16)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,#0b2344 0%,#081a35 100%)!important;
+  color:#92949c!important;
+  box-shadow:0 7px 16px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.045)!important;
+  transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease!important;
+}
+.tab svg{width:27px!important;height:27px!important;flex:0 0 auto!important;stroke:currentColor!important}
+.tab strong{font-size:clamp(12px,1.5vw,17px)!important;white-space:nowrap!important}
+.tab small{display:none!important}
+.tab.active{
+  color:#f5f4f1!important;
+  border-color:#00c6ff!important;
+  background:linear-gradient(135deg,#0b3760 0%,#09264a 58%,#081a35 100%)!important;
+  box-shadow:0 0 0 1px rgba(0,198,255,.2),0 7px 20px rgba(0,198,255,.18),inset 0 0 16px rgba(0,198,255,.09)!important;
+}
+.tab.active svg{color:#00c6ff!important;filter:drop-shadow(0 0 5px rgba(0,198,255,.45))!important}
+.tab:active{transform:translateY(1px)!important}
+.store-search{
+  width:100%;min-height:54px;margin:0 0 27px;padding:0 9px 0 16px;
+  display:flex;align-items:center;gap:13px;
+  border:1px solid rgba(0,198,255,.18);border-radius:16px;
+  background:linear-gradient(110deg,#0b1c36 0%,#0a1a32 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 7px 18px rgba(0,0,0,.16);
+}
+.store-search-icon{width:23px;height:23px;flex:0 0 auto;fill:none;stroke:#92949c;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.store-search input{width:100%;min-width:0;height:50px;padding:0;border:0;outline:0;background:transparent;color:#f5f4f1;font:500 15px var(--font)}
+.store-search input::placeholder{color:#92949c;opacity:1}
+.store-search input:focus-visible{outline:0}
+.store-search-count{
+  min-width:58px;height:38px;padding:0 11px;display:flex;align-items:center;justify-content:center;gap:7px;
+  flex:0 0 auto;border:1px solid rgba(0,198,255,.25);border-radius:22px;
+  background:linear-gradient(135deg,#103a65,#0b2850);color:#00c6ff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+}
+.store-search-count svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.store-search-count b{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+.section-search{display:none!important}
+.services-empty{
+  min-height:180px;padding:28px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  border:1px dashed rgba(0,198,255,.22);border-radius:17px;background:linear-gradient(145deg,rgba(8,26,53,.9),rgba(5,11,24,.72));text-align:center
+}
+.services-empty svg{width:36px;height:36px;fill:none;stroke:#00c6ff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.services-empty strong{font-size:17px;color:#f5f4f1}
+.services-empty p{margin:0;color:#92949c;font-size:13px}
+@media(max-width:700px){
+  .tabs{gap:7px!important;margin-top:-22px!important;margin-bottom:16px!important}
+  .tab{min-height:59px!important;padding:8px 4px!important;border-radius:14px!important;gap:6px!important}
+  .tab svg{width:22px!important;height:22px!important}
+  .tab strong{font-size:12px!important}
+  .store-search{min-height:48px;margin-bottom:22px;padding:0 8px 0 13px;gap:10px;border-radius:14px}
+  .store-search-icon{width:21px;height:21px}
+  .store-search input{height:46px;font-size:14px}
+  .store-search-count{min-width:54px;height:34px;padding:0 9px}
+  .store-search-count svg{width:19px;height:19px}
+}
+@media(max-width:360px){
+  .tabs{gap:5px!important}
+  .tab{gap:4px!important}
+  .tab svg{width:19px!important;height:19px!important}
+  .tab strong{font-size:11px!important}
+}
+@media(prefers-reduced-motion:reduce){.tab{transition:none!important}}
+</style>
 </head>
 <body>
 <main class="store">
@@ -145,9 +226,21 @@
   <img src="fuentes/tienda_azul_neon.webp" alt="Banner de la tienda" loading="eager" fetchpriority="high" decoding="sync">
 </div>
 <div class="tabs" role="tablist" aria-label="Categorías de tienda">
-<button class="tab active" type="button" role="tab" aria-selected="true" data-target="games-section"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M12 13h16a8 8 0 0 1 7.7 10l-1.2 5a4 4 0 0 1-6.8 1.8L24 26h-8l-3.7 3.8a4 4 0 0 1-6.8-1.8l-1.2-5A8 8 0 0 1 12 13Z"/><path d="M12 18v8m-4-4h8m12-2h.1m4 4h.1"/></svg><span><strong>Juegos</strong><small>Recargas y monedas</small></span></button>
-<button class="tab" type="button" role="tab" aria-selected="false" data-target="gift-section"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 17h30v18H5zM3 11h34v7H3zM20 11v24M20 11H11a4 4 0 1 1 4-4c0 2 2 4 5 4Zm0 0h9a4 4 0 1 0-4-4c0 2-2 4-5 4Z"/></svg><span><strong>Gift Cards</strong><small>Tarjetas de regalo</small></span></button>
+<button class="tab active" type="button" role="tab" aria-selected="true" data-target="games-section">
+<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M12 13h16a8 8 0 0 1 7.7 10l-1.2 5a4 4 0 0 1-6.8 1.8L24 26h-8l-3.7 3.8a4 4 0 0 1-6.8-1.8l-1.2-5A8 8 0 0 1 12 13Z"/><path d="M12 18v8m-4-4h8m12-2h.1m4 4h.1"/></svg><span><strong>Juegos</strong></span></button>
+<button class="tab" type="button" role="tab" aria-selected="false" data-target="gift-section">
+<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 17h30v18H5zM3 11h34v7H3zM20 11v24M20 11H11a4 4 0 1 1 4-4c0 2 2 4 5 4Zm0 0h9a4 4 0 1 0-4-4c0 2-2 4-5 4Z"/></svg><span><strong>Gift Cards</strong></span></button>
+<button class="tab" type="button" role="tab" aria-selected="false" data-target="services-section">
+<svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 3 15 8.5v17L20 37 5 28.5v-17L20 3Z"/><path d="m5 11.5 15 9 15-9M20 20.5V37M12.5 7.3l15 9M27.5 7.3l-15 9"/></svg><span><strong>Servicios</strong></span></button>
 </div>
+<div class="store-search" role="search">
+<svg class="store-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+<input id="store-search-input" type="search" placeholder="Buscar en la tienda" aria-label="Buscar en la tienda" autocomplete="off">
+<span class="store-search-count" aria-live="polite"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M12 13h16a8 8 0 0 1 7.7 10l-1.2 5a4 4 0 0 1-6.8 1.8L24 26h-8l-3.7 3.8a4 4 0 0 1-6.8-1.8l-1.2-5A8 8 0 0 1 12 13Z"/><path d="M12 18v8m-4-4h8m12-2h.1m4 4h.1"/></svg><b id="store-search-total">9</b></span>
+</div>
+<section class="group" id="services-section" role="tabpanel" hidden>
+<div class="services-empty"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="m20 3 15 8.5v17L20 37 5 28.5v-17L20 3Z"/><path d="m5 11.5 15 9 15-9M20 20.5V37"/></svg><strong>Servicios</strong><p>Esta categoría todavía no tiene productos publicados.</p></div>
+</section>
 <section class="group" id="gift-section" role="tabpanel" hidden>
 <div class="section-title"><h2><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 14h24v14H4zM2 9h28v6H2zM16 9v19M16 9H9a3 3 0 1 1 3-3c0 2 1 3 4 3Zm0 0h7a3 3 0 1 0-3-3c0 2-1 3-4 3Z"/></svg><span class="section-name">Gift Cards<small class="section-count">5</small></span></h2><div class="section-search"><input type="search" placeholder="Buscar..." aria-label="Buscar en esta categoría"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></div></div>
 <div class="cards gift-grid">
@@ -179,18 +272,34 @@
 <a href="cuenta.html" aria-label="Cuenta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.4-6 8-6s7.3 2 8 6"/></svg><small>Cuenta</small></a>
 </nav>
 <script>
-const tabs=document.querySelectorAll(".tab");
-const groups=document.querySelectorAll(".group");
-tabs.forEach(tab=>tab.addEventListener("click",()=>{tabs.forEach(item=>{item.classList.remove("active");item.setAttribute("aria-selected","false")});tab.classList.add("active");tab.setAttribute("aria-selected","true");groups.forEach(group=>group.hidden=group.id!==tab.dataset.target)}));
-document.querySelectorAll(".section-search input").forEach(input=>{
-  input.addEventListener("input",()=>{
-    const group=input.closest(".group");
-    const term=input.value.trim().toLocaleLowerCase("es");
-    group.querySelectorAll(".product").forEach(card=>{
-      card.hidden=!card.textContent.toLocaleLowerCase("es").includes(term);
-    });
+const tabs=[...document.querySelectorAll(".tab")];
+const groups=[...document.querySelectorAll(".group")];
+const searchInput=document.getElementById("store-search-input");
+const searchTotal=document.getElementById("store-search-total");
+let activeGroup=document.getElementById("games-section");
+function updateStoreSearch(){
+  if(!activeGroup)return;
+  const term=(searchInput?.value||"").trim().toLocaleLowerCase("es");
+  const cards=[...activeGroup.querySelectorAll(".product")];
+  let visible=0;
+  cards.forEach(card=>{
+    const match=card.textContent.toLocaleLowerCase("es").includes(term);
+    card.hidden=!match;
+    if(match)visible++;
   });
-});
+  if(searchTotal)searchTotal.textContent=String(visible);
+}
+tabs.forEach(tab=>tab.addEventListener("click",()=>{
+  tabs.forEach(item=>{item.classList.remove("active");item.setAttribute("aria-selected","false")});
+  tab.classList.add("active");
+  tab.setAttribute("aria-selected","true");
+  activeGroup=groups.find(group=>group.id===tab.dataset.target)||null;
+  groups.forEach(group=>group.hidden=group!==activeGroup);
+  if(searchInput)searchInput.value="";
+  updateStoreSearch();
+}));
+searchInput?.addEventListener("input",updateStoreSearch);
+updateStoreSearch();
 
 
 </script>
