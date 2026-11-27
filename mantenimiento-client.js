@@ -17,39 +17,41 @@ export function initStoreMaintenance(supabase) {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
+      gap: 12px;
       box-sizing: border-box;
-      width: 100vw;
-      max-width: 100vw;
-      min-width: 100vw;
-      min-height: 72px;
-      margin-inline: calc(50% - 50vw);
-      padding: 16px clamp(20px, 7vw, 120px);
-      border-top: 1px solid #9a704d;
-      border-bottom: 1px solid #a87845;
-      background: linear-gradient(100deg, #241b18 0%, #49301f 24%, #563b28 50%, #49301f 76%, #241b18 100%);
+      width: min(560px, calc(100% - 36px));
+      min-width: 0;
+      min-height: 62px;
+      margin: 14px auto 18px;
+      padding: 13px 22px;
+      border: 1px solid #a87845;
+      border-radius: 12px 4px 12px 4px;
+      background: linear-gradient(112deg, #241b18 0%, #49301f 48%, #2c211b 100%);
       color: #f8eadb;
       text-align: center;
       font: 800 14px/1.35 Inter, sans-serif;
       letter-spacing: .55px;
-      box-shadow: 0 8px 24px #0006;
+      box-shadow: 0 7px 22px #0006, inset 0 1px 0 #ffffff12;
+    }
+    .gg-maintenance-banner[hidden] {
+      display: none !important;
     }
     .gg-maintenance-banner svg {
       display: block;
-      flex: 0 0 32px;
-      width: 32px;
-      height: 32px;
+      flex: 0 0 30px;
+      width: 30px;
+      height: 30px;
       box-sizing: border-box;
       fill: none;
-      stroke: #24efff;
+      stroke: #ffffff;
       stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      filter: drop-shadow(0 0 5px #24efff80);
+      filter: drop-shadow(0 0 3px #ffffff55);
     }
     .gg-maintenance-banner span {
       display: inline-block;
-      max-width: min(100%, 900px);
+      max-width: 100%;
       text-wrap: balance;
     }
     .gg-maintenance-blocked {
@@ -77,15 +79,18 @@ export function initStoreMaintenance(supabase) {
     }
     @media (max-width: 620px) {
       .gg-maintenance-banner {
-        min-height: 64px;
-        gap: 11px;
-        padding: 12px 14px;
+        width: calc(100% - 28px);
+        min-height: 58px;
+        gap: 10px;
+        margin: 12px auto 16px;
+        padding: 11px 14px;
         font-size: 13px;
+        border-radius: 10px 3px 10px 3px;
       }
       .gg-maintenance-banner svg {
-        flex-basis: 27px;
-        width: 27px;
-        height: 27px;
+        flex-basis: 26px;
+        width: 26px;
+        height: 26px;
       }
     }
     @media (prefers-reduced-motion: reduce) {
