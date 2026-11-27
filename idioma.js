@@ -35,10 +35,8 @@
     ["Idioma",["Language","Idioma","Langue","Sprache","Lingua","Язык","语言","言語","اللغة"]],
     ["Idioma de la plataforma",["Platform language","Idioma da plataforma","Langue de la plateforme","Plattformsprache","Lingua della piattaforma","Язык платформы","平台语言","プラットフォームの言語","لغة المنصة"]],
     ["Guardar idioma",["Save language","Salvar idioma","Enregistrer la langue","Sprache speichern","Salva lingua","Сохранить язык","保存语言","言語を保存","حفظ اللغة"]],
-    ["Preferencias",["Preferences","Preferências","Préférences","Einstellungen","Preferenze","Настройки","偏好设置","設定","التفضيلات"]],
     ["Notificaciones",["Notifications","Notificações","Notifications","Benachrichtigungen","Notifiche","Уведомления","通知","通知","الإشعارات"]],
     ["Configuración",["Settings","Configurações","Paramètres","Einstellungen","Impostazioni","Настройки","设置","設定","الإعدادات"]],
-    ["Mi cuenta",["My account","Minha conta","Mon compte","Mein Konto","Il mio account","Мой аккаунт","我的账户","マイアカウント","حسابي"]],
     ["Seguridad",["Security","Segurança","Sécurité","Sicherheit","Sicurezza","Безопасность","安全","セキュリティ","الأمان"]],
     ["Mis compras",["My purchases","Minhas compras","Mes achats","Meine Käufe","I miei acquisti","Мои покупки","我的订单","購入履歴","مشترياتي"]],
     ["Player ID:",["Player ID:","Player ID:","Player ID :","Player-ID:","Player ID:","Player ID:","玩家 ID：","プレイヤー ID：","معرّف اللاعب:"]],
@@ -322,7 +320,6 @@
     ["Ingresa el Hash de la transacción (TXID)",["Enter the transaction hash (TXID)","Insira o hash da transação (TXID)","Saisissez le hash de la transaction (TXID)","Gib den Transaktions-Hash (TXID) ein","Inserisci l'hash della transazione (TXID)","Введите хеш транзакции (TXID)","输入交易哈希（TXID）","取引ハッシュ（TXID）を入力","أدخل تجزئة المعاملة (TXID)"]],
     ["Pagar",["Pay","Pagar","Payer","Bezahlen","Paga","Оплатить","支付","支払う","ادفع"]],
     ["Selecciona el paquete",["Select a package","Selecione o pacote","Sélectionnez un forfait","Paket auswählen","Seleziona il pacchetto","Выберите пакет","选择套餐","パッケージを選択","اختر الباقة"]],
-    ["Nombre y apellidos",["First and last name","Nome e sobrenome","Nom et prénom","Vor- und Nachname","Nome e cognome","Имя и фамилия","姓名","氏名","الاسم الكامل"]],
     ["Número de teléfono",["Phone number","Número de telefone","Numéro de téléphone","Telefonnummer","Numero di telefono","Номер телефона","电话号码","電話番号","رقم الهاتف"]],
     ["Correo electrónico",["Email address","Endereço de e-mail","Adresse e-mail","E-Mail-Adresse","Indirizzo e-mail","Адрес электронной почты","电子邮箱","メールアドレス","البريد الإلكتروني"]],
     ["GUARDAR CAMBIOS",["SAVE CHANGES","SALVAR ALTERAÇÕES","ENREGISTRER LES MODIFICATIONS","ÄNDERUNGEN SPEICHERN","SALVA MODIFICHE","СОХРАНИТЬ ИЗМЕНЕНИЯ","保存更改","変更を保存","حفظ التغييرات"]],
@@ -350,51 +347,48 @@
     ["Recordarme",["Remember me","Lembrar-me","Se souvenir de moi","Angemeldet bleiben","Ricordami","Запомнить меня","记住我","ログイン状態を保持","تذكرني"]],
     ["¿Olvidaste tu contraseña?",["Forgot your password?","Esqueceu sua senha?","Mot de passe oublié ?","Passwort vergessen?","Hai dimenticato la password?","Забыли пароль?","忘记密码？","パスワードをお忘れですか？","هل نسيت كلمة المرور؟"]],
     ["¿Todavía no tienes cuenta?",["Don't have an account yet?","Ainda não tem uma conta?","Vous n’avez pas encore de compte ?","Du hast noch kein Konto?","Non hai ancora un account?","Ещё нет аккаунта?","还没有账户？","まだアカウントをお持ちでないですか？","ليس لديك حساب بعد؟"]],
-    ["Regístrate",["Sign up","Cadastre-se","S’inscrire","Registrieren","Registrati","Зарегистрироваться","注册","登録","سجّل"]]
-
-    ,["Correo de entrega",["Delivery email","E-mail de entrega","E-mail de livraison","E-Mail für Zustellung","E-mail di consegna","Почта для доставки","收件邮箱","お届け先メール","بريد التسليم"]]
-    ,["Importe",["Amount","Valor","Montant","Betrag","Importo","Сумма","金额","金額","المبلغ"]]
-    ,["Selecciona el importe",["Select the amount","Selecione o valor","Sélectionnez le montant","Betrag auswählen","Seleziona l'importo","Выберите сумму","选择金额","金額を選択","اختر المبلغ"]]
-    ,["Selecciona una región",["Select a region","Selecione uma região","Sélectionnez une région","Region auswählen","Seleziona una regione","Выберите регион","选择地区","地域を選択","اختر منطقة"]]
-    ,["Dispositivos",["Devices","Dispositivos","Appareils","Geräte","Dispositivi","Устройства","设备","デバイス","الأجهزة"]]
-    ,["Acerca de",["About","Sobre","À propos","Über uns","Informazioni","О проекте","关于","概要","حول"]]
-    ,["Cuenta y privacidad",["Account and privacy","Conta e privacidade","Compte et confidentialité","Konto und Datenschutz","Account e privacy","Аккаунт и конфиденциальность","账户与隐私","アカウントとプライバシー","الحساب والخصوصية"]]
-    ,["Información",["Information","Informações","Informations","Informationen","Informazioni","Информация","信息","情報","المعلومات"]]
-    ,["Preferencias",["Preferences","Preferências","Préférences","Einstellungen","Preferenze","Настройки","偏好设置","設定","التفضيلات"]]
-    ,["Nombre y apellidos",["First and last name","Nome e sobrenome","Nom et prénom","Vor- und Nachname","Nome e cognome","Имя и фамилия","姓名","氏名","الاسم الكامل"]]
-    ,["Usuario",["Username","Usuário","Nom d’utilisateur","Benutzername","Nome utente","Имя пользователя","用户名","ユーザー名","اسم المستخدم"]]
-    ,["Activo",["Active","Ativo","Actif","Aktiv","Attivo","Активен","正常","有効","نشط"]]
-    ,["Todas las opciones",["All options","Todas as opções","Toutes les options","Alle Optionen","Tutte le opzioni","Все параметры","所有选项","すべてのオプション","كل الخيارات"]]
-    ,["↻ Actualizar",["↻ Refresh","↻ Atualizar","↻ Actualiser","↻ Aktualisieren","↻ Aggiorna","↻ Обновить","↻ 刷新","↻ 更新","↻ تحديث"]]
-    ,["Cargando panel administrativo...",["Loading admin panel...","Carregando painel administrativo...","Chargement du panneau d’administration...","Admin-Panel wird geladen...","Caricamento del pannello amministrativo...","Загрузка панели администратора...","正在加载管理面板...","管理パネルを読み込み中...","جارٍ تحميل لوحة الإدارة..."]]
-    ,["Ajustar saldo USDT",["Adjust USDT balance","Ajustar saldo USDT","Ajuster le solde USDT","USDT-Guthaben anpassen","Regola saldo USDT","Изменить баланс USDT","调整 USDT 余额","USDT残高を調整","تعديل رصيد USDT"]]
-    ,["Selecciona el importe que deseas sumar o restar. El movimiento quedará registrado en el historial.",["Select the amount you want to add or subtract. The transaction will be recorded in the history.","Selecione o valor que deseja adicionar ou subtrair. A movimentação ficará registrada no histórico.","Sélectionnez le montant à ajouter ou à soustraire. L’opération sera enregistrée dans l’historique.","Wähle den Betrag, den du hinzufügen oder abziehen möchtest. Die Buchung wird im Verlauf gespeichert.","Seleziona l'importo da aggiungere o sottrarre. Il movimento verrà registrato nella cronologia.","Выберите сумму для добавления или вычитания. Операция будет записана в истории.","选择要增加或扣除的金额。该操作将记录在历史记录中。","追加または差し引く金額を選択してください。操作は履歴に記録されます。","حدد المبلغ الذي تريد إضافته أو خصمه. سيتم تسجيل الحركة في السجل."]]
-    ,["Tipo de ajuste",["Adjustment type","Tipo de ajuste","Type d’ajustement","Anpassungsart","Tipo di modifica","Тип корректировки","调整类型","調整タイプ","نوع التعديل"]]
-    ,["＋ Aumentar saldo",["＋ Increase balance","＋ Aumentar saldo","＋ Augmenter le solde","＋ Guthaben erhöhen","＋ Aumenta saldo","＋ Увеличить баланс","＋ 增加余额","＋ 残高を増やす","＋ زيادة الرصيد"]]
-    ,["− Restar saldo",["− Decrease balance","− Diminuir saldo","− Diminuer le solde","− Guthaben verringern","− Riduci saldo","− Уменьшить баланс","− 扣除余额","− 残高を減らす","− خصم الرصيد"]]
-    ,["Importe en USDT",["Amount in USDT","Valor em USDT","Montant en USDT","Betrag in USDT","Importo in USDT","Сумма в USDT","USDT 金额","USDT金額","المبلغ بعملة USDT"]]
-    ,["Motivo obligatorio",["Reason required","Motivo obrigatório","Motif obligatoire","Begründung erforderlich","Motivo obbligatorio","Укажите причину","必须填写原因","理由が必要です","السبب مطلوب"]]
-    ,["Guardar ajuste",["Save adjustment","Salvar ajuste","Enregistrer l’ajustement","Anpassung speichern","Salva modifica","Сохранить корректировку","保存调整","調整を保存","حفظ التعديل"]]
-    ,["Todas las opciones",["All options","Todas as opções","Toutes les options","Alle Optionen","Tutte le opzioni","Все параметры","所有选项","すべてのオプション","كل الخيارات"]]
-    ,["Nivel inicial",["Starting level","Nível inicial","Niveau initial","Anfangsstufe","Livello iniziale","Начальный уровень","初始等级","初期レベル","المستوى الأولي"]]
-    ,["Tu marca",["Your brand","Sua marca","Votre marque","Deine Marke","Il tuo marchio","Ваш бренд","你的品牌","あなたのブランド","علامتك التجارية"]]
-    ,["Tu ganancia",["Your earnings","Seu ganho","Vos gains","Dein Verdienst","I tuoi guadagni","Ваш доход","你的收益","あなたの収益","أرباحك"]]
-    ,["Juego",["Game","Jogo","Jeu","Spiel","Gioco","Игра","游戏","ゲーム","اللعبة"]]
-    ,["Pronto",["Coming soon","Em breve","Bientôt","Demnächst","Prossimamente","Скоро","即将推出","近日公開","قريبًا"]]
-    ,["Panel de",["Reseller","Painel de","Panneau de","Panel für","Pannello","Панель","面板","パネル","لوحة"]]
-    ,["revendedor",["reseller","revendedor","revendeur","Wiederverkäufer","rivenditore","реселлер","分销商","リセラー","الموزع"]]
-    ,["Acceso",["Access","Acesso","Accès","Zugang","Accesso","Доступ","访问","アクセス","الوصول"]]
-    ,["exclusivo",["exclusive","exclusivo","exclusif","exklusiv","esclusivo","эксклюзивный","专属","限定","حصري"]]
-    ,["0 recargas completadas",["0 top-ups completed","0 recargas concluídas","0 recharges terminées","0 Aufladungen abgeschlossen","0 ricariche completate","0 пополнений выполнено","已完成 0 次充值","チャージ完了 0 件","0 عملية شحن مكتملة"]]
-    ,["25 recargas · 2%",["25 top-ups · 2%","25 recargas · 2%","25 recharges · 2%","25 Aufladungen · 2%","25 ricariche · 2%","25 пополнений · 2%","25 次充值 · 2%","チャージ25回 · 2%","25 عملية شحن · 2%"]]
-    ,["50 recargas · 3%",["50 top-ups · 3%","50 recargas · 3%","50 recharges · 3%","50 Aufladungen · 3%","50 ricariche · 3%","50 пополнений · 3%","50 次充值 · 3%","チャージ50回 · 3%","50 عملية شحن · 3%"]]
-    ,["90 recargas · 5%",["90 top-ups · 5%","90 recargas · 5%","90 recharges · 5%","90 Aufladungen · 5%","90 ricariche · 5%","90 пополнений · 5%","90 次充值 · 5%","チャージ90回 · 5%","90 عملية شحن · 5%"]]
-    ,["RECARGAS COMPLETADAS",["COMPLETED TOP-UPS","RECARGAS CONCLUÍDAS","RECHARGES TERMINÉES","ABGESCHLOSSENE AUFLADUNGEN","RICARICHE COMPLETATE","ВЫПОЛНЕННЫЕ ПОПОЛНЕНИЯ","已完成充值","完了したチャージ","عمليات الشحن المكتملة"]]
-    ,["TU DESCUENTO",["YOUR DISCOUNT","SEU DESCONTO","VOTRE REMISE","DEIN RABATT","IL TUO SCONTO","ВАША СКИДКА","你的折扣","あなたの割引","خصمك"]]
-    ,["TU NEGOCIO",["YOUR BUSINESS","SEU NEGÓCIO","VOTRE ACTIVITÉ","DEIN GESCHÄFT","LA TUA ATTIVITÀ","ВАШ БИЗНЕС","你的业务","あなたのビジネス","عملك"]]
-
-    ,["Mi cuenta",["My account","Minha conta","Mon compte","Mein Konto","Il mio account","Мой аккаунт","我的账户","マイアカウント","حسابي"]]
-    ,["ID:",["ID:","ID:","ID :","ID:","ID:","ID:","ID：","ID：","المعرّف:"]]
+    ["Regístrate",["Sign up","Cadastre-se","S’inscrire","Registrieren","Registrati","Зарегистрироваться","注册","登録","سجّل"]],
+    ["Correo de entrega",["Delivery email","E-mail de entrega","E-mail de livraison","E-Mail für Zustellung","E-mail di consegna","Почта для доставки","收件邮箱","お届け先メール","بريد التسليم"]],
+    ["Importe",["Amount","Valor","Montant","Betrag","Importo","Сумма","金额","金額","المبلغ"]],
+    ["Selecciona el importe",["Select the amount","Selecione o valor","Sélectionnez le montant","Betrag auswählen","Seleziona l'importo","Выберите сумму","选择金额","金額を選択","اختر المبلغ"]],
+    ["Selecciona una región",["Select a region","Selecione uma região","Sélectionnez une région","Region auswählen","Seleziona una regione","Выберите регион","选择地区","地域を選択","اختر منطقة"]],
+    ["Dispositivos",["Devices","Dispositivos","Appareils","Geräte","Dispositivi","Устройства","设备","デバイス","الأجهزة"]],
+    ["Acerca de",["About","Sobre","À propos","Über uns","Informazioni","О проекте","关于","概要","حول"]],
+    ["Cuenta y privacidad",["Account and privacy","Conta e privacidade","Compte et confidentialité","Konto und Datenschutz","Account e privacy","Аккаунт и конфиденциальность","账户与隐私","アカウントとプライバシー","الحساب والخصوصية"]],
+    ["Información",["Information","Informações","Informations","Informationen","Informazioni","Информация","信息","情報","المعلومات"]],
+    ["Preferencias",["Preferences","Preferências","Préférences","Einstellungen","Preferenze","Настройки","偏好设置","設定","التفضيلات"]],
+    ["Nombre y apellidos",["First and last name","Nome e sobrenome","Nom et prénom","Vor- und Nachname","Nome e cognome","Имя и фамилия","姓名","氏名","الاسم الكامل"]],
+    ["Usuario",["Username","Usuário","Nom d’utilisateur","Benutzername","Nome utente","Имя пользователя","用户名","ユーザー名","اسم المستخدم"]],
+    ["Activo",["Active","Ativo","Actif","Aktiv","Attivo","Активен","正常","有効","نشط"]],
+    ["↻ Actualizar",["↻ Refresh","↻ Atualizar","↻ Actualiser","↻ Aktualisieren","↻ Aggiorna","↻ Обновить","↻ 刷新","↻ 更新","↻ تحديث"]],
+    ["Cargando panel administrativo...",["Loading admin panel...","Carregando painel administrativo...","Chargement du panneau d’administration...","Admin-Panel wird geladen...","Caricamento del pannello amministrativo...","Загрузка панели администратора...","正在加载管理面板...","管理パネルを読み込み中...","جارٍ تحميل لوحة الإدارة..."]],
+    ["Ajustar saldo USDT",["Adjust USDT balance","Ajustar saldo USDT","Ajuster le solde USDT","USDT-Guthaben anpassen","Regola saldo USDT","Изменить баланс USDT","调整 USDT 余额","USDT残高を調整","تعديل رصيد USDT"]],
+    ["Selecciona el importe que deseas sumar o restar. El movimiento quedará registrado en el historial.",["Select the amount you want to add or subtract. The transaction will be recorded in the history.","Selecione o valor que deseja adicionar ou subtrair. A movimentação ficará registrada no histórico.","Sélectionnez le montant à ajouter ou à soustraire. L’opération sera enregistrée dans l’historique.","Wähle den Betrag, den du hinzufügen oder abziehen möchtest. Die Buchung wird im Verlauf gespeichert.","Seleziona l'importo da aggiungere o sottrarre. Il movimento verrà registrato nella cronologia.","Выберите сумму для добавления или вычитания. Операция будет записана в истории.","选择要增加或扣除的金额。该操作将记录在历史记录中。","追加または差し引く金額を選択してください。操作は履歴に記録されます。","حدد المبلغ الذي تريد إضافته أو خصمه. سيتم تسجيل الحركة في السجل."]],
+    ["Tipo de ajuste",["Adjustment type","Tipo de ajuste","Type d’ajustement","Anpassungsart","Tipo di modifica","Тип корректировки","调整类型","調整タイプ","نوع التعديل"]],
+    ["＋ Aumentar saldo",["＋ Increase balance","＋ Aumentar saldo","＋ Augmenter le solde","＋ Guthaben erhöhen","＋ Aumenta saldo","＋ Увеличить баланс","＋ 增加余额","＋ 残高を増やす","＋ زيادة الرصيد"]],
+    ["− Restar saldo",["− Decrease balance","− Diminuir saldo","− Diminuer le solde","− Guthaben verringern","− Riduci saldo","− Уменьшить баланс","− 扣除余额","− 残高を減らす","− خصم الرصيد"]],
+    ["Importe en USDT",["Amount in USDT","Valor em USDT","Montant en USDT","Betrag in USDT","Importo in USDT","Сумма в USDT","USDT 金额","USDT金額","المبلغ بعملة USDT"]],
+    ["Motivo obligatorio",["Reason required","Motivo obrigatório","Motif obligatoire","Begründung erforderlich","Motivo obbligatorio","Укажите причину","必须填写原因","理由が必要です","السبب مطلوب"]],
+    ["Guardar ajuste",["Save adjustment","Salvar ajuste","Enregistrer l’ajustement","Anpassung speichern","Salva modifica","Сохранить корректировку","保存调整","調整を保存","حفظ التعديل"]],
+    ["Todas las opciones",["All options","Todas as opções","Toutes les options","Alle Optionen","Tutte le opzioni","Все параметры","所有选项","すべてのオプション","كل الخيارات"]],
+    ["Nivel inicial",["Starting level","Nível inicial","Niveau initial","Anfangsstufe","Livello iniziale","Начальный уровень","初始等级","初期レベル","المستوى الأولي"]],
+    ["Tu marca",["Your brand","Sua marca","Votre marque","Deine Marke","Il tuo marchio","Ваш бренд","你的品牌","あなたのブランド","علامتك التجارية"]],
+    ["Tu ganancia",["Your earnings","Seu ganho","Vos gains","Dein Verdienst","I tuoi guadagni","Ваш доход","你的收益","あなたの収益","أرباحك"]],
+    ["Juego",["Game","Jogo","Jeu","Spiel","Gioco","Игра","游戏","ゲーム","اللعبة"]],
+    ["Pronto",["Coming soon","Em breve","Bientôt","Demnächst","Prossimamente","Скоро","即将推出","近日公開","قريبًا"]],
+    ["Panel de",["Reseller","Painel de","Panneau de","Panel für","Pannello","Панель","面板","パネル","لوحة"]],
+    ["revendedor",["reseller","revendedor","revendeur","Wiederverkäufer","rivenditore","реселлер","分销商","リセラー","الموزع"]],
+    ["Acceso",["Access","Acesso","Accès","Zugang","Accesso","Доступ","访问","アクセス","الوصول"]],
+    ["exclusivo",["exclusive","exclusivo","exclusif","exklusiv","esclusivo","эксклюзивный","专属","限定","حصري"]],
+    ["0 recargas completadas",["0 top-ups completed","0 recargas concluídas","0 recharges terminées","0 Aufladungen abgeschlossen","0 ricariche completate","0 пополнений выполнено","已完成 0 次充值","チャージ完了 0 件","0 عملية شحن مكتملة"]],
+    ["25 recargas · 2%",["25 top-ups · 2%","25 recargas · 2%","25 recharges · 2%","25 Aufladungen · 2%","25 ricariche · 2%","25 пополнений · 2%","25 次充值 · 2%","チャージ25回 · 2%","25 عملية شحن · 2%"]],
+    ["50 recargas · 3%",["50 top-ups · 3%","50 recargas · 3%","50 recharges · 3%","50 Aufladungen · 3%","50 ricariche · 3%","50 пополнений · 3%","50 次充值 · 3%","チャージ50回 · 3%","50 عملية شحن · 3%"]],
+    ["90 recargas · 5%",["90 top-ups · 5%","90 recargas · 5%","90 recharges · 5%","90 Aufladungen · 5%","90 ricariche · 5%","90 пополнений · 5%","90 次充值 · 5%","チャージ90回 · 5%","90 عملية شحن · 5%"]],
+    ["RECARGAS COMPLETADAS",["COMPLETED TOP-UPS","RECARGAS CONCLUÍDAS","RECHARGES TERMINÉES","ABGESCHLOSSENE AUFLADUNGEN","RICARICHE COMPLETATE","ВЫПОЛНЕННЫЕ ПОПОЛНЕНИЯ","已完成充值","完了したチャージ","عمليات الشحن المكتملة"]],
+    ["TU DESCUENTO",["YOUR DISCOUNT","SEU DESCONTO","VOTRE REMISE","DEIN RABATT","IL TUO SCONTO","ВАША СКИДКА","你的折扣","あなたの割引","خصمك"]],
+    ["TU NEGOCIO",["YOUR BUSINESS","SEU NEGÓCIO","VOTRE ACTIVITÉ","DEIN GESCHÄFT","LA TUA ATTIVITÀ","ВАШ БИЗНЕС","你的业务","あなたのビジネス","عملك"]],
+    ["Mi cuenta",["My account","Minha conta","Mon compte","Mein Konto","Il mio account","Мой аккаунт","我的账户","マイアカウント","حسابي"]],
+    ["ID:",["ID:","ID:","ID :","ID:","ID:","ID:","ID：","ID：","المعرّف:"]]
   ];
 
   const DICTIONARIES = Object.fromEntries(LANGS.map(([code], index) => [
