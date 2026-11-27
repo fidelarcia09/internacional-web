@@ -305,6 +305,42 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;margin:0 
   }
 }
 </style>
+
+<style id="GG_ACCOUNT_GVR_SHIELD_WATERMARK">
+/* Escudo GVR como marca de agua: decorativo, discreto y detrás de los datos. */
+.account-panel::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:50%;
+  right:8px;
+  width:164px;
+  height:184px;
+  transform:translateY(-50%);
+  background:url("fuentes/gamers-gold-escudo.svg") center/contain no-repeat;
+  opacity:.13;
+  pointer-events:none;
+  user-select:none;
+}
+.account-panel>.profile,
+.account-panel>.balance,
+.account-panel>.add-usdt{
+  position:relative;
+  z-index:1;
+}
+@media(max-width:620px){
+  .account-panel::after{
+    right:-7px;
+    width:128px;
+    height:148px;
+    opacity:.11;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .account-panel::after{transition:none!important}
+}
+</style>
+
 </head>
 <body>
 <main>
