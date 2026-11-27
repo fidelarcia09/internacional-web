@@ -76,7 +76,7 @@
         node.nodeValue = leading + translated[i] + trailing;
         lastTranslated.set(node,node.nodeValue);
       });
-      if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+      if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["placeholder","aria-label","title"]});
     }
     busy = false;
     if (pendingNodes.length) { const queued = pendingNodes.splice(0); translateNodes(queued, current()); }
@@ -99,7 +99,7 @@
       while(walker.nextNode()){const n=walker.currentNode;if(originals.has(n)){n.nodeValue=originals.get(n);lastTranslated.delete(n);}}
       const titleNode=document.querySelector("title")?.firstChild;
       if(titleNode&&originals.has(titleNode)){titleNode.nodeValue=originals.get(titleNode);lastTranslated.delete(titleNode);}
-      if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+      if (observer) observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["placeholder","aria-label","title"]});
       return;
     }
     translateNodes(collect(),lang);
