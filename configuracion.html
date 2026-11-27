@@ -35,7 +35,7 @@ h1{font:900 clamp(42px,10vw,56px)/.94 var(--display);letter-spacing:.5px;text-al
 .about-overlay.is-open{display:flex}
 .about-dialog{width:min(100%,440px);max-height:min(82vh,650px);overflow:auto;padding:23px;border:1px solid #00c6ff70;border-radius:22px;background:linear-gradient(145deg,#0d2342,#081a35 72%);box-shadow:0 18px 65px #0009,0 0 28px #00c6ff14}
 .about-heading{display:flex;align-items:center;gap:13px;margin-bottom:18px}
-.about-mark{width:48px;height:48px;flex:0 0 auto;display:grid;place-items:center;border-radius:15px;background:#00c6ff16;color:#24efff;border:1px solid #00c6ff50;font:900 22px var(--display)}
+.about-mark{width:48px;height:48px;flex:0 0 auto;display:grid;place-items:center;border-radius:15px;background:#00c6ff16;border:1px solid #00c6ff50;overflow:hidden}.about-mark img{display:block;width:38px;height:43px;object-fit:contain}
 .about-heading h2{margin:0;color:#f5f4f1;font:800 25px/1 var(--display);letter-spacing:.3px}
 .about-heading p{margin:5px 0 0;color:#92949c;font-size:10px}
 .about-dialog h3{margin:18px 0 7px;color:#24efff;font-size:11px;letter-spacing:1px;text-transform:uppercase}
@@ -198,7 +198,7 @@ h1{font:900 clamp(42px,10vw,56px)/.94 var(--display);letter-spacing:.5px;text-al
 </main>
 <section class="about-overlay" id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-title" aria-hidden="true">
 <div class="about-dialog">
-<div class="about-heading"><span class="about-mark" aria-hidden="true">GG</span><div><h2 id="about-title">Gamers Gold TopUp</h2><p>Información de la plataforma</p></div></div>
+<div class="about-heading"><span class="about-mark" aria-hidden="true"><img src="fuentes/gamers-gold-escudo.svg?v=2" alt="" width="38" height="43"></span><div><h2 id="about-title">Gamers Gold TopUp</h2><p>Información de la plataforma</p></div></div>
 <h3>¿Quiénes somos?</h3>
 <p>Gamers Gold TopUp es una plataforma digital orientada a la recarga de videojuegos y a la compra de tarjetas de regalo digitales.</p>
 <h3>¿Qué puedes encontrar?</h3>
