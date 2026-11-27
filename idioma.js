@@ -404,12 +404,12 @@
     code,
     Object.fromEntries(ROWS.map(([source, values]) => [source, index === 0 ? source : values[index - 1]]))
   ]));
-  const isWordChar = char => !!char && /[\\p{L}\\p{N}]/u.test(char);
+  const isWordChar = char => !!char && /[\p{L}\p{N}]/u.test(char);
   const translate = (value, lang) => {
     if (!value || lang === "es") return value;
     const dictionary = DICTIONARIES[lang];
     if (!dictionary) return value;
-    const clean = value.trim().replace(/\\s+/g," ");
+    const clean = value.trim().replace(/\s+/g," ");
     if (dictionary[clean]) return dictionary[clean];
     let result = value;
     const keys = Object.keys(dictionary).filter(source => source.length >= 4).sort((a,b) => b.length - a.length);
