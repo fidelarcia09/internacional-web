@@ -238,6 +238,31 @@
 }
 .tab.active svg{filter:drop-shadow(0 0 4px rgba(0,198,255,.38))!important}
 </style>
+<style id="GG_NAV_FIXED_VIEWPORT">
+/* Mantiene la navegación anclada al viewport durante todo el desplazamiento */
+@media(max-width:850px){
+  .mobile-nav{
+    position:fixed!important;
+    inset: auto 0 0 0!important;
+    inset-block-end:0!important;
+    inset-inline:0!important;
+    z-index:10000!important;
+    width:100%!important;
+    margin:0!important;
+    transform:none!important;
+    -webkit-transform:none!important;
+    animation:none!important;
+    transition:none!important;
+    box-sizing:border-box!important;
+    height:calc(64px + env(safe-area-inset-bottom, 0px))!important;
+    padding:3px 1% env(safe-area-inset-bottom, 0px)!important;
+    background:#050B18!important;
+    opacity:1!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+}
+</style>
 </head>
 <body>
 <main class="store">
