@@ -20,6 +20,12 @@ main{width:min(90%,510px);margin:22px auto 35px}
 h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;letter-spacing:.4px;margin:0 0 26px}
 .security-options{display:grid;gap:13px}
 .security-option{min-height:91px;display:grid;grid-template-columns:54px minmax(0,1fr) 22px;align-items:center;gap:14px;padding:15px 17px;border:1px solid #00c6ff78;border-radius:17px;background:linear-gradient(105deg,#0d2342,#081a35 65%);box-shadow:inset 0 0 16px #00c6ff0b;transition:border-color .18s,box-shadow .18s,transform .18s}
+button.security-option{width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer}
+button.security-option:hover,button.security-option:focus-visible{border-color:#24efff;box-shadow:0 0 18px #00c6ff20,inset 0 0 16px #00c6ff0b;outline:none}
+button.security-option:disabled{opacity:.65;cursor:wait}
+.security-feedback{margin:10px 3px 0;color:#24efff;font-size:11px;line-height:1.5}
+.security-feedback.error{color:#ff9b9b}
+
 .security-icon{width:49px;height:49px;border-radius:14px;display:grid;place-items:center;background:#ffffff08;border:1px solid #ffffff12;color:#e8e9ed}
 .security-icon svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .security-icon .accent{stroke:#2ecfff}
@@ -178,11 +184,12 @@ h1{font:900 clamp(42px,10vw,58px)/.95 var(--display);text-align:center;letter-sp
   <button class="password-submit" id="disableMfa" type="button" hidden>DESACTIVAR</button>
   <div class="password-message" id="mfaMessage" role="status" aria-live="polite"></div>
 </section>
-<div class="security-option">
+<button class="security-option" id="signOutAllDevices" type="button">
 <span class="security-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="4" width="14" height="23" rx="2.5"/><path d="M10 8h4m-3 15h2"/><path class="accent" d="M20 12h7m-3-3 3 3-3 3M19 21h8"/></svg></span>
 <span class="security-copy"><strong>Cerrar sesión en todos los dispositivos</strong><small>Finaliza las sesiones abiertas de tu cuenta</small></span>
 <span class="security-arrow" aria-hidden="true">›</span>
-</div>
+</button>
+<p class="security-feedback" id="signOutAllFeedback" role="status" aria-live="polite" hidden></p>
 </section>
 </main>
 <nav class="mobile-nav" aria-label="Navegación inferior">
@@ -503,6 +510,54 @@ disableMfa.addEventListener("click", async () => {
   showMfaMessage("La verificación en dos pasos se ha desactivado.");
   await sendSecurityNotification("two_factor_disabled");
   await loadMfaState();
+});
+
+
+const signOutAllButton = document.getElementById("signOutAllDevices");
+const signOutAllFeedback = document.getElementById("signOutAllFeedback");
+
+signOutAllButton?.addEventListener("click", async () => {
+  if (signOutAllButton.disabled) return;
+  const confirmed = window.confirm("¿Quieres cerrar la sesión de tu cuenta en todos los dispositivos? Tendrás que iniciar sesión de nuevo.");
+  if (!confirmed) return;
+
+  signOutAllButton.disabled = true;
+  if (signOutAllFeedback) {
+    signOutAllFeedback.hidden = false;
+    signOutAllFeedback.classList.remove("error");
+    signOutAllFeedback.textContent = "Cerrando todas las sesiones...";
+  }
+
+  try {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (!session?.user) {
+      window.location.replace("login.html");
+      return;
+    }
+
+    const userId = session.user.id;
+    const { error } = await supabase.auth.signOut({ scope: "global" });
+    if (error) throw error;
+
+    try {
+      localStorage.removeItem("iw-account-identity:" + userId);
+      localStorage.removeItem("iw-account-balance:" + userId);
+      localStorage.removeItem("iw-history:" + userId);
+    } catch (cacheError) {
+      console.warn("No se pudo limpiar la caché local de la cuenta:", cacheError);
+    }
+
+    window.location.replace("login.html");
+  } catch (error) {
+    console.error("No se pudieron cerrar todas las sesiones:", error);
+    if (signOutAllFeedback) {
+      signOutAllFeedback.hidden = false;
+      signOutAllFeedback.classList.add("error");
+      signOutAllFeedback.textContent = "No se pudieron cerrar todas las sesiones. Comprueba tu conexión e inténtalo de nuevo.";
+    }
+    signOutAllButton.disabled = false;
+  }
 });
 
 </script>
