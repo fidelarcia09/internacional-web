@@ -103,8 +103,8 @@ export function initStoreMaintenance(supabase) {
     banner.setAttribute("aria-live", "polite");
     banner.innerHTML = `
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3.5 17.5a2.1 2.1 0 0 0 3 3l4.8-4.8a5 5 0 0 0 6.4-6.4l-3 3-3.5-3.5 3.5-3.5Z"/>
-        <path d="m5.4 18.6.0.0"/>
+        <path d="M14.2 5.1a5.6 5.6 0 0 0-6.9 7.1l-4.5 4.5a2.2 2.2 0 0 0 3.1 3.1l4.5-4.5a5.6 5.6 0 0 0 7.1-6.9l-3.2 3.2-3.3-3.3 3.2-3.2Z"/>
+        <path d="m5.1 18.9 0 0"/>
       </svg>
       <span>Tienda en Mantenimiento</span>
     `;
