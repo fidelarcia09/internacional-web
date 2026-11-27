@@ -393,6 +393,8 @@
     ,["TU DESCUENTO",["YOUR DISCOUNT","SEU DESCONTO","VOTRE REMISE","DEIN RABATT","IL TUO SCONTO","ВАША СКИДКА","你的折扣","あなたの割引","خصمك"]]
     ,["TU NEGOCIO",["YOUR BUSINESS","SEU NEGÓCIO","VOTRE ACTIVITÉ","DEIN GESCHÄFT","LA TUA ATTIVITÀ","ВАШ БИЗНЕС","你的业务","あなたのビジネス","عملك"]]
 
+    ,["Mi cuenta",["My account","Minha conta","Mon compte","Mein Konto","Il mio account","Мой аккаунт","我的账户","マイアカウント","حسابي"]]
+    ,["ID:",["ID:","ID:","ID :","ID:","ID:","ID:","ID：","ID：","المعرّف:"]]
   ];
 
   const DICTIONARIES = Object.fromEntries(LANGS.map(([code], index) => [
@@ -429,9 +431,14 @@
     });
     return result;
   };
-  const skip = "script,style,noscript,svg,code,pre,input,textarea,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
-  const skipAttributes = "script,style,noscript,svg,code,pre,[contenteditable=true],[data-no-translate],.profile,.user-id,.balance,.avatar,.order-code,.player-id,.private-data";
-  const isEligible = node => !!(node && node.nodeValue && node.nodeValue.trim() && node.parentElement && !node.parentElement.closest(skip));
+  const skip = "script,style,noscript,svg,code,pre,input,textarea,[contenteditable=true],[data-no-translate],.username,#account-user-code,.order-code,.player-id,.private-data";
+  const skipAttributes = "script,style,noscript,svg,code,pre,[contenteditable=true],[data-no-translate],.username,#account-user-code,.order-code,.player-id,.private-data";
+  const isEligible = node => {
+    if (!node || !node.nodeValue || !node.nodeValue.trim() || !node.parentElement) return false;
+    const protectedElement = node.parentElement.closest(skip);
+    if (!protectedElement) return true;
+    return protectedElement.matches(".username") && ["Mi cuenta","Usuario"].includes(node.nodeValue.trim());
+  };
   const preserve = (value) => {
     const leading = value.match(/^\s*/)?.[0] || "";
     const trailing = value.match(/\s*$/)?.[0] || "";
