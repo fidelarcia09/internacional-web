@@ -568,6 +568,40 @@
 @media(prefers-reduced-motion:reduce){
   .store .tabs > .tab{transition:none!important}
 }
+
+/* Alineación común de categorías, búsqueda y tarjetas */
+.store > .tabs,
+.store > .store-search,
+.store > .group{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+.store > .tabs{
+  margin-bottom:8px!important;
+}
+.store > .store-search{
+  margin-top:0!important;
+  margin-bottom:12px!important;
+}
+.store > .group > .section-title{
+  margin-top:0!important;
+  margin-bottom:10px!important;
+}
+.store > .group > .cards{
+  width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+@media(max-width:700px){
+  .store > .tabs{margin-bottom:7px!important}
+  .store > .store-search{margin-bottom:10px!important}
+  .store > .group > .section-title{margin-bottom:9px!important}
+}
+
 </style>
 </head>
 <body>
