@@ -490,6 +490,78 @@
  .game-grid .product:hover .game-card-image{transform:none}
 }
 
+
+/* Ajuste final del selector de categorías según la referencia */
+.store .tabs{
+  display:grid!important;
+  width:100%!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:0!important;
+  margin:0 0 20px!important;
+  padding:0 0 0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(146,148,156,.24)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.store .tabs > .tab{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  min-width:0!important;
+  min-height:64px!important;
+  margin:0!important;
+  padding:8px 5px 10px!important;
+  border:0!important;
+  border-bottom:3px solid transparent!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#92949c!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+.store .tabs > .tab > svg{
+  display:block!important;
+  width:24px!important;
+  height:24px!important;
+  flex:0 0 24px!important;
+  color:currentColor!important;
+  stroke:currentColor!important;
+  filter:none!important;
+}
+.store .tabs > .tab strong{
+  display:block!important;
+  margin:0!important;
+  color:inherit!important;
+  font-size:clamp(12px,2.25vw,17px)!important;
+  line-height:1.2!important;
+  font-weight:750!important;
+}
+.store .tabs > .tab.active{
+  color:#24EFFF!important;
+  border-bottom:3px solid #24EFFF!important;
+  background:linear-gradient(180deg,rgba(36,239,255,.07),transparent 100%)!important;
+  box-shadow:none!important;
+}
+.store .tabs > .tab.active > svg{
+  color:#24EFFF!important;
+  stroke:#24EFFF!important;
+  filter:drop-shadow(0 0 5px rgba(36,239,255,.4))!important;
+}
+.store .tabs > .tab:active{transform:translateY(1px)!important}
+@media(max-width:380px){
+  .store .tabs > .tab{gap:6px!important;padding-left:2px!important;padding-right:2px!important}
+  .store .tabs > .tab > svg{width:20px!important;height:20px!important;flex-basis:20px!important}
+  .store .tabs > .tab strong{font-size:11px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .store .tabs > .tab{transition:none!important}
+}
+
 </style>
 </head>
 <body>
