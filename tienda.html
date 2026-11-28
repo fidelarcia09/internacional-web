@@ -491,14 +491,14 @@
 }
 
 
-/* Ajuste final del selector de categorías según la referencia */
+/* Ajuste fino del selector y alineación del buscador */
 .store .tabs{
   display:grid!important;
   width:100%!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   gap:0!important;
-  margin:0 0 20px!important;
-  padding:0 0 0!important;
+  margin:0 0 16px!important;
+  padding:0!important;
   border:0!important;
   border-bottom:1px solid rgba(146,148,156,.24)!important;
   border-radius:0!important;
@@ -512,11 +512,11 @@
   justify-content:center!important;
   gap:10px!important;
   min-width:0!important;
-  min-height:64px!important;
+  min-height:50px!important;
   margin:0!important;
-  padding:8px 5px 10px!important;
+  padding:4px 5px 6px!important;
   border:0!important;
-  border-bottom:3px solid transparent!important;
+  border-bottom:2px solid transparent!important;
   border-radius:0!important;
   background:transparent!important;
   box-shadow:none!important;
@@ -543,8 +543,8 @@
 }
 .store .tabs > .tab.active{
   color:#24EFFF!important;
-  border-bottom:3px solid #24EFFF!important;
-  background:linear-gradient(180deg,rgba(36,239,255,.07),transparent 100%)!important;
+  border-bottom:2px solid #24EFFF!important;
+  background:transparent!important;
   box-shadow:none!important;
 }
 .store .tabs > .tab.active > svg{
@@ -553,6 +553,13 @@
   filter:drop-shadow(0 0 5px rgba(36,239,255,.4))!important;
 }
 .store .tabs > .tab:active{transform:translateY(1px)!important}
+.store .store-search{
+  display:flex!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0 0 27px!important;
+  box-sizing:border-box!important;
+}
 @media(max-width:380px){
   .store .tabs > .tab{gap:6px!important;padding-left:2px!important;padding-right:2px!important}
   .store .tabs > .tab > svg{width:20px!important;height:20px!important;flex-basis:20px!important}
@@ -561,7 +568,6 @@
 @media(prefers-reduced-motion:reduce){
   .store .tabs > .tab{transition:none!important}
 }
-
 </style>
 </head>
 <body>
