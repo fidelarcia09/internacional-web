@@ -322,25 +322,16 @@
  overflow:hidden;
  background:#081A35;
 }
-.game-grid .visual:before{
- background:linear-gradient(180deg,rgba(5,11,24,.02) 58%,rgba(5,11,24,.26) 100%);
-}
+.game-grid .visual:before,
 .game-grid .visual:after{
- z-index:2;
- inset:0;
- border:3px solid var(--image-dominant-color,transparent);
- border-radius:0;
- clip-path:polygon(0 10px,1px 6px,3px 3px,6px 1px,10px 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);
- box-shadow:
-  0 0 13px color-mix(in srgb,var(--image-dominant-color,transparent) 92%,transparent),
-  0 0 23px color-mix(in srgb,var(--image-dominant-color,transparent) 58%,transparent);
+ display:none!important;
 }
 .game-grid .game-card-image{
  position:absolute;
  inset:0;
  width:100%;
  height:100%;
- object-fit:cover;
+ object-fit:contain;
  object-position:center;
  image-rendering:auto;
  transform:none;
