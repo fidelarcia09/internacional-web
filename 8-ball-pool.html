@@ -401,7 +401,7 @@ function normalizeGameRegion(region){
  const value=String(region||"global").trim().toLowerCase();
  const labels={global:"Global",malaysia:"Malasia",singapore:"Singapur",cambodia:"Camboya",indonesia:"Indonesia"};
  if(labels[value]) return labels[value];
- return value.split(/[\\s_-]+/).filter(Boolean).map(part=>part.charAt(0).toUpperCase()+part.slice(1)).join(" ");
+ return value.split(/[\s_-]+/).filter(Boolean).map(part=>part.charAt(0).toUpperCase()+part.slice(1)).join(" ");
 }
 function regionEmoji(region){
  const flags={Global:"🌐",Malasia:"🇲🇾",Singapur:"🇸🇬",Camboya:"🇰🇭",Indonesia:"🇮🇩"};
