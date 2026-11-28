@@ -567,6 +567,13 @@ function readPrefetchedCatalog(){
  return null;
 }
 async function loadCatalog(){
+ if(["delta-force","rainbow-six-mobile","farlight-84"].includes(GAME)){
+   packages.innerHTML='<div class="catalog-state">Este servicio de recarga no está disponible.</div>';
+   regions.replaceChildren();
+   playerSection.hidden=true;
+   buyButton.disabled=true;
+   return;
+ }
  buyButton.textContent="Recargar ahora";
  const cachedProducts=readPrefetchedCatalog();
  if(cachedProducts) applyCatalogProducts(cachedProducts);
