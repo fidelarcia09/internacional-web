@@ -326,9 +326,9 @@
  background:linear-gradient(180deg,rgba(5,11,24,.02) 58%,rgba(5,11,24,.26) 100%);
 }
 .game-grid .visual:after{
- border:3px solid #00C6FF;
+ border:3px solid var(--image-dominant-color,transparent);
  border-radius:inherit;
- box-shadow:inset 0 0 12px rgba(0,198,255,.16);
+ box-shadow:inset 0 0 12px color-mix(in srgb,var(--image-dominant-color,transparent) 22%,transparent);
 }
 .game-grid .game-card-image{
  position:absolute;
@@ -513,6 +513,46 @@ tabs.forEach(tab=>tab.addEventListener("click",()=>{
 searchInput?.addEventListener("input",updateStoreSearch);
 updateStoreCategoryIcon(tabs.find(tab=>tab.classList.contains("active")));
 updateStoreSearch();
+
+// Calcula el color predominante de cada imagen y lo aplica solo al marco de la fotografía.
+function applyImageDominantBorder(img){
+  if(!img || img.dataset.dominantBorderReady==="1")return;
+  const sample=()=>{
+    if(!img.naturalWidth||!img.naturalHeight)return;
+    try{
+      const canvas=document.createElement("canvas");
+      const size=32;
+      canvas.width=size;canvas.height=size;
+      const ctx=canvas.getContext("2d",{willReadFrequently:true});
+      if(!ctx)return;
+      ctx.drawImage(img,0,0,size,size);
+      const pixels=ctx.getImageData(0,0,size,size).data;
+      const buckets=new Map();
+      for(let i=0;i<pixels.length;i+=4){
+        const alpha=pixels[i+3]/255;
+        if(alpha<.65)continue;
+        const red=pixels[i],green=pixels[i+1],blue=pixels[i+2];
+        const max=Math.max(red,green,blue),min=Math.min(red,green,blue);
+        const saturation=max===0?0:(max-min)/max;
+        if(max<38||max>248||saturation<.18)continue;
+        const key=[red>>4,green>>4,blue>>4].join(",");
+        buckets.set(key,(buckets.get(key)||0)+1);
+      }
+      let winner="",count=0;
+      buckets.forEach((amount,key)=>{if(amount>count){winner=key;count=amount}});
+      if(!winner)return;
+      const [r,g,b]=winner.split(",").map(Number);
+      const color=`rgb(${r*16+8} ${g*16+8} ${b*16+8})`;
+      img.closest(".visual")?.style.setProperty("--image-dominant-color",color);
+      img.dataset.dominantBorderReady="1";
+    }catch(error){
+      console.warn("No se pudo extraer el color de la imagen:",error);
+    }
+  };
+  if(img.complete)sample();
+  else img.addEventListener("load",sample,{once:true});
+}
+document.querySelectorAll(".game-grid .game-card-image").forEach(applyImageDominantBorder);
 
 
 </script>
