@@ -328,10 +328,12 @@
 .game-grid .visual:after{
  z-index:2;
  inset:0;
- border:1.5px solid var(--image-dominant-color,transparent);
+ border:3px solid var(--image-dominant-color,transparent);
  border-radius:0;
  clip-path:polygon(0 10px,1px 6px,3px 3px,6px 1px,10px 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);
- box-shadow:0 0 9px color-mix(in srgb,var(--image-dominant-color,transparent) 72%,transparent);
+ box-shadow:
+  0 0 13px color-mix(in srgb,var(--image-dominant-color,transparent) 92%,transparent),
+  0 0 23px color-mix(in srgb,var(--image-dominant-color,transparent) 58%,transparent);
 }
 .game-grid .game-card-image{
  position:absolute;
