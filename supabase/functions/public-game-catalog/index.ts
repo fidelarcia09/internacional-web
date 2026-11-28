@@ -12,6 +12,8 @@ const GAMES = new Set([
   "free-fire", "mobile-legends", "pubg-mobile", "roblox",
   "genshin-impact", "honor-of-kings", "arena-breakout",
   "blood-strike", "call-of-duty-mobile",
+  "wuthering-waves", "delta-force", "rainbow-six-mobile",
+  "eafc-mobile", "farlight-84", "8-ball-pool",
 ]);
 
 function retailPriceUSDT(cost: number): number {
@@ -79,8 +81,10 @@ Deno.serve(async (req: Request) => {
   }
   const url = new URL(req.url);
   const game = url.searchParams.get("game") ?? "";
-  if (!GAMES.has(game)) {
-    return Response.json({ ok: false, error: "unsupported_game" }, { status: 400, headers: cors });
+  const kind = url.searchParams.get("kind") ?? "topup";
+  const validSlug = /^[a-z0-9-]{1,80}$/.test(game);
+  if (!validSlug || !["topup", "giftcard"].includes(kind) || (kind === "topup" && !GAMES.has(game))) {
+    return Response.json({ ok: false, error: "unsupported_catalog" }, { status: 400, headers: cors });
   }
   if (!SB || !SERVICE) {
     return Response.json({ ok: false, error: "catalog_server_not_configured" }, { status: 500, headers: cors });
@@ -103,10 +107,10 @@ Deno.serve(async (req: Request) => {
     }
   }
   const query = new URL("/rest/v1/provider_products", SB);
-  query.searchParams.set("select", "provider_product_id,game,product_type,name,region,cost,cost_currency,available,requires_player_id,requires_zone_id");
+  query.searchParams.set("select", "provider_product_id,game,product_type,name,region,cost,cost_currency,available,requires_player_id,requires_zone_id,face_value,raw_payload");
   query.searchParams.set("provider", "eq.rechargegames");
-  query.searchParams.set("game", "eq." + game);
-  query.searchParams.set("product_type", "eq.TOPUP");
+  query.searchParams.set("game", kind === "giftcard" && game === "steam" ? "in.(steam,steam-wallet)" : "eq." + game);
+  query.searchParams.set("product_type", "eq." + (kind === "giftcard" ? "GIFTCARD" : "TOPUP"));
   query.searchParams.set("available", "eq.true");
   query.searchParams.set("order", "region.asc,name.asc");
   try {
@@ -122,23 +126,27 @@ Deno.serve(async (req: Request) => {
     const products = Array.isArray(rows) ? rows.map((p: any) => {
       const cost = Number(p.cost);
       const hasValidCost = Number.isFinite(cost) && cost > 0 && p.cost_currency === "USDT";
+      const rawProduct = p.raw_payload?.product ?? {};
+      const faceValue = Number(p.face_value ?? rawProduct.amount);
       return {
         productId: p.provider_product_id,
         game: p.game,
         type: p.product_type,
         name: p.name,
         region: p.region ?? "Global",
+        amount: Number.isFinite(faceValue) && faceValue > 0 ? faceValue : null,
+        unit: typeof rawProduct.unit === "string" ? rawProduct.unit : null,
         priceUSDT: hasValidCost ? retailPriceUSDT(cost) : null,
         currency: hasValidCost ? "USDT" : null,
         requiresPlayerId: p.requires_player_id === true,
         requiresZoneId: p.requires_zone_id === true,
-        // RechargeGames Order API does not expose a player-validation route in the supplied integration guide.
         supportsPlayerValidation: false,
       };
     }) : [];
     return Response.json({
-      ok: true, provider: "rechargegames", game, count: products.length,
+      ok: true, provider: "rechargegames", game, kind, count: products.length,
       pricing: { marginPercent: 10, currency: "USDT", rounding: "up_to_0.01" },
+      emailDeliveryReady: kind === "giftcard" ? Boolean(Deno.env.get("RESEND_API_KEY") && Deno.env.get("GIFT_CARD_FROM_EMAIL")) : null,
       products, reseller,
     }, {
       headers: { ...cors, "Cache-Control": authorization ? "private, no-store" : "public, max-age=60, s-maxage=300" },
