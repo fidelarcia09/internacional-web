@@ -406,6 +406,26 @@
  .game-grid .product,.game-grid .game-card-image{transition:none!important}
  .game-grid .product:hover .game-card-image{transform:none}
 }
+/* Imagen y panel inferior con el mismo ancho interior y márgenes uniformes */
+.game-grid .visual{
+ margin:8px 8px 0;
+ width:calc(100% - 16px);
+ border-radius:12px;
+}
+.game-grid .product-info{
+ margin:0 8px 8px;
+}
+@media(max-width:700px){
+ .game-grid .visual{
+  margin:7px 7px 0;
+  width:calc(100% - 14px);
+  border-radius:11px;
+ }
+ .game-grid .product-info{
+  margin:0 7px 7px;
+ }
+}
+
 </style>
 </head>
 <body>
