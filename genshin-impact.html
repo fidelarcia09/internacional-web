@@ -266,6 +266,16 @@ body{overflow-x:hidden}
 }
 
 </style>
+
+<style id="gg-genshin-server-select">
+.genshin-server-row{margin-top:12px}
+.server-select-field{display:flex;flex-direction:column;gap:7px;width:100%;color:#92949c;font-size:12px;font-weight:800}
+#provider-server-id{appearance:none;-webkit-appearance:none;cursor:pointer;padding-left:46px;padding-right:42px;color:#f5f4f1}
+#provider-server-id:invalid{color:#92949c}
+#provider-server-id option{background:#081a35;color:#f5f4f1}
+.server-select-field .player-field:after{content:"⌄";position:absolute;right:16px;top:50%;transform:translateY(-55%);color:#24efff;font-size:20px;line-height:1;pointer-events:none}
+@media(max-width:560px){#provider-server-id{padding-left:40px;padding-right:38px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -274,7 +284,7 @@ body{overflow-x:hidden}
 </header>
 <main>
 <section class="section section-heading-outside" aria-labelledby="region-title">
-<h2 class="section-head" id="region-title"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span>Región del juego</h2>
+<h2 class="section-head" id="region-title"><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span>Región del producto</h2>
 <div class="section-panel">
 <div class="region-grid" id="regions"><div class="catalog-state">Cargando regiones disponibles…</div></div>
 </div>
@@ -283,6 +293,21 @@ body{overflow-x:hidden}
 <h2 class="section-head" id="player-title"><span class="ico player-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 16c.6-1.8 1.7-2.7 3.2-2.7s2.6.9 3.2 2.7M14.5 9h4M14.5 12h4M14.5 15h2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tu UID</h2>
 <div class="section-panel">
 <div class="field-row"><div class="player-field"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5.8 16c.6-1.8 1.7-2.7 3.2-2.7s2.6.9 3.2 2.7M14.5 9h4M14.5 12h4M14.5 15h2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><input class="player-input" id="player-id" type="text" inputmode="numeric" autocomplete="off" placeholder="Ingresa tu UID..." maxlength="32" aria-label="Tu Player ID"><button class="player-paste" id="player-paste" type="button" aria-label="Pegar Player ID" title="Pegar desde el portapapeles"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="2"/><path d="M16 3V2.5A1.5 1.5 0 0 0 14.5 1h-9A1.5 1.5 0 0 0 4 2.5v13A1.5 1.5 0 0 0 5.5 17H8"/><path d="M14 9v7m-3-3 3 3 3-3"/></svg></button></div></div>
+<div class="field-row genshin-server-row">
+ <label class="server-select-field" for="provider-server-id">
+  <span>Servidor de tu cuenta</span>
+  <div class="player-field">
+   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+   <select class="player-input" id="provider-server-id" required aria-label="Servidor de tu cuenta">
+    <option value="">Selecciona tu servidor...</option>
+    <option value="America">América</option>
+    <option value="Europe">Europa</option>
+    <option value="Asia">Asia</option>
+    <option value="TW/HK/MO">TW / HK / MO</option>
+   </select>
+  </div>
+ </label>
+</div>
 </div>
 </section>
 <section class="section" aria-labelledby="packages-title">
@@ -403,11 +428,11 @@ function safeText(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"
 function normalizeGenshinRegion(region){
  const value=String(region??"").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\s+/g," ");
  if(["global","gl","worldwide","world"].includes(value))return "Global";
+ if(["asia","asia server","as"].includes(value))return "Asia";
  if(["eu","europe","european","europe server"].includes(value))return "EU";
- if(["na","north america","north american","america","america server","us","usa"].includes(value))return "NA";
  return null;
 }
-const GENSHIN_REGIONS=[{value:"Global",symbol:"🌐"},{value:"EU",symbol:"🌍"},{value:"NA",symbol:"🌎"}];
+const GENSHIN_REGIONS=[{value:"Global",symbol:"🌐"},{value:"Asia",symbol:"🌏"},{value:"EU",symbol:"🌍"}];
 function renderRegions(){
  regions.innerHTML="";
  selectedRegion="Global";
@@ -613,9 +638,9 @@ buyButton.addEventListener("click",async()=>{
  if(purchaseInProgress) return;
  if(!selectedProduct){notify("Selecciona primero un producto.");return;}
  const playerId=playerInput?.value.trim()||"";
- const zoneId=document.getElementById("provider-zone-id")?.value.trim()||"";
- if(selectedProduct.requiresPlayerId&&!playerId){notify("Ingresa tu Player ID antes de continuar.");playerInput?.focus();return;}
- if(selectedProduct.requiresZoneId&&!zoneId){notify("Ingresa tu Zone ID antes de continuar.");document.getElementById("provider-zone-id")?.focus();return;}
+ const serverId=document.getElementById("provider-server-id")?.value||"";
+ if(selectedProduct.requiresPlayerId&&!playerId){notify("Ingresa tu UID antes de continuar.");playerInput?.focus();return;}
+ if(!serverId){notify("Selecciona el servidor de tu cuenta antes de continuar.");document.getElementById("provider-server-id")?.focus();return;}
  if(!resellerPricingLoaded){notify("No se pudo comprobar tu nivel de revendedor. Actualiza el catálogo antes de comprar.");return;}
   const price=priceForProduct(selectedProduct);
  if(!Number.isFinite(price)||price<=0){notify("No se pudo comprobar el precio. Actualiza el catálogo.");return;}
@@ -628,11 +653,11 @@ buyButton.addEventListener("click",async()=>{
  try{
    const accessToken=activeSession?.access_token;
    if(!accessToken) throw new Error("Tu sesión ya no está activa. Vuelve a iniciar sesión.");
-   const clientReference=getPendingClientReference(selectedProduct,playerId,zoneId);
+   const clientReference=getPendingClientReference(selectedProduct,playerId,serverId);
    const response=await fetch(SUPABASE_URL+"/functions/v1/rechargegames-comprar",{
      method:"POST",
      headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+accessToken,"Content-Type":"application/json",Accept:"application/json"},
-     body:JSON.stringify({product_key:selectedProduct.productId,game:GAME,player_id:playerId,server_id:zoneId,client_reference:clientReference,expected_amount:price})
+     body:JSON.stringify({product_key:selectedProduct.productId,game:GAME,player_id:playerId,server_id:serverId,client_reference:clientReference,expected_amount:price})
    });
    const data=await response.json().catch(()=>({}));
    if(response.status===402&&data.error==="insufficient_usdt_balance"){
