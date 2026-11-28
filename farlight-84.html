@@ -116,7 +116,7 @@ body{overflow-x:hidden}
 /* Selector de regiones inspirado en Gamevora: control segmentado, sin alterar la carga dinámica. */
 #regions.region-grid{
   display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-columns:repeat(var(--region-count,1),minmax(0,1fr))!important;
   gap:3px!important;
   width:100%!important;
   padding:3px!important;
@@ -409,6 +409,7 @@ function regionEmoji(region){
 }
 function renderRegions(){
  const values=[...new Set(products.map(product=>product.region).filter(Boolean))];
+ regions.style.setProperty("--region-count",String(Math.max(1,values.length)));
  regions.innerHTML="";
  selectedRegion=values.includes(selectedRegion)?selectedRegion:(values[0]||"");
  values.forEach(region=>{
@@ -567,13 +568,6 @@ function readPrefetchedCatalog(){
  return null;
 }
 async function loadCatalog(){
- if(["delta-force","rainbow-six-mobile","farlight-84"].includes(GAME)){
-   packages.innerHTML='<div class="catalog-state">Este servicio de recarga no está disponible.</div>';
-   regions.replaceChildren();
-   playerSection.hidden=true;
-   buyButton.disabled=true;
-   return;
- }
  buyButton.textContent="Recargar ahora";
  const cachedProducts=readPrefetchedCatalog();
  if(cachedProducts) applyCatalogProducts(cachedProducts);
