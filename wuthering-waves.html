@@ -388,7 +388,6 @@ const playerSection=document.getElementById("player-title").closest(".section");
 const playerInput=document.getElementById("player-id");
 
 function clearValidation(){}
-function scheduleNicknameValidation(){}
 let products=[];
 let resellerDiscountPercent=0;
 let resellerPricingLoaded=false;
@@ -439,7 +438,7 @@ function productAmount(product){
 }
 function isCurrencyPack(product){
  const name=String(product?.name||"").toLowerCase();
- return /diamantes?|diamonds?|bonds?|\bcp\b|tokens?|cristales\s+g[eé]nesis|genesis\s+crystals?|crystals?|\buc\b|robux|\bgold\b/i.test(name);
+ return /diamantes?|diamonds?|bonds?|lunite|delta\s*coins?|coins?|platinum|cash|fc\s*points?|silver|\bcp\b|tokens?|cristales\s+g[eé]nesis|genesis\s+crystals?|crystals?|\buc\b|robux|\bgold\b/i.test(name);
 }
 function priceForProduct(product){
  const base=Number(product?.priceUSDT);
