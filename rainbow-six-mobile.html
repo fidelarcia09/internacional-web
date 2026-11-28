@@ -667,7 +667,8 @@ buyButton.addEventListener("click",async()=>{
  }
 });
 
-function scheduleNicknameValidation(){}\nconst pasteButton=document.getElementById("player-paste");
+function scheduleNicknameValidation(){}
+const pasteButton=document.getElementById("player-paste");
 pasteButton?.addEventListener("click",async()=>{
  try{
   if(!navigator.clipboard?.readText) throw new Error("Tu navegador no permite leer el portapapeles. Mantén pulsado el campo y selecciona Pegar.");
